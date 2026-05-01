@@ -1,11 +1,16 @@
+export type UserRole = "USER" | "SUPER_ADMIN";
+
 export type User = {
   id: string;
   username: string;
-  password: string; // เพิ่มฟิลด์รหัสผ่าน
+  password: string;
   wallet: string;
   balance: number;
   winRate: string;
   totalProfit: string;
+  role: UserRole; // เพิ่มระดับสิทธิ์
+  status: "ACTIVE" | "BANNED"; // สถานะสมาชิก
+  lastIp?: string;
 };
 
 export const mockUsers: User[] = [
@@ -17,6 +22,9 @@ export const mockUsers: User[] = [
     balance: 1500,
     winRate: "67%",
     totalProfit: "+850 USDT",
+    role: "SUPER_ADMIN", // บัญชีผู้ดูแลระบบสูงสุด
+    status: "ACTIVE",
+    lastIp: "192.168.1.149",
   },
   {
     id: "user_2",
@@ -26,5 +34,8 @@ export const mockUsers: User[] = [
     balance: 3000,
     winRate: "52%",
     totalProfit: "+2,100 USDT",
+    role: "USER",
+    status: "ACTIVE",
+    lastIp: "192.168.1.102",
   },
 ];
