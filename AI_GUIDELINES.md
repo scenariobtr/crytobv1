@@ -57,7 +57,7 @@ node_modules/next/dist/docs/
 - Platform fee target: 2.5%
 - Wallet safety warning: แสดงเมื่อใช้เงินเกิน 80% ของ balance
 - Prediction market ใช้ YES/NO side, price, volume, creator และ endDate
-- Forecast World ใช้ item เป็นตัวแทนเงินพยากรณ์ โดย item จะเพิ่ม volume ให้ YES/NO pool ตาม power ของ item
+- Forecast Radar ใช้เครื่องบิน 2D บินไป lock radar signal แล้วเดิมพัน YES/NO ด้วย balance โดยตรง
 - ถ้าแก้ rate/price ฝั่ง admin ควรคิดผลกระทบ P&L ของ user ในอนาคต
 - `getSystemStats` รองรับทั้ง `yesVolume/noVolume` และ legacy `makerVolume/takerVolume`
 
@@ -77,9 +77,74 @@ node_modules/next/dist/docs/
 
 ## 8. Roadmap
 
+### 8.1 Forecast Radar: 2D Flight Betting Layer
+
+เป้าหมายใหม่คือปรับ Forecast World ให้เป็นเกม 2D แนว radar flight betting: ผู้เล่นเป็นเครื่องบิน 2 มิติ บินอยู่บนจอ radar ตรวจจับสัญญาณตลาดเดิมพัน แล้วบินเข้าไป lock เป้าหมายเพื่อวางเดิมพัน YES/NO ด้วยเงินในเกมจาก balance/deposit เดิม โดยยังใช้ทรัพยากรน้อยที่สุด ภาพรวมควรเป็นสีสันแบบ Minecraft-inspired/blocky pixel ไม่ใช่ noir ล้วน
+
+หลักการสำคัญ:
+
+- ใช้ React + CSS/SVG สำหรับ radar, เครื่องบิน, signal และ HUD เพื่อให้ bundle เบา ไม่ใช้ Phaser/Canvas/3D ในช่วงแรก
+- ใช้ blocky pixel shapes, สีเขียว grass, ฟ้า sky/cyan, เหลือง beacon, แดง lava/risk และขอบดำหนาให้ดูเป็นเกม
+- Market เดิมถูก map เป็น radar signal/blip บนแผนที่
+- ผู้เล่นเคลื่อนเครื่องบินด้วย WASD/arrow หรือคลิกตำแหน่งบน radar
+- เมื่อเครื่องบินเข้าใกล้ signal จะเกิด radar lock และเปิด panel วางเดิมพัน
+- ร้านค้า/เลือกของเหลือแค่ action YES และ NO พร้อม amount input ไม่ใช้ item/inventory เป็นแกนหลัก
+- ทุกการเดิมพันต้องหัก balance ผ่าน business logic เดิม, เพิ่ม yesVolume/noVolume และ log ผ่าน `logService`
+
+Phase 1: Radar Flight Core
+
+1. เปลี่ยน `WorldMap.tsx` เป็นแนว `RadarMap.tsx` หรือปรับ component เดิมให้เป็น radar screen
+2. เปลี่ยน `PlayerAvatar.tsx` เป็น `PlayerPlane.tsx` ที่ render เครื่องบิน 2D ด้วย SVG/CSS จริง
+3. เปลี่ยน market hut เป็น `MarketSignal.tsx` แสดง blip, pulse, hot signal และ expired signal
+4. เพิ่ม radar sweep, grid coordinates, distance indicator และ lock-on ring แบบ CSS animation
+5. คง movement hook ให้เบา แต่ปรับ naming/UX ให้เป็น flight control
+
+Phase 2: Direct YES/NO Betting
+
+1. แทน `ItemShopPanel`, `InventoryPanel`, `AvatarCustomizer`, `ItemActionBar` ด้วย `BetDockPanel`
+2. `BetDockPanel` มีแค่ YES, NO, amount input, balance display และ confirm action
+3. ใช้เงินในเกมจาก balance/deposit เดิม ไม่ใช้ item power
+4. เมื่อเดิมพัน ให้ validate amount, market lock, market expiry และ balance
+5. log action เป็น `RADAR_BET` หรือ `BET` พร้อม market title, side และ amount
+
+Phase 3: Radar Game Feel
+
+1. signal intensity ขึ้นกับ market volume และ `isHot`
+2. lock-on state เปลี่ยนสี/เสียงภาพ เช่น ring, coordinate, distance, status
+3. เพิ่ม route line จากเครื่องบินไป signal ที่เลือก
+4. เพิ่ม HUD เช่น speed, altitude mock, wallet fuel/balance และ scan status
+5. expired market เป็น signal จางหรือแดงและกดเดิมพันไม่ได้
+
+Phase 4: Economy And Persistence
+
+1. Persist radar bets, balance movement และ market volume ลง database จริงเมื่อย้ายออกจาก `.txt`
+2. แยก economy config เช่น min bet, max bet, platform fee, cooldown และ risk limit ให้ admin ปรับได้
+3. เพิ่ม audit trail สำหรับ radar betting เพื่อคำนวณ P&L และตรวจสอบความถูกต้องของ balance
+4. เพิ่ม rate limit/cooldown สำหรับตลาดที่มี volume สูงหรือมีการกดเดิมพันถี่
+5. ออกแบบ migration จาก client/mock balance ไป schema จริงโดยไม่เปลี่ยน UI contract มาก
+
+ไฟล์ที่ควรเพิ่มหรือขยาย:
+
+- `src/features/forecast-world/components/RadarMap.tsx`
+- `src/features/forecast-world/components/PlayerPlane.tsx`
+- `src/features/forecast-world/components/MarketSignal.tsx`
+- `src/features/forecast-world/components/RadarPanel.tsx`
+- `src/features/forecast-world/components/BetDockPanel.tsx`
+- `src/features/forecast-world/hooks/useRadarLock.ts`
+- `src/features/forecast-world/hooks/useFlightMovement.ts`
+
+สิ่งที่ยังไม่ควรทำในช่วงแรก:
+
+- ยังไม่เพิ่ม Phaser, Canvas, Three.js หรือ animation engine หนัก
+- ยังไม่ทำ multiplayer จริงแบบ sync position ทุก frame
+- ยังไม่เอาเงินจริงหรือ wallet จริงมา bind กับ gameplay โดยตรง
+- ยังไม่ใส่ sprite sheet/image asset ขนาดใหญ่จนกว่า art direction จะชัดเจน
+
+### 8.2 Platform Roadmap
+
 1. ย้าย persistence จาก `.txt` เป็น PostgreSQL/Redis
 2. เพิ่ม auth จริง เช่น NextAuth/Clerk และ wallet connection
 3. เพิ่ม market API จริงแทน mock service
 4. เพิ่ม real-time sync ด้วย WebSocket/SSE
 5. แยก `StakewiseTerminal.tsx` ต่อเป็น hooks และ modal components ย่อย
-6. persist inventory/item ownership ลง database จริงแทน client state
+6. persist radar bets, market volume และ balance movement ลง database จริงแทน client state

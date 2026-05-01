@@ -1,13 +1,13 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { INITIAL_PLAYER_POSITION, WORLD_SIZE } from "../constants";
+import { INITIAL_PLANE_POSITION, WORLD_SIZE } from "../constants";
 import type { Position } from "../types";
 
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
 
-export const useAvatarMovement = () => {
-  const [position, setPosition] = useState<Position>(INITIAL_PLAYER_POSITION);
+export const useFlightMovement = () => {
+  const [position, setPosition] = useState<Position>(INITIAL_PLANE_POSITION);
 
   const moveBy = useCallback((delta: Position) => {
     setPosition((current) => ({

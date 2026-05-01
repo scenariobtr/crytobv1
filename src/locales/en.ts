@@ -112,9 +112,9 @@ export const en = {
     cancel: "Cancel"
   },
   world: {
-    nav: "Forecast World",
-    title: "Forecast World",
-    subtitle: "Walk the village, enter huts, buy items, and use them to forecast outcomes.",
+    nav: "Game World",
+    title: "Forecast Radar",
+    subtitle: "Fly the blocky radar, lock market signals, and bet YES or NO with game balance.",
     selected_hut: "Selected Hut",
     selected_item: "Selected Item",
     choose_item_first: "Choose an inventory item first",
@@ -134,9 +134,55 @@ export const en = {
     forecast_yes: "Forecast YES",
     forecast_no: "Forecast NO",
     insufficient_balance: "Insufficient balance for this item",
+    bet_dock: "Bet Dock",
+    bet_amount: "Bet Amount",
     purchased: "Purchased",
     forecasted: "Forecasted",
     with_item: "with",
+    cosmetic_only: "Cosmetic only",
+    categories: {
+      stake: "Stake",
+      boost: "Boost",
+      cosmetic: "Cosmetic",
+      utility: "Utility",
+    },
+    rarity: {
+      common: "Common",
+      uncommon: "Uncommon",
+      rare: "Rare",
+      epic: "Epic",
+    },
+    avatar: {
+      title: "Avatar Studio",
+      outfit: "Outfit",
+      accessory: "Accessory",
+      none: "None",
+      current: "Avatar",
+      equip: "Equip",
+      equipped: "Equipped",
+      outfits: {
+        emerald_initiate: "Emerald",
+        noir_runner: "Noir",
+        signal_mage: "Signal",
+      },
+      accessories: {
+        signal_visor: "Visor",
+        oracle_pin: "Oracle Pin",
+      },
+    },
+    radar: {
+      kicker: "Block Flight Control",
+      scan_online: "Radar Scan Online",
+      searching: "Searching Signals",
+      locked: "Signal Locked",
+      out_of_range: "Out Of Range",
+      pick_signal: "Pick a radar signal or fly close to lock a market.",
+      coordinates: "Coordinates",
+      distance: "Distance",
+      ready_to_bet: "Signal locked. YES/NO dock is armed.",
+      fly_to_lock: "Fly closer to a signal to unlock betting.",
+      bet_confirmed: "Radar bet confirmed",
+    },
     items: {
       forecast_ticket: {
         name: "Forecast Ticket",
@@ -149,6 +195,18 @@ export const en = {
       no_charm: {
         name: "NO Charm",
         description: "A focused token that can only support NO.",
+      },
+      noir_runner_cloak: {
+        name: "Noir Runner Cloak",
+        description: "Unlocks a pale noir outfit for your avatar.",
+      },
+      signal_visor: {
+        name: "Signal Visor",
+        description: "Unlocks a small orange visor accessory.",
+      },
+      oracle_pin: {
+        name: "Oracle Pin",
+        description: "Unlocks an emerald oracle pin accessory.",
       },
     },
   }

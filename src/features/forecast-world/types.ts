@@ -5,38 +5,20 @@ export type Position = {
   y: number;
 };
 
-export type WorldTileType = "GRASS" | "PATH" | "HUT" | "SHOP" | "BLOCK";
-
-export type WorldTile = Position & {
-  type: WorldTileType;
-  marketId?: number;
-};
-
-export type WorldHut = {
+export type RadarSignal = {
   id: string;
   market: Thread;
   position: Position;
+  intensity: number;
+  distance: number;
+  isLocked: boolean;
+  isExpired: boolean;
 };
 
-export type GameItemType = "FORECAST_TOKEN" | "BOOST" | "COSMETIC";
-
-export type GameItem = {
-  id: string;
-  nameKey: string;
-  descriptionKey: string;
-  price: number;
-  type: GameItemType;
-  side?: "YES" | "NO";
-  power: number;
+export type FlightTelemetry = {
+  altitude: number;
+  speed: number;
+  heading: string;
 };
 
-export type InventoryItem = {
-  itemId: string;
-  quantity: number;
-};
-
-export type PlayerAvatar = {
-  userId: string;
-  displayName: string;
-  position: Position;
-};
+export type RadarBetSide = "YES" | "NO";

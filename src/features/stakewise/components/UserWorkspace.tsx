@@ -6,7 +6,7 @@ import { ProfileSettings } from "@/components/user/ProfileSettings";
 import { WalletDashboard } from "@/components/user/WalletDashboard";
 import type { User } from "@/data/mockUsers";
 import { ForecastWorld } from "@/features/forecast-world/ForecastWorld";
-import type { GameItem } from "@/features/forecast-world/types";
+import type { RadarBetSide } from "@/features/forecast-world/types";
 import type { Thread } from "@/modules/market/service";
 import { USER_TABS, userTabLabelKey } from "../constants";
 import type { PortfolioBet, UserSubTab } from "../types";
@@ -24,8 +24,7 @@ type UserWorkspaceProps = {
   onEditMarket: (thread: Thread) => void;
   onDeposit: () => void;
   onProfileUpdate: (updatedData: Partial<User>) => void;
-  onBuyWorldItem: (item: GameItem) => boolean;
-  onUseWorldItem: (thread: Thread, side: "YES" | "NO", item: GameItem) => void;
+  onPlaceRadarBet: (thread: Thread, side: RadarBetSide, amount: number) => boolean;
   getTracking: (strength: "normal" | "wide" | "widest") => string;
   t: (path: string) => string;
 };
@@ -43,8 +42,7 @@ export const UserWorkspace = ({
   onEditMarket,
   onDeposit,
   onProfileUpdate,
-  onBuyWorldItem,
-  onUseWorldItem,
+  onPlaceRadarBet,
   getTracking,
   t,
 }: UserWorkspaceProps) => {
@@ -64,8 +62,7 @@ export const UserWorkspace = ({
             currentUser={currentUser}
             threads={threads}
             balance={balance}
-            onBuyItem={onBuyWorldItem}
-            onUseItem={onUseWorldItem}
+            onPlaceRadarBet={onPlaceRadarBet}
             t={t}
           />
         )}

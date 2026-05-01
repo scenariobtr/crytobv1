@@ -114,9 +114,9 @@ export const th: LocaleType = {
     cancel: "ยกเลิก"
   },
   world: {
-    nav: "หมู่บ้านพยากรณ์",
-    title: "หมู่บ้านพยากรณ์",
-    subtitle: "เดินสำรวจหมู่บ้าน เข้ากระท่อม ซื้อไอเทม และใช้ไอเทมเพื่อพยากรณ์ผลลัพธ์",
+    nav: "GAME",
+    title: "เรดาร์พยากรณ์",
+    subtitle: "บินบนเรดาร์สีสันแบบบล็อก ล็อกสัญญาณตลาด และเดิมพัน YES หรือ NO ด้วยเงินในเกม",
     selected_hut: "กระท่อมที่เลือก",
     selected_item: "ไอเทมที่เลือก",
     choose_item_first: "เลือกไอเทมจากคลังก่อน",
@@ -136,9 +136,55 @@ export const th: LocaleType = {
     forecast_yes: "พยากรณ์ YES",
     forecast_no: "พยากรณ์ NO",
     insufficient_balance: "ยอดเงินไม่พอสำหรับซื้อไอเทมนี้",
+    bet_dock: "ฐานเดิมพัน",
+    bet_amount: "จำนวนเดิมพัน",
     purchased: "ซื้อแล้ว",
     forecasted: "พยากรณ์แล้ว",
     with_item: "ด้วย",
+    cosmetic_only: "ไอเทมแต่งตัวเท่านั้น",
+    categories: {
+      stake: "เดิมพัน",
+      boost: "บูสต์",
+      cosmetic: "แต่งตัว",
+      utility: "เครื่องมือ",
+    },
+    rarity: {
+      common: "ทั่วไป",
+      uncommon: "พิเศษ",
+      rare: "หายาก",
+      epic: "อีปิก",
+    },
+    avatar: {
+      title: "แต่ง Avatar",
+      outfit: "ชุด",
+      accessory: "เครื่องประดับ",
+      none: "ไม่มี",
+      current: "Avatar",
+      equip: "สวมใส่",
+      equipped: "สวมใส่แล้ว",
+      outfits: {
+        emerald_initiate: "Emerald",
+        noir_runner: "Noir",
+        signal_mage: "Signal",
+      },
+      accessories: {
+        signal_visor: "Visor",
+        oracle_pin: "Oracle Pin",
+      },
+    },
+    radar: {
+      kicker: "ศูนย์ควบคุมการบินบล็อก",
+      scan_online: "เรดาร์กำลังสแกน",
+      searching: "ค้นหาสัญญาณ",
+      locked: "ล็อกสัญญาณแล้ว",
+      out_of_range: "อยู่นอกระยะ",
+      pick_signal: "เลือกสัญญาณบนเรดาร์ หรือบินเข้าไปใกล้เพื่อ lock ตลาด",
+      coordinates: "พิกัด",
+      distance: "ระยะห่าง",
+      ready_to_bet: "ล็อกสัญญาณแล้ว ฐาน YES/NO พร้อมเดิมพัน",
+      fly_to_lock: "บินเข้าใกล้สัญญาณเพื่อปลดล็อกการเดิมพัน",
+      bet_confirmed: "ยืนยันการเดิมพันผ่านเรดาร์แล้ว",
+    },
     items: {
       forecast_ticket: {
         name: "ตั๋วพยากรณ์",
@@ -151,6 +197,18 @@ export const th: LocaleType = {
       no_charm: {
         name: "เครื่องราง NO",
         description: "ไอเทมเฉพาะทางสำหรับสนับสนุนฝั่ง NO เท่านั้น",
+      },
+      noir_runner_cloak: {
+        name: "เสื้อคลุม Noir Runner",
+        description: "ปลดล็อกชุดสีอ่อนแนว noir ให้ Avatar",
+      },
+      signal_visor: {
+        name: "Signal Visor",
+        description: "ปลดล็อกเครื่องประดับ visor สีส้ม",
+      },
+      oracle_pin: {
+        name: "Oracle Pin",
+        description: "ปลดล็อกเข็มกลัด oracle สี emerald",
       },
     },
   }

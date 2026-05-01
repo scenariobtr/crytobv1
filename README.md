@@ -17,7 +17,7 @@
 
 - Login/register mock flow พร้อม OTP demo `1234`
 - Prediction markets แบบ YES/NO พร้อมราคา, volume, countdown และ market expiry
-- Forecast World: map 2D แบบเบา ๆ มี avatar เดินได้, market เป็นกระท่อม, shop และ inventory item สำหรับนำไปพยากรณ์
+- Forecast Radar: เครื่องบิน 2D บินบน radar map, lock market signal และเดิมพัน YES/NO ด้วย balance ในเกม
 - Wallet dashboard พร้อม quick deposit mock และ wallet safety warning ที่ 80%
 - Profile settings พร้อม avatar, phone, password และ membership duration
 - Admin dashboard สำหรับ `SUPER_ADMIN`
@@ -36,18 +36,18 @@ src/
 │   └── page.tsx                 # Thin route entry, render feature component
 ├── features/
 │   ├── forecast-world/
-│   │   ├── ForecastWorld.tsx           # Lightweight game world entry
-│   │   ├── constants.ts                # Map size, hut positions, item catalog
-│   │   ├── types.ts                    # Avatar, item, inventory, hut types
+│   │   ├── ForecastWorld.tsx           # Lightweight radar flight game entry
+│   │   ├── constants.ts                # Map size, signal positions, radar/game config
+│   │   ├── types.ts                    # Plane, radar signal and betting types
 │   │   ├── hooks/
-│   │   │   └── useAvatarMovement.ts    # WASD/arrow movement logic
+│   │   │   ├── useFlightMovement.ts    # WASD/arrow movement logic
+│   │   │   └── useRadarLock.ts         # Signal distance and lock-on logic
 │   │   └── components/
-│   │       ├── WorldMap.tsx
-│   │       ├── PlayerAvatar.tsx
-│   │       ├── MarketHut.tsx
-│   │       ├── HutDetailsPanel.tsx
-│   │       ├── InventoryPanel.tsx
-│   │       └── ItemShopPanel.tsx
+│   │       ├── RadarMap.tsx
+│   │       ├── PlayerPlane.tsx
+│   │       ├── MarketSignal.tsx
+│   │       ├── RadarPanel.tsx
+│   │       └── BetDockPanel.tsx
 │   └── stakewise/
 │       ├── StakewiseTerminal.tsx       # Main orchestrator: state + flow wiring
 │       ├── constants.ts                # Tab lists and market draft factory
@@ -135,23 +135,41 @@ npm run build
 
 ## Forecast World
 
-Forecast World เป็น game-like layer ที่วางทับ business เดิมโดยไม่ใช้ graphics engine:
+Forecast World เป็น game-like layer ที่วางทับ business เดิมโดยไม่ใช้ graphics engine ตอนนี้ pivot เป็น Forecast Radar:
 
-- ใช้ React + CSS grid เป็น map 2D
-- avatar เดินได้ด้วย WASD/arrow keys หรือคลิก tile
-- market `Thread` เดิมถูก map เป็น hut
-- shop ใช้ balance เดิมในการซื้อ item
-- inventory เก็บ item mock ฝั่ง client
-- ใช้ item กับ hut เพื่อ forecast YES/NO และเพิ่ม volume ให้ market
-- transaction สำคัญถูก log ผ่าน `logService` เป็น `BUY_ITEM` และ `USE_ITEM`
-- UI text ของ world, item shop, inventory และ hut details แปลผ่าน `src/locales/en.ts` และ `src/locales/th.ts`
+- ใช้ React + CSS grid/SVG เป็น radar map 2D แบบ blocky colorful
+- เครื่องบิน 2D บินได้ด้วย WASD/arrow keys หรือคลิก tile
+- market `Thread` เดิมถูก map เป็น radar signal/blip
+- เมื่อเครื่องบินเข้าใกล้ signal จะ lock และเปิด Bet Dock
+- Bet Dock มี action หลักแค่ YES/NO พร้อม amount input
+- เดิมพันใช้ balance/deposit เดิม หักเงินและเพิ่ม YES/NO volume ตามจำนวนเดิมพัน
+- transaction สำคัญถูก log ผ่าน `logService` เป็น `RADAR_BET`
+- UI text ของ radar, signal และ Bet Dock แปลผ่าน `src/locales/en.ts` และ `src/locales/th.ts`
 
 หลักการพัฒนาต่อ:
 
 - อย่าใส่ game logic ใน `StakewiseTerminal.tsx`
 - เพิ่ม world UI ที่ `src/features/forecast-world/components/`
 - เพิ่ม movement/interaction logic ที่ `src/features/forecast-world/hooks/`
-- ถ้า item/inventory ต้องใช้ร่วมหลาย feature ให้ย้าย logic ไป `src/modules/items` หรือ `src/modules/inventory`
+- ถ้า economy/betting logic ใช้ร่วมหลาย feature ให้ย้ายไป `src/modules/bet` หรือ domain module ที่เหมาะสม
+
+## Forecast Radar Roadmap
+
+ทิศทางถัดไปคือ pivot Forecast World ให้เป็น lightweight 2D radar flight betting game พร้อมสีสันแบบ Minecraft-inspired/blocky pixel:
+
+1. ตัวละครหลักเป็นเครื่องบิน 2D ที่บินบน radar map ด้วย WASD/arrow หรือคลิกตำแหน่ง
+2. Market เดิมถูกแสดงเป็น radar signal/blip พร้อม pulse, hot status, expired status และ distance
+3. เมื่อเครื่องบินเข้าใกล้ signal จะเกิด radar lock และเปิด panel รายละเอียดการเดิมพัน
+4. ร้านค้าเหลือ action หลักแค่ YES และ NO พร้อม amount input ไม่ใช้ item/inventory เป็น flow หลัก
+5. เดิมพันด้วยเงินในเกมจาก balance/deposit เดิม หัก balance และเพิ่ม yesVolume/noVolume ตาม amount
+6. เพิ่ม HUD ให้เหมือน radar ทำงานจริง เช่น scan sweep, lock ring, coordinate, altitude/speed mock และ signal intensity
+7. ใช้ visual แบบ blocky colorful: grass green, sky/cyan, beacon yellow, lava red, chunky black borders และ pixel-like controls
+
+ข้อจำกัดช่วงแรก:
+
+- ไม่เพิ่ม Phaser, Canvas, Three.js หรือ multiplayer sync หนัก
+- ไม่ bind gameplay กับเงินจริงหรือ wallet จริงโดยตรง
+- ไม่ใส่ image/sprite asset ขนาดใหญ่จนกว่า art direction จะชัดเจน
 
 ## Development Notes
 

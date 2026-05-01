@@ -24,7 +24,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - Do not add large JSX blocks back into `StakewiseTerminal.tsx`.
 - Put feature UI in `src/features/stakewise/components/`.
 - Put feature modals in `src/features/stakewise/components/modals/`.
-- Put Forecast World UI, movement hooks, item catalog, and map types in `src/features/forecast-world/`.
+- Put Forecast Radar UI, movement hooks, radar config, and map types in `src/features/forecast-world/`.
 - Put reusable cross-feature UI in `src/components/shared/`.
 - Put business/domain helpers in `src/modules/`.
 - Put client API wrappers in `src/services/`.
@@ -55,14 +55,14 @@ src/features/forecast-world/
 ├── constants.ts
 ├── types.ts
 ├── hooks/
-│   └── useAvatarMovement.ts
+│   ├── useFlightMovement.ts
+│   └── useRadarLock.ts
 └── components/
-    ├── WorldMap.tsx
-    ├── PlayerAvatar.tsx
-    ├── MarketHut.tsx
-    ├── HutDetailsPanel.tsx
-    ├── InventoryPanel.tsx
-    └── ItemShopPanel.tsx
+    ├── RadarMap.tsx
+    ├── PlayerPlane.tsx
+    ├── MarketSignal.tsx
+    ├── RadarPanel.tsx
+    └── BetDockPanel.tsx
 ```
 
 ## Data And Server Boundaries
