@@ -240,6 +240,8 @@ export default function Home() {
     );
   }
 
+  const stats = getSystemStats(threads);
+
   return (
     <div className="min-h-screen bg-neutral-950 text-neutral-100 font-sans">
       <nav className="flex items-center justify-between px-8 py-5 border-b border-white/5 bg-neutral-950 sticky top-0 z-[60]">
@@ -249,16 +251,16 @@ export default function Home() {
             <span className="text-xl font-black tracking-tighter uppercase text-white">CryptoBet</span>
           </div>
           <div className="hidden lg:flex bg-neutral-900/50 p-1 border border-neutral-800">
-            <button onClick={() => setViewMode("USER")} className={`px-5 py-1.5 text-[10px] font-black uppercase ${viewMode === "USER" ? "bg-emerald-500 text-black" : "text-neutral-500"}`}>USER DASHBOARD</button>
+            <button onClick={() => setViewMode("USER")} className={`px-5 py-1.5 text-[10px] font-black uppercase ${viewMode === "USER" ? "bg-emerald-500 text-black" : "text-neutral-500 hover:text-white"}`}>USER DASHBOARD</button>
             {currentUser.role === "SUPER_ADMIN" && (
-              <button onClick={() => setViewMode("ADMIN")} className={`px-5 py-1.5 text-[10px] font-black uppercase ${viewMode === "ADMIN" ? "bg-emerald-500 text-black" : "text-neutral-500"}`}>ADMIN CONSOLE</button>
+              <button onClick={() => setViewMode("ADMIN")} className={`px-5 py-1.5 text-[10px] font-black uppercase ${viewMode === "ADMIN" ? "bg-emerald-500 text-black" : "text-neutral-500 hover:text-white"}`}>ADMIN CONSOLE</button>
             )}
           </div>
         </div>
         <div className="flex items-center gap-6">
           <div className="text-right">
             <p className="text-[10px] font-black text-neutral-500 uppercase">{currentUser.username}</p>
-            <p className="text-emerald-500 font-black">{balance.toLocaleString()} USDT</p>
+            <p className="text-emerald-400 font-black tracking-tight">{balance.toLocaleString()} USDT</p>
           </div>
           <button onClick={handleLogout} className="text-neutral-700 hover:text-red-500 transition-colors"><LogOut className="w-5 h-5" /></button>
         </div>
@@ -269,12 +271,87 @@ export default function Home() {
           /* --- ADMIN VIEW --- */
           <div className="space-y-8 animate-in fade-in duration-500">
              <div className="flex gap-4 border-b border-neutral-900 pb-8">
-                {["OVERVIEW", "USERS", "MARKETS", "SECURITY"].map(tab => (
-                  <button key={tab} onClick={() => setAdminTab(tab as any)} className={`px-6 py-3 border transition-all text-[10px] font-black uppercase ${adminTab === tab ? "bg-emerald-500 text-black border-emerald-500" : "bg-neutral-900 border-neutral-800 text-neutral-500"}`}>{tab}</button>
+                {[
+                  { id: "OVERVIEW", label: "ภาพรวมระบบ", icon: BarChart3 },
+                  { id: "USERS", label: "จัดการสมาชิก", icon: Users },
+                  { id: "MARKETS", label: "จัดการตลาด", icon: Settings },
+                  { id: "SECURITY", label: "ความปลอดภัย", icon: ShieldAlert },
+                ].map(tab => (
+                  <button 
+                    key={tab.id} 
+                    onClick={() => setAdminTab(tab.id as any)} 
+                    className={`flex items-center gap-2 px-6 py-3 border transition-all text-[10px] font-black uppercase tracking-widest ${adminTab === tab.id ? "bg-emerald-500 text-black border-emerald-500" : "bg-neutral-900 border-neutral-800 text-neutral-500 hover:border-neutral-700"}`}
+                  >
+                    <tab.icon className="w-3 h-3" /> {tab.label}
+                  </button>
                 ))}
              </div>
+
+             {/* TAB: OVERVIEW */}
+             {adminTab === "OVERVIEW" && (
+               <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4">
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <div className="bg-neutral-900/50 border border-neutral-900 p-6 space-y-2">
+                      <p className="text-[10px] font-black text-neutral-600 uppercase">Volume รวม</p>
+                      <p className="text-2xl font-black text-white">{stats.totalVolume.toLocaleString()} USDT</p>
+                    </div>
+                    <div className="bg-neutral-900/50 border border-neutral-900 p-6 space-y-2">
+                      <p className="text-[10px] font-black text-neutral-600 uppercase">ค่าธรรมเนียมสะสม</p>
+                      <p className="text-2xl font-black text-emerald-500">{stats.totalFees.toLocaleString()} USDT</p>
+                    </div>
+                    <div className="bg-neutral-900/50 border border-neutral-900 p-6 space-y-2">
+                      <p className="text-[10px] font-black text-neutral-600 uppercase">ตลาดที่แอคทีฟ</p>
+                      <p className="text-2xl font-black text-white">{stats.activeThreads}</p>
+                    </div>
+                    <div className="bg-neutral-900/50 border border-neutral-900 p-6 space-y-2">
+                      <p className="text-[10px] font-black text-neutral-600 uppercase">สภาพคล่องระบบ</p>
+                      <p className="text-2xl font-black text-white">1.5M USDT</p>
+                    </div>
+                  </div>
+                  <div className="bg-neutral-900/30 border border-neutral-900 p-8 h-64 flex items-end gap-2">
+                    {[40, 70, 45, 90, 65, 80, 50, 95, 60, 85].map((h, i) => (
+                      <div key={i} className="flex-1 bg-emerald-500/20 hover:bg-emerald-500 transition-all cursor-pointer" style={{ height: `${h}%` }}></div>
+                    ))}
+                  </div>
+               </div>
+             )}
+
+             {/* TAB: USERS */}
+             {adminTab === "USERS" && (
+               <div className="bg-neutral-900/30 border border-neutral-900 overflow-hidden animate-in fade-in slide-in-from-bottom-4">
+                  <table className="w-full text-left">
+                    <thead className="bg-black/50 border-b border-neutral-800 text-[10px] font-black uppercase text-neutral-600">
+                      <tr><th className="p-6">Username</th><th className="p-6">Wallet</th><th className="p-6">Balance</th><th className="p-6 text-center">สถานะ</th><th className="p-6 text-right">จัดการ</th></tr>
+                    </thead>
+                    <tbody className="divide-y divide-neutral-800/50">
+                      {users.map(u => (
+                        <tr key={u.id} className="hover:bg-neutral-800/20 text-xs">
+                          <td className="p-6 font-black uppercase">{u.username}</td>
+                          <td className="p-6 text-neutral-500 font-mono">{u.wallet}</td>
+                          <td className="p-6 font-black text-emerald-500">{u.balance.toLocaleString()}</td>
+                          <td className="p-6 text-center">
+                            <span className={`px-2 py-1 text-[8px] font-black uppercase ${u.status === "ACTIVE" ? "bg-emerald-500/10 text-emerald-500" : "bg-red-500/10 text-red-500"}`}>
+                              {u.status}
+                            </span>
+                          </td>
+                          <td className="p-6 text-right">
+                            <button onClick={() => {
+                              setUsers(users.map(user => user.id === u.id ? { ...user, status: user.status === "ACTIVE" ? "BANNED" : "ACTIVE" } : user));
+                              showNotify(`อัปเดตสถานะ ${u.username} เรียบร้อย`, "SUCCESS");
+                            }} className="p-2 bg-neutral-800 hover:bg-red-500 transition-colors">
+                              {u.status === "ACTIVE" ? <UserMinus className="w-4 h-4" /> : <UserPlus className="w-4 h-4" />}
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+               </div>
+             )}
+
+             {/* TAB: MARKETS */}
              {adminTab === "MARKETS" && (
-               <div className="bg-neutral-900/30 border border-neutral-900 overflow-hidden">
+               <div className="bg-neutral-900/30 border border-neutral-900 overflow-hidden animate-in fade-in slide-in-from-bottom-4">
                  <table className="w-full text-left">
                    <thead className="bg-black/50 border-b border-neutral-800 text-[10px] font-black uppercase text-neutral-600">
                      <tr><th className="p-6">หัวข้อ</th><th className="p-6 text-center">สถานะ</th><th className="p-6 text-right">Liquidity</th><th className="p-6 text-right">ดำเนินการ</th></tr>
@@ -290,6 +367,25 @@ export default function Home() {
                      ))}
                    </tbody>
                  </table>
+               </div>
+             )}
+
+             {/* TAB: SECURITY */}
+             {adminTab === "SECURITY" && (
+               <div className="bg-neutral-900/30 border border-neutral-900 p-8 animate-in fade-in slide-in-from-bottom-4">
+                  <h3 className="text-xs font-black uppercase tracking-widest text-neutral-500 mb-6 flex items-center gap-2"><ShieldAlert className="w-4 h-4" /> System Audit Logs</h3>
+                  <div className="space-y-4">
+                    {mockSystemLogs.map(log => (
+                      <div key={log.id} className="p-4 bg-black/40 border border-neutral-800 flex justify-between items-center text-[10px] font-black uppercase">
+                        <div className="flex gap-4">
+                          <span className={log.type === "DANGER" ? "text-red-500" : "text-emerald-500"}>[{log.type}]</span>
+                          <span className="text-white">{log.action}</span>
+                          <span className="text-neutral-600">เป้าหมาย: {log.target}</span>
+                        </div>
+                        <span className="text-neutral-700">{new Date(log.timestamp).toLocaleTimeString()}</span>
+                      </div>
+                    ))}
+                  </div>
                </div>
              )}
           </div>
