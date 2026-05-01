@@ -112,5 +112,46 @@ export const th: LocaleType = {
     days: "วัน",
     just_joined: "เพิ่งเข้าร่วมวันนี้",
     cancel: "ยกเลิก"
+  },
+  world: {
+    nav: "หมู่บ้านพยากรณ์",
+    title: "หมู่บ้านพยากรณ์",
+    subtitle: "เดินสำรวจหมู่บ้าน เข้ากระท่อม ซื้อไอเทม และใช้ไอเทมเพื่อพยากรณ์ผลลัพธ์",
+    selected_hut: "กระท่อมที่เลือก",
+    selected_item: "ไอเทมที่เลือก",
+    choose_item_first: "เลือกไอเทมจากคลังก่อน",
+    empty_hut_prompt: "เลือกกระท่อมเพื่อดูรายละเอียดตลาดพยากรณ์",
+    inventory: "คลังไอเทม",
+    empty_inventory: "ยังไม่มีไอเทม ไปที่ร้านค้าเพื่อซื้อไอเทม",
+    item_shop: "ร้านค้าไอเทม",
+    buy_item: "ซื้อไอเทม",
+    shop: "ร้านค้า",
+    move_to: "เดินไปที่",
+    open: "เปิดอยู่",
+    closed: "ปิดแล้ว",
+    up: "ขึ้น",
+    down: "ลง",
+    left: "ซ้าย",
+    right: "ขวา",
+    forecast_yes: "พยากรณ์ YES",
+    forecast_no: "พยากรณ์ NO",
+    insufficient_balance: "ยอดเงินไม่พอสำหรับซื้อไอเทมนี้",
+    purchased: "ซื้อแล้ว",
+    forecasted: "พยากรณ์แล้ว",
+    with_item: "ด้วย",
+    items: {
+      forecast_ticket: {
+        name: "ตั๋วพยากรณ์",
+        description: "ตั๋วพื้นฐานสำหรับพยากรณ์ YES หรือ NO หนึ่งครั้ง",
+      },
+      yes_charm: {
+        name: "เครื่องราง YES",
+        description: "ไอเทมเฉพาะทางสำหรับสนับสนุนฝั่ง YES เท่านั้น",
+      },
+      no_charm: {
+        name: "เครื่องราง NO",
+        description: "ไอเทมเฉพาะทางสำหรับสนับสนุนฝั่ง NO เท่านั้น",
+      },
+    },
   }
 };

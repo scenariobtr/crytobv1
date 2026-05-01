@@ -10,6 +10,7 @@ import { authService } from "@/modules/auth/service";
 import { marketService, Thread } from "@/modules/market/service";
 import { betService } from "@/modules/bet/service";
 import { logService } from "@/services/logService";
+import type { GameItem } from "@/features/forecast-world/types";
 
 // --- Context & Hooks ---
 import { useTranslation } from "@/context/LangContext";
@@ -307,6 +308,35 @@ export function StakewiseTerminal() {
       }
   }
 
+  const handleBuyWorldItem = (item: GameItem) => {
+    if (!currentUser) return false;
+    if (balance < item.price) {
+      showNotify(t("world.insufficient_balance"), "ERROR");
+      return false;
+    }
+
+    setBalance((current) => current - item.price);
+    const itemName = t(item.nameKey);
+    showNotify(`${t("world.purchased")} ${itemName}`, "SUCCESS");
+    logService.logTransaction(currentUser.username, "BUY_ITEM", item.price, `Bought ${itemName} in Forecast World`);
+    return true;
+  };
+
+  const handleUseWorldItem = (thread: Thread, side: "YES" | "NO", item: GameItem) => {
+    if (!currentUser) return;
+
+    setThreads((current) => current.map((market) => {
+      if (market.id !== thread.id) return market;
+      return side === "YES"
+        ? { ...market, yesVolume: market.yesVolume + item.power }
+        : { ...market, noVolume: market.noVolume + item.power };
+    }));
+
+    const itemName = t(item.nameKey);
+    showNotify(`${t("world.forecasted")} ${side} ${t("world.with_item")} ${itemName}`, "SUCCESS");
+    logService.logTransaction(currentUser.username, "USE_ITEM", item.power, `Used ${itemName} to forecast ${side} on ${thread.title}`);
+  };
+
   const getTracking = (strength: "normal" | "wide" | "widest") => {
     if (lang === "TH") return "tracking-normal";
     if (strength === "widest") return "tracking-[0.1em]";
@@ -380,6 +410,8 @@ export function StakewiseTerminal() {
               setCurrentUser({...currentUser, ...updatedData});
               showNotify("อัปเดตโปรไฟล์เรียบร้อยแล้ว", "SUCCESS");
             }}
+            onBuyWorldItem={handleBuyWorldItem}
+            onUseWorldItem={handleUseWorldItem}
             getTracking={getTracking}
             t={t}
           />

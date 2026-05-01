@@ -9,6 +9,7 @@
 - **Styling:** Tailwind CSS v4
 - **Routing rule:** `src/app/page.tsx` ต้องเป็น thin route entry เท่านั้น
 - **Main feature:** client terminal อยู่ที่ `src/features/stakewise/StakewiseTerminal.tsx`
+- **Game-like feature:** Forecast World อยู่ที่ `src/features/forecast-world/`
 - **Feature support files:** tab constants และ UI/domain types อยู่ใน `src/features/stakewise/constants.ts` และ `src/features/stakewise/types.ts`
 
 ก่อนแก้ Next.js API, App Router, route handlers, caching, server/client components หรือ metadata ต้องอ่านเอกสารที่เกี่ยวข้องใน:
@@ -40,6 +41,7 @@ node_modules/next/dist/docs/
 - Business/domain helper ให้ไว้ใน `src/modules/*`
 - Feature orchestration ที่รวม state หลายส่วนให้ไว้ใน `src/features/*`
 - หลีกเลี่ยงการเพิ่ม logic ใหม่ลงใน `StakewiseTerminal.tsx` ถ้าแยกเป็น component, hook, constant หรือ module ได้อย่างชัดเจน
+- game/world UI ต้องอยู่ใน `src/features/forecast-world/*` ไม่ปนกับ shared dashboard components
 
 ## 4. Design DNA
 
@@ -55,6 +57,7 @@ node_modules/next/dist/docs/
 - Platform fee target: 2.5%
 - Wallet safety warning: แสดงเมื่อใช้เงินเกิน 80% ของ balance
 - Prediction market ใช้ YES/NO side, price, volume, creator และ endDate
+- Forecast World ใช้ item เป็นตัวแทนเงินพยากรณ์ โดย item จะเพิ่ม volume ให้ YES/NO pool ตาม power ของ item
 - ถ้าแก้ rate/price ฝั่ง admin ควรคิดผลกระทบ P&L ของ user ในอนาคต
 - `getSystemStats` รองรับทั้ง `yesVolume/noVolume` และ legacy `makerVolume/takerVolume`
 
@@ -79,3 +82,4 @@ node_modules/next/dist/docs/
 3. เพิ่ม market API จริงแทน mock service
 4. เพิ่ม real-time sync ด้วย WebSocket/SSE
 5. แยก `StakewiseTerminal.tsx` ต่อเป็น hooks และ modal components ย่อย
+6. persist inventory/item ownership ลง database จริงแทน client state

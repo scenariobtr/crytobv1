@@ -110,6 +110,47 @@ export const en = {
     days: "days",
     just_joined: "Just joined today",
     cancel: "Cancel"
+  },
+  world: {
+    nav: "Forecast World",
+    title: "Forecast World",
+    subtitle: "Walk the village, enter huts, buy items, and use them to forecast outcomes.",
+    selected_hut: "Selected Hut",
+    selected_item: "Selected Item",
+    choose_item_first: "Choose an inventory item first",
+    empty_hut_prompt: "Select a hut to inspect a prediction market.",
+    inventory: "Inventory",
+    empty_inventory: "No items yet. Visit the shop.",
+    item_shop: "Item Shop",
+    buy_item: "Buy Item",
+    shop: "Shop",
+    move_to: "Move to",
+    open: "OPEN",
+    closed: "CLOSED",
+    up: "UP",
+    down: "DOWN",
+    left: "LEFT",
+    right: "RIGHT",
+    forecast_yes: "Forecast YES",
+    forecast_no: "Forecast NO",
+    insufficient_balance: "Insufficient balance for this item",
+    purchased: "Purchased",
+    forecasted: "Forecasted",
+    with_item: "with",
+    items: {
+      forecast_ticket: {
+        name: "Forecast Ticket",
+        description: "A simple ticket for one YES or NO prediction.",
+      },
+      yes_charm: {
+        name: "YES Charm",
+        description: "A focused token that can only support YES.",
+      },
+      no_charm: {
+        name: "NO Charm",
+        description: "A focused token that can only support NO.",
+      },
+    },
   }
 };
 

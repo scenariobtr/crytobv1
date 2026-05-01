@@ -17,12 +17,14 @@
 
 - Login/register mock flow พร้อม OTP demo `1234`
 - Prediction markets แบบ YES/NO พร้อมราคา, volume, countdown และ market expiry
+- Forecast World: map 2D แบบเบา ๆ มี avatar เดินได้, market เป็นกระท่อม, shop และ inventory item สำหรับนำไปพยากรณ์
 - Wallet dashboard พร้อม quick deposit mock และ wallet safety warning ที่ 80%
 - Profile settings พร้อม avatar, phone, password และ membership duration
 - Admin dashboard สำหรับ `SUPER_ADMIN`
 - Member management พร้อมอ่าน activity log จากไฟล์ `.txt`
 - Financial audit mock view
 - TH/EN language switch ผ่าน `LangContext`
+- Forecast World UI ใช้ locale namespace `world.*` รองรับทั้ง TH/EN
 
 ## Project Structure
 
@@ -33,6 +35,19 @@ src/
 │   ├── layout.tsx               # Root layout + LangProvider
 │   └── page.tsx                 # Thin route entry, render feature component
 ├── features/
+│   ├── forecast-world/
+│   │   ├── ForecastWorld.tsx           # Lightweight game world entry
+│   │   ├── constants.ts                # Map size, hut positions, item catalog
+│   │   ├── types.ts                    # Avatar, item, inventory, hut types
+│   │   ├── hooks/
+│   │   │   └── useAvatarMovement.ts    # WASD/arrow movement logic
+│   │   └── components/
+│   │       ├── WorldMap.tsx
+│   │       ├── PlayerAvatar.tsx
+│   │       ├── MarketHut.tsx
+│   │       ├── HutDetailsPanel.tsx
+│   │       ├── InventoryPanel.tsx
+│   │       └── ItemShopPanel.tsx
 │   └── stakewise/
 │       ├── StakewiseTerminal.tsx       # Main orchestrator: state + flow wiring
 │       ├── constants.ts                # Tab lists and market draft factory
@@ -118,10 +133,31 @@ npm run build
 - business logic หรือ calculation ที่ใช้ซ้ำให้ย้ายไป `src/modules/`
 - อย่าเพิ่ม JSX ก้อนใหญ่กลับเข้า `StakewiseTerminal.tsx`
 
+## Forecast World
+
+Forecast World เป็น game-like layer ที่วางทับ business เดิมโดยไม่ใช้ graphics engine:
+
+- ใช้ React + CSS grid เป็น map 2D
+- avatar เดินได้ด้วย WASD/arrow keys หรือคลิก tile
+- market `Thread` เดิมถูก map เป็น hut
+- shop ใช้ balance เดิมในการซื้อ item
+- inventory เก็บ item mock ฝั่ง client
+- ใช้ item กับ hut เพื่อ forecast YES/NO และเพิ่ม volume ให้ market
+- transaction สำคัญถูก log ผ่าน `logService` เป็น `BUY_ITEM` และ `USE_ITEM`
+- UI text ของ world, item shop, inventory และ hut details แปลผ่าน `src/locales/en.ts` และ `src/locales/th.ts`
+
+หลักการพัฒนาต่อ:
+
+- อย่าใส่ game logic ใน `StakewiseTerminal.tsx`
+- เพิ่ม world UI ที่ `src/features/forecast-world/components/`
+- เพิ่ม movement/interaction logic ที่ `src/features/forecast-world/hooks/`
+- ถ้า item/inventory ต้องใช้ร่วมหลาย feature ให้ย้าย logic ไป `src/modules/items` หรือ `src/modules/inventory`
+
 ## Development Notes
 
 - Keep `src/app/page.tsx` thin. Business/UI state ของ terminal ควรอยู่ใน `src/features/stakewise/`
 - ถ้าเพิ่ม tab หรือ view ใหม่ ให้เพิ่ม type/constant ที่ `features/stakewise/types.ts` และ `features/stakewise/constants.ts`
 - ถ้าเพิ่ม auth/dashboard/modal UI ใหม่ ให้สร้าง component แยกแทนการขยาย `StakewiseTerminal.tsx`
+- ถ้าเพิ่ม game/world UI ใหม่ ให้เก็บใน `src/features/forecast-world/`
 - Route Handler ที่แตะ `fs` ต้องอยู่ฝั่ง server เท่านั้น อย่านำ `fs`, path absolute หรือ secret เข้า client component
 - ถ้าขยายระบบจริง ควรย้ายจาก file logs ไป PostgreSQL/Redis และเพิ่ม auth provider จริง

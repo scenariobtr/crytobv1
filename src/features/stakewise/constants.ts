@@ -2,9 +2,10 @@ import type { AdminTab, MarketDraft, UserSubTab } from "./types";
 
 export const ADMIN_TABS: AdminTab[] = ["OVERVIEW", "USERS", "FINANCE", "SYSTEM"];
 
-export const USER_TABS: UserSubTab[] = ["MARKETS", "PORTFOLIO", "WALLET", "PROFILE"];
+export const USER_TABS: UserSubTab[] = ["WORLD", "MARKETS", "PORTFOLIO", "WALLET", "PROFILE"];
 
 export const userTabLabelKey: Record<UserSubTab, string> = {
+  WORLD: "world.nav",
   MARKETS: "nav.prediction_markets",
   PORTFOLIO: "nav.your_assets",
   WALLET: "nav.wallet_hub",
