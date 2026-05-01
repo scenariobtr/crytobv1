@@ -10,7 +10,7 @@ export type MatchConfig = {
   maintenanceMode: boolean;
 };
 
-export let systemConfig: MatchConfig = {
+export const systemConfig: MatchConfig = {
   feePercent: 0.02,
   minBet: 10,
   maxBet: 50000,
@@ -18,8 +18,20 @@ export let systemConfig: MatchConfig = {
   maintenanceMode: false,
 };
 
-export const getSystemStats = (threads: any[]) => {
-  const totalVolume = threads.reduce((sum, t) => sum + t.makerVolume + t.takerVolume, 0);
+type MarketVolumeSource = {
+  yesVolume?: number;
+  noVolume?: number;
+  makerVolume?: number;
+  takerVolume?: number;
+  status?: string;
+};
+
+export const getSystemStats = (threads: MarketVolumeSource[]) => {
+  const totalVolume = threads.reduce((sum, t) => {
+    const predictionVolume = (t.yesVolume ?? 0) + (t.noVolume ?? 0);
+    const legacyVolume = (t.makerVolume ?? 0) + (t.takerVolume ?? 0);
+    return sum + Math.max(predictionVolume, legacyVolume);
+  }, 0);
   const totalFees = totalVolume * systemConfig.feePercent;
   
   return {

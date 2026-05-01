@@ -1,5 +1,15 @@
+import type { User } from "@/data/mockUsers";
+import type { Thread } from "@/modules/market/service";
+
+export type LoggedUser = User & {
+  phone?: string;
+  displayName?: string;
+  avatar?: string;
+  joinedAt?: string;
+};
+
 export const logService = {
-  async initUser(username: string, data: any) {
+  async initUser(username: string, data: LoggedUser) {
     try {
       await fetch('/api/logs', {
         method: 'POST',
@@ -43,7 +53,7 @@ export const logService = {
     }
   },
 
-  async logMarketCreation(username: string, marketData: any) {
+  async logMarketCreation(username: string, marketData: Thread) {
     try {
       await fetch('/api/logs', {
         method: 'POST',
@@ -59,7 +69,7 @@ export const logService = {
     }
   },
 
-  async verifyUser(username: string): Promise<any | null> {
+  async verifyUser(username: string): Promise<LoggedUser | null> {
     try {
       const response = await fetch(`/api/logs?username=${username}&verify=true`);
       if (!response.ok) return null;
@@ -71,7 +81,7 @@ export const logService = {
     }
   },
 
-  async getAllUsers(): Promise<any[]> {
+  async getAllUsers(): Promise<LoggedUser[]> {
     try {
       const response = await fetch('/api/logs?all_users=true');
       if (!response.ok) return [];

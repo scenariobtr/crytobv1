@@ -11,18 +11,7 @@ interface AdminOverviewProps {
   };
 }
 
-import { useTranslation } from "@/context/LangContext";
-
-interface AdminOverviewProps {
-  stats: {
-    totalVolume: number;
-    activeMarkets: number;
-    pendingWithdrawals: number;
-  };
-}
-
 export const AdminOverview: React.FC<AdminOverviewProps> = ({ stats }) => {
-  const { t } = useTranslation();
   // Real-time states for simulation
   const [cpu, setCpu] = useState(24.2);
   const [db, setDb] = useState(14);

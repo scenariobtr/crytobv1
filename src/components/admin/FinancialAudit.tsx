@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { ArrowUpRight, ArrowDownLeft, Search, Filter, Download, DollarSign, Wallet, TrendingUp } from "lucide-react";
+import { ArrowUpRight, ArrowDownLeft, Search, Filter, Download, TrendingUp } from "lucide-react";
 import { useTranslation } from "@/context/LangContext";
 
 interface Transaction {

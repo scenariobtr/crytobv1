@@ -20,7 +20,7 @@ export const mockSystemLogs: SystemLog[] = [
 
 export const securityManager = {
   // ตรวจสอบระดับการเข้าถึง
-  isAdmin: (user: any) => user?.role === "SUPER_ADMIN",
+  isAdmin: (user: { role?: string } | null | undefined) => user?.role === "SUPER_ADMIN",
   
   // จำลองการเปลี่ยนสถานะผู้ใช้
   toggleUserStatus: (userId: string, currentStatus: string) => {

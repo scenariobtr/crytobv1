@@ -25,7 +25,7 @@ export const MemberManagement: React.FC<MemberManagementProps> = ({ users, onUpd
     try {
       const log = await logService.getUserLog(user.username);
       setUserLogContent(log || t("nav.no_log_found"));
-    } catch (err) {
+    } catch {
       setUserLogContent(t("nav.error_loading_log"));
     } finally {
       setIsLogLoading(false);

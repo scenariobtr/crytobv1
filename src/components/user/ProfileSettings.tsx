@@ -3,10 +3,18 @@
 import React, { useState } from "react";
 import { User, Lock, Smartphone, ShieldCheck, Calendar, Camera, CheckCircle2, Edit2 } from "lucide-react";
 import { useTranslation } from "@/context/LangContext";
+import type { User as UserType } from "@/data/mockUsers";
+
+type EditableProfile = Partial<Pick<UserType, "password">> & {
+  displayName?: string;
+  phone?: string;
+  avatar?: string;
+  joinedAt?: string;
+};
 
 interface ProfileSettingsProps {
-  user: any;
-  onUpdate: (data: any) => void;
+  user: UserType & EditableProfile;
+  onUpdate: (data: EditableProfile) => void;
 }
 
 export const ProfileSettings: React.FC<ProfileSettingsProps> = ({ user, onUpdate }) => {

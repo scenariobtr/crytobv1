@@ -35,7 +35,7 @@ const Countdown: React.FC<{ endDate: string }> = ({ endDate }) => {
     update();
     const timer = setInterval(update, 1000);
     return () => clearInterval(timer);
-  }, [endDate]);
+  }, [endDate, t]);
 
   return (
     <div className={`flex items-center gap-2 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest ${timeLeft === 'EXPIRED' ? 'bg-red-500/10 text-red-500' : 'bg-orange-500/10 text-orange-500'}`}>
@@ -62,6 +62,12 @@ export const MarketGrid: React.FC<MarketGridProps> = ({
   onEdit
 }) => {
   const { t } = useTranslation();
+  const [now, setNow] = React.useState(() => Date.now());
+
+  React.useEffect(() => {
+    const timer = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <div className="space-y-12">
@@ -77,7 +83,7 @@ export const MarketGrid: React.FC<MarketGridProps> = ({
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
         {threads.map((thread) => {
-          const isExpired = new Date(thread.endDate).getTime() <= Date.now();
+          const isExpired = new Date(thread.endDate).getTime() <= now;
           return (
             <div key={thread.id} className={`bg-zinc-950 border border-zinc-900 rounded-[32px] p-8 hover:border-emerald-500/50 transition-all group relative overflow-hidden flex flex-col h-full shadow-2xl ${isExpired ? 'opacity-75 grayscale-[0.5]' : ''}`}>
             {/* Admin Control Bar (Top) */}

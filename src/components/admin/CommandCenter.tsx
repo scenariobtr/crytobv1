@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Server, RefreshCw, Globe, Zap, ShieldCheck, Cpu, Database, Activity, Box, Terminal as TerminalIcon } from "lucide-react";
+import { Server, RefreshCw, Zap, Cpu, Database, Activity, Box, Terminal as TerminalIcon } from "lucide-react";
 import { useTranslation } from "@/context/LangContext";
 
 interface CommandCenterProps {

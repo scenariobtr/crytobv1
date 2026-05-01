@@ -1,73 +1,127 @@
-# 💎 STAKEWISE - Premium Prediction Market Platform
+# STAKEWISE - Premium Prediction Market Platform
 
-**STAKEWISE** คือแพลตฟอร์มบริหารจัดการตลาดพยากรณ์ (Prediction Market) ระดับพรีเมียม ที่ถูกออกแบบมาเพื่อการพยากรณ์ผลเหตุการณ์ต่างๆ ทั่วโลกด้วยความโปร่งใส ปลอดภัย และมีความเป็นมืออาชีพสูงสุด ด้วยดีไซน์แบบ **Emerald Noir High-End Aesthetic**
+**STAKEWISE** คือ prototype แพลตฟอร์ม prediction market / crypto betting ที่มีทั้งฝั่งผู้ใช้งานและผู้ดูแลระบบในแอปเดียว ดีไซน์หลักเป็น Emerald Noir และใช้ file-based logging เพื่อเก็บกิจกรรมสำคัญระหว่างพัฒนา
 
-![Preview](https://images.unsplash.com/photo-1639762681485-074b7f938ba0?q=80&w=2832&auto=format&fit=crop)
+## Tech Stack
 
----
+- **Framework:** Next.js 16.2.4 App Router
+- **Runtime UI:** React 19.2.4
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS v4 ผ่าน `@import "tailwindcss"`
+- **Icons:** Lucide React
+- **Current persistence:** file-based logs ผ่าน Route Handler และ Node.js `fs`
 
-## 🚀 ฟีเจอร์หลัก (Key Features)
+> หมายเหตุ: โปรเจ็คนี้ใช้ Next.js 16 ซึ่งมี rules ของ React/Next lint ที่เข้มขึ้น ก่อนแก้ routing, data fetching, route handlers หรือ server/client boundary ให้อ่าน docs ใน `node_modules/next/dist/docs/` ตาม `AGENTS.md`
 
-### 👤 สำหรับผู้ใช้งาน (User Experience)
-*   **Dynamic Prediction Markets:** ตลาดพยากรณ์ผลแบบ Real-time พร้อมระบบ Liquidity Pool แยกฝั่ง YES/NO
-*   **Wallet Safety System:** ระบบแจ้งเตือนความเสี่ยง (80% Threshold Warning) เมื่อผู้ใช้ใช้เงินเกิน 80% ของกระเป๋า
-*   **Advanced Profile Management:** จัดการข้อมูลส่วนตัว เลือกอวตาร และระบบนับจำนวนวันสมาชิก (Membership Duration)
-*   **Portfolio Tracking:** ระบบติดตามสินทรัพย์และประวัติการพยากรณ์พร้อมสรุปกำไร/ขาดทุน
-*   **Multi-language Support:** รองรับทั้งภาษาไทยและภาษาอังกฤษ (TH/EN) อย่างสมบูรณ์
+## Main Features
 
-### 🛡️ สำหรับผู้ดูแลระบบ (Admin Supreme Controls)
-*   **Real-time Dashboard:** มอนิเตอร์สถิติระบบ (CPU, DB, Latency) แบบสดๆ ในรูปแบบศูนย์บัญชาการ
-*   **Market Command Center:** ควบคุมตลาดพยากรณ์ได้อย่างเบ็ดเสร็จ (Edit/Delete/Rate Adjustment)
-*   **Impact Analysis Logic:** ระบบคำนวณผลกระทบต่อพอร์ตของ User ทันทีเมื่อ Admin เปลี่ยนเรทราคา
-*   **Revenue Tracking:** ระบบคำนวณรายได้ของแพลตฟอร์ม (Fixed Platform Fee 2.5%) อัตโนมัติในทุกตลาด
-*   **Member Management:** จัดการสมาชิก ดูรายละเอียดการ Login, IP Address และประวัติกิจกรรมเชิงลึก
+- Login/register mock flow พร้อม OTP demo `1234`
+- Prediction markets แบบ YES/NO พร้อมราคา, volume, countdown และ market expiry
+- Wallet dashboard พร้อม quick deposit mock และ wallet safety warning ที่ 80%
+- Profile settings พร้อม avatar, phone, password และ membership duration
+- Admin dashboard สำหรับ `SUPER_ADMIN`
+- Member management พร้อมอ่าน activity log จากไฟล์ `.txt`
+- Financial audit mock view
+- TH/EN language switch ผ่าน `LangContext`
 
----
+## Project Structure
 
-## ⚙️ สถาปัตยกรรมทางเทคนิค (Technical Architecture)
+```text
+src/
+├── app/
+│   ├── api/logs/route.ts        # Route Handler สำหรับอ่าน/เขียน logs
+│   ├── layout.tsx               # Root layout + LangProvider
+│   └── page.tsx                 # Thin route entry, render feature component
+├── features/
+│   └── stakewise/
+│       ├── StakewiseTerminal.tsx       # Main orchestrator: state + flow wiring
+│       ├── constants.ts                # Tab lists and market draft factory
+│       ├── types.ts                    # Feature-level UI/domain types
+│       └── components/
+│           ├── AuthScreen.tsx          # Login/register/OTP screen
+│           ├── LoadingScreen.tsx       # Boot/loading screen
+│           ├── TerminalHeader.tsx      # Authenticated top nav
+│           ├── AdminWorkspace.tsx      # Admin tab workspace
+│           ├── UserWorkspace.tsx       # User tab workspace
+│           ├── TerminalFooter.tsx      # Version/deploy footer
+│           └── modals/
+│               ├── CreateMarketModal.tsx
+│               ├── EditMarketModal.tsx
+│               └── JoinMarketModal.tsx
+├── components/
+│   ├── admin/                   # Admin dashboard components
+│   ├── shared/                  # BaseModal, Notification
+│   └── user/                    # Market, wallet, portfolio, profile UI
+├── context/                     # LangContext
+├── data/                        # mockUsers, version metadata
+├── locales/                     # en/th dictionaries
+├── modules/                     # auth, market, bet, wallet, matching, security
+└── services/                    # client-side service wrappers
+```
 
-*   **Frontend:** Next.js 14 (App Router) + Tailwind CSS (Vanilla CSS focused)
-*   **Icons:** Lucide React (Cyberpunk Theme)
-*   **Database Engine:** **File-based DB (Logging System)** ใช้ Node.js `fs` API ในการจัดเก็บข้อมูลแยกราย User และรายกิจกรรมในโฟลเดอร์ `/logs`
-*   **State Management:** React Hooks (UseState, UseEffect) พร้อมการจำลองระบบ Real-time Simulation สำหรับหน้า Dashboard
+## Data Strategy
 
----
+ระบบปัจจุบันยังไม่ใช้ database จริง ข้อมูลที่ persist จะถูกเก็บใน `logs/`
 
-## 📂 โครงสร้างข้อมูล (Data Strategy)
+- `logs/{username}.txt`: profile update, login, transaction/action log ของ user หรือ admin
+- `logs/markets/market_{id}_{title}.txt`: บันทึกการสร้าง market
 
-ระบบใช้ไฟล์ `.txt` ในการเก็บข้อมูลเพื่อความรวดเร็วและตรวจสอบได้ง่าย:
-*   `logs/users/{username}.txt`: เก็บข้อมูลโปรไฟล์, กระเป๋าเงิน, และสถานะการสมัคร
-*   `logs/transactions/{username}.txt`: เก็บประวัติการทำรายการทางการเงินทั้งหมด
-*   `logs/markets/{market_id}.txt`: เก็บข้อมูลกิจกรรมที่เกิดขึ้นในตลาดแต่ละแห่ง
+Client เรียก `logService` ที่ [src/services/logService.ts](src/services/logService.ts) และ service จะส่ง request ไปที่ [src/app/api/logs/route.ts](src/app/api/logs/route.ts)
 
----
+## Getting Started
 
-## 🛠️ การติดตั้งและการใช้งาน (Getting Started)
+```bash
+npm install
+npm run dev
+```
 
-1. **Clone the repository:**
-   ```bash
-   git clone [repository-url]
-   ```
+เปิดแอปที่:
 
-2. **Install dependencies:**
-   ```bash
-   npm install
-   ```
+```text
+http://localhost:3000
+```
 
-3. **Run the development server:**
-   ```bash
-   npm run dev
-   ```
+บัญชี demo:
 
-4. **Access the platform:**
-   เปิด [http://localhost:3000](http://localhost:3000) บนบราวเซอร์ของคุณ
+```text
+admin001 / 12345  -> SUPER_ADMIN
+admin002 / 12345  -> USER
+```
 
----
+## Quality Commands
 
-## 🛡️ มาตรฐานความปลอดภัย (Security Standards)
-*   **Admin Strict Access:** ล็อคสิทธิ์หน้า Terminal สำหรับ `SUPER_ADMIN` เท่านั้น
-*   **Safety Fallback:** ระบบดีดกลับอัตโนมัติหากผู้ที่ไม่มีสิทธิ์พยายามเข้าถึงหน้าควบคุม
-*   **Transaction Integrity:** การดำเนินการทางการเงินถูกบันทึกแบบ Atomic ลงในระบบ Log ทันที
+```bash
+npm run lint
+npm run build
+```
 
-**Predict the Future. Trade the Outcome.**  
-Developed with ❤️ by the STAKEWISE Team.
+สถานะล่าสุด:
+
+- `npm run lint` ผ่าน ไม่มี error
+- `npm run build` ผ่าน
+- เหลือ warning เดียวเรื่อง avatar `<img>` ใน `ProfileSettings` ซึ่งตั้งใจคงไว้ก่อนเพราะใช้ external DiceBear SVG
+
+## Feature Architecture
+
+`src/features/stakewise/StakewiseTerminal.tsx` เคยเป็นไฟล์ใหญ่มากที่รวม JSX เกือบทุกส่วนไว้ในที่เดียว ตอนนี้ถูกลดบทบาทให้เป็นตัวประกอบ flow หลัก:
+
+- sync users/session
+- เก็บ state ระดับหน้า เช่น current user, tabs, markets, balance, modal state
+- wire handlers ไปยัง components ลูก
+- render authenticated/unauthenticated experience ผ่าน component ที่แยกแล้ว
+
+แนวคิดการดูแลต่อ:
+
+- UI screen ใหม่ควรอยู่ใน `src/features/stakewise/components/`
+- modal ใหม่ควรอยู่ใน `src/features/stakewise/components/modals/`
+- shared UI ที่ใช้ข้าม feature ให้ย้ายไป `src/components/shared/`
+- business logic หรือ calculation ที่ใช้ซ้ำให้ย้ายไป `src/modules/`
+- อย่าเพิ่ม JSX ก้อนใหญ่กลับเข้า `StakewiseTerminal.tsx`
+
+## Development Notes
+
+- Keep `src/app/page.tsx` thin. Business/UI state ของ terminal ควรอยู่ใน `src/features/stakewise/`
+- ถ้าเพิ่ม tab หรือ view ใหม่ ให้เพิ่ม type/constant ที่ `features/stakewise/types.ts` และ `features/stakewise/constants.ts`
+- ถ้าเพิ่ม auth/dashboard/modal UI ใหม่ ให้สร้าง component แยกแทนการขยาย `StakewiseTerminal.tsx`
+- Route Handler ที่แตะ `fs` ต้องอยู่ฝั่ง server เท่านั้น อย่านำ `fs`, path absolute หรือ secret เข้า client component
+- ถ้าขยายระบบจริง ควรย้ายจาก file logs ไป PostgreSQL/Redis และเพิ่ม auth provider จริง

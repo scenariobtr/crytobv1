@@ -56,9 +56,10 @@ Description: ${data.description}
     }
 
     return NextResponse.json({ success: true });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Logging Error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    const message = error instanceof Error ? error.message : 'Unknown logging error';
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
 
@@ -80,7 +81,7 @@ export async function GET(request: Request) {
             }).filter(u => u !== null);
             
             return NextResponse.json({ users: allUserData });
-        } catch (e) {
+        } catch {
             return NextResponse.json({ error: 'Failed to list users' }, { status: 500 });
         }
     }
@@ -99,7 +100,7 @@ export async function GET(request: Request) {
             try {
                 const userData = JSON.parse(profileMatch[1]);
                 return NextResponse.json({ userData });
-            } catch (e) {
+            } catch {
                 return NextResponse.json({ error: 'Failed to parse user data' }, { status: 500 });
             }
         }
