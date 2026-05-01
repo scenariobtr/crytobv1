@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { 
   Wallet, Plus, Trash2, X, CheckCircle2, TrendingUp, Activity, 
   ShieldCheck, Users, Settings, Globe, Zap, Cpu, AlertTriangle, 
-  BarChart3, ShieldAlert, LogOut, ArrowRight, Gavel, Award, UserPlus, User,
+  BarChart3, ShieldAlert, LogOut, ArrowRight, Gavel, Award, UserPlus, UserMinus, User,
   Flame, LineChart, History, PieChart, Timer
 } from "lucide-react";
 import Link from "next/link";
