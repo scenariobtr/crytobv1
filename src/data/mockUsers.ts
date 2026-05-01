@@ -10,6 +10,7 @@ export type User = {
   totalProfit: string;
   role: UserRole; // เพิ่มระดับสิทธิ์
   status: "ACTIVE" | "BANNED"; // สถานะสมาชิก
+  walletStatus: "ACTIVE" | "PENDING" | "BLOCKED"; // สถานะกระเป๋าเงิน
   lastIp?: string;
 };
 
@@ -24,6 +25,7 @@ export const mockUsers: User[] = [
     totalProfit: "+850 USDT",
     role: "SUPER_ADMIN", // บัญชีผู้ดูแลระบบสูงสุด
     status: "ACTIVE",
+    walletStatus: "ACTIVE",
     lastIp: "192.168.1.149",
   },
   {
@@ -36,6 +38,7 @@ export const mockUsers: User[] = [
     totalProfit: "+2,100 USDT",
     role: "USER",
     status: "ACTIVE",
+    walletStatus: "PENDING",
     lastIp: "192.168.1.102",
   },
 ];

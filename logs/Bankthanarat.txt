@@ -1,0 +1,23 @@
+--- USER PROFILE: Bankthanarat ---
+Created: 2026-05-01T20:48:55.089Z
+---------------------------
+
+--- TRANSACTIONS ---
+[PROFILE_UPDATE] 2026-05-01T20:48:55.089Z
+Data: {
+  "id": "user_1777668534729",
+  "username": "Bankthanarat",
+  "password": "123456",
+  "phone": "0967907457",
+  "wallet": "0x034ED626",
+  "balance": 1000,
+  "role": "USER",
+  "status": "ACTIVE",
+  "walletStatus": "ACTIVE",
+  "lastIp": "127.0.0.1"
+}
+---------------------------
+[2026-05-01T20:48:55.106Z] [LOGIN] IP: 127.0.0.1
+[2026-05-01T20:55:44.643Z] [LOGIN] IP: 127.0.0.1
+[2026-05-01T20:55:58.673Z] [LOGIN] IP: 127.0.0.1
+[2026-05-01T20:56:31.458Z] [DEPOSIT] Amount: 500 | Detail: Manual deposit via dashboard

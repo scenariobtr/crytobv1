@@ -1,25 +1,54 @@
 @import "tailwindcss";
 
+@theme {
+  --color-brand-emerald: #10b981;
+  --color-brand-orange: #f97316;
+  --color-dark-bg: #050505;
+  --color-dark-card: #111111;
+  --color-dark-border: #222222;
+  --font-sarabun: "var(--font-sarabun)", sans-serif;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 5, 5, 5;
+  --background-end-rgb: 0, 0, 0;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-sarabun);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  font-family: var(--font-sarabun), sans-serif !important;
+  font-style: italic !important; /* บังคับตัวเอียงทั้งหมดตามคำสั่ง */
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sarabun), sans-serif;
+  color: rgb(var(--foreground-rgb));
+  background: #050505;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom Utilities for v4 */
+@utility animate-shimmer {
+  animation: shimmer 2s infinite linear;
+}
+
+@keyframes shimmer {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

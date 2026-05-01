@@ -1,81 +1,73 @@
-# 🟢 CryptoBet - แพลตฟอร์มทายผล Crypto แบบไร้คนกลาง (P2P)
+# 💎 STAKEWISE - Premium Prediction Market Platform
 
-แพลตฟอร์มตัวกลาง (Intermediate Platform) ที่ถูกออกแบบมาเพื่อการทายผลทุกสรรพสิ่งบนโลกใบนี้ด้วยสกุลเงินคริปโต (USDT) โดยเน้นความเรียบง่าย โปร่งใส และความปลอดภัยสูงสุด ด้วยดีไซน์แบบ **Minimal Emerald Noir**
+**STAKEWISE** คือแพลตฟอร์มบริหารจัดการตลาดพยากรณ์ (Prediction Market) ระดับพรีเมียม ที่ถูกออกแบบมาเพื่อการพยากรณ์ผลเหตุการณ์ต่างๆ ทั่วโลกด้วยความโปร่งใส ปลอดภัย และมีความเป็นมืออาชีพสูงสุด ด้วยดีไซน์แบบ **Emerald Noir High-End Aesthetic**
 
 ![Preview](https://images.unsplash.com/photo-1639762681485-074b7f938ba0?q=80&w=2832&auto=format&fit=crop)
 
 ---
 
+## 🚀 ฟีเจอร์หลัก (Key Features)
 
-git config --global user.name "Deoginies"
+### 👤 สำหรับผู้ใช้งาน (User Experience)
+*   **Dynamic Prediction Markets:** ตลาดพยากรณ์ผลแบบ Real-time พร้อมระบบ Liquidity Pool แยกฝั่ง YES/NO
+*   **Wallet Safety System:** ระบบแจ้งเตือนความเสี่ยง (80% Threshold Warning) เมื่อผู้ใช้ใช้เงินเกิน 80% ของกระเป๋า
+*   **Advanced Profile Management:** จัดการข้อมูลส่วนตัว เลือกอวตาร และระบบนับจำนวนวันสมาชิก (Membership Duration)
+*   **Portfolio Tracking:** ระบบติดตามสินทรัพย์และประวัติการพยากรณ์พร้อมสรุปกำไร/ขาดทุน
+*   **Multi-language Support:** รองรับทั้งภาษาไทยและภาษาอังกฤษ (TH/EN) อย่างสมบูรณ์
 
-git config --global user.email "scenario.tnr@gmail.com"
-## ✨ ฟีเจอร์หลัก (Core Features)
-
-*   **P2P Matching System:** ระบบจับคู่ระหว่างผู้ตั้งเรท (Maker) และผู้เข้าร่วมทายผล (Taker) โดยอัตโนมัติ
-*   **Minimal Emerald Noir UI:** ดีไซน์ที่ทันสมัย เรียบหรู ใช้โทนสีเขียวมรกตตัดกับสีดำด้าน (Matte Black)
-*   **Modular Architecture:** โครงสร้างโค้ดแยกส่วนชัดเจนเพื่อความปลอดภัยและการขยายในอนาคต
-*   **Membership System:** ระบบสมาชิกพร้อมหน้าประวัติการทายผล และการวิเคราะห์กำไร/Win Rate
-*   **LAN Accessible:** รองรับการแชร์หน้าจอและใช้งานร่วมกันผ่านวงแลน (Local Network) สำหรับการทดสอบ
-
----
-
-## 🛠 เทคโนโลยีที่ใช้ (Tech Stack)
-
-*   **Frontend:** [Next.js 16 (App Router)](https://nextjs.org/)
-*   **Styling:** [Tailwind CSS 4.0](https://tailwindcss.com/)
-*   **Icons:** [Lucide React](https://lucide.dev/)
-*   **Fonts:** [TH Sarabun New](https://fonts.google.com/specimen/Sarabun) (Google Fonts)
-*   **Deployment:** Ready for [Vercel](https://vercel.com)
+### 🛡️ สำหรับผู้ดูแลระบบ (Admin Supreme Controls)
+*   **Real-time Dashboard:** มอนิเตอร์สถิติระบบ (CPU, DB, Latency) แบบสดๆ ในรูปแบบศูนย์บัญชาการ
+*   **Market Command Center:** ควบคุมตลาดพยากรณ์ได้อย่างเบ็ดเสร็จ (Edit/Delete/Rate Adjustment)
+*   **Impact Analysis Logic:** ระบบคำนวณผลกระทบต่อพอร์ตของ User ทันทีเมื่อ Admin เปลี่ยนเรทราคา
+*   **Revenue Tracking:** ระบบคำนวณรายได้ของแพลตฟอร์ม (Fixed Platform Fee 2.5%) อัตโนมัติในทุกตลาด
+*   **Member Management:** จัดการสมาชิก ดูรายละเอียดการ Login, IP Address และประวัติกิจกรรมเชิงลึก
 
 ---
 
-## 📂 โครงสร้างระบบ (System Architecture)
+## ⚙️ สถาปัตยกรรมทางเทคนิค (Technical Architecture)
 
-โปรเจกต์นี้ถูกออกแบบมาแบบ Modular เพื่อแยกตรรกะทางการเงินออกจากหน้าจอ:
-
-*   📂 `src/modules/wallet`: จัดการยอดเงินและการถือครอง (Balance & Hold)
-*   📂 `src/modules/matching`: ตรรกะการจับคู่คำสั่งซื้อขาย (Matching Engine)
-*   📂 `src/modules/payment`: ระบบรับฝากเงิน Crypto
-*   📂 `src/modules/withdrawal`: ระบบถอนเงินคืนเข้ากระเป๋าหลัก
-*   📂 `src/modules/security`: ระบบตรวจสอบความถูกต้องของ Transaction (Anti-Fraud)
+*   **Frontend:** Next.js 14 (App Router) + Tailwind CSS (Vanilla CSS focused)
+*   **Icons:** Lucide React (Cyberpunk Theme)
+*   **Database Engine:** **File-based DB (Logging System)** ใช้ Node.js `fs` API ในการจัดเก็บข้อมูลแยกราย User และรายกิจกรรมในโฟลเดอร์ `/logs`
+*   **State Management:** React Hooks (UseState, UseEffect) พร้อมการจำลองระบบ Real-time Simulation สำหรับหน้า Dashboard
 
 ---
 
-## 🚀 การเริ่มต้นใช้งาน (Getting Started)
+## 📂 โครงสร้างข้อมูล (Data Strategy)
 
-### 1. ติดตั้ง Dependencies
-```bash
-npm install
-```
-
-### 2. รันในโหมดพัฒนา (Development)
-```bash
-npm run dev
-```
-เว็บจะทำงานที่: `http://localhost:3000`
-
-### 3. รันเพื่อแชร์ในวงแลน (LAN Mode)
-```bash
-npm run dev -- -H 0.0.0.0
-```
-ตรวจสอบไอพีเครื่องของคุณแล้วเข้าใช้งานผ่านมือถือได้ทันที
+ระบบใช้ไฟล์ `.txt` ในการเก็บข้อมูลเพื่อความรวดเร็วและตรวจสอบได้ง่าย:
+*   `logs/users/{username}.txt`: เก็บข้อมูลโปรไฟล์, กระเป๋าเงิน, และสถานะการสมัคร
+*   `logs/transactions/{username}.txt`: เก็บประวัติการทำรายการทางการเงินทั้งหมด
+*   `logs/markets/{market_id}.txt`: เก็บข้อมูลกิจกรรมที่เกิดขึ้นในตลาดแต่ละแห่ง
 
 ---
 
-## 🌍 การ Deploy ขึ้นออนไลน์
+## 🛠️ การติดตั้งและการใช้งาน (Getting Started)
 
-โปรเจกต์นี้ได้รับการปรับแต่งให้พร้อมสำหรับการ Deploy บน **Vercel** ทันที:
-1. เชื่อมต่อ Repository นี้กับ Vercel
-2. ตัวระบบจะทำการ Build และ Online ให้โดยอัตโนมัติ
+1. **Clone the repository:**
+   ```bash
+   git clone [repository-url]
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Run the development server:**
+   ```bash
+   npm run dev
+   ```
+
+4. **Access the platform:**
+   เปิด [http://localhost:3000](http://localhost:3000) บนบราวเซอร์ของคุณ
 
 ---
 
-## 🛡 ระบบความปลอดภัย
+## 🛡️ มาตรฐานความปลอดภัย (Security Standards)
+*   **Admin Strict Access:** ล็อคสิทธิ์หน้า Terminal สำหรับ `SUPER_ADMIN` เท่านั้น
+*   **Safety Fallback:** ระบบดีดกลับอัตโนมัติหากผู้ที่ไม่มีสิทธิ์พยายามเข้าถึงหน้าควบคุม
+*   **Transaction Integrity:** การดำเนินการทางการเงินถูกบันทึกแบบ Atomic ลงในระบบ Log ทันที
 
-*   **Atomic Transactions:** ระบบ Matching ถูกออกแบบมาให้เป็นธุรกรรมแบบอะตอมิก ป้องกันยอดเงินคลาดเคลื่อน
-*   **Balance Holding:** มีการล็อคยอดเงินทันทีเมื่อมีการเข้าร่วมทายผล เพื่อรับประกันว่าผู้ชนะจะได้รับเงินรางวัลแน่นอน
-
----
-
-**พัฒนาโดย ทีมงาน CryptoBet - แพลตฟอร์มเพื่อสังคมการทายผลที่โปร่งใส**
+**Predict the Future. Trade the Outcome.**  
+Developed with ❤️ by the STAKEWISE Team.
