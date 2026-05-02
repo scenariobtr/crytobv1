@@ -1,5 +1,6 @@
 "use client";
 
+import React, { useState, useEffect } from "react";
 import { Globe, KeyRound, Lock, ShieldCheck, Smartphone, User, Wallet, Zap } from "lucide-react";
 import versionInfo from "@/data/version.json";
 import type { AuthView } from "../types";
@@ -65,6 +66,9 @@ export const AuthScreen = ({
   onToggleLang,
   t,
 }: AuthScreenProps) => {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
+
   return (
     <div className="min-h-screen bg-black flex flex-col items-center justify-center p-6 relative overflow-hidden">
       <div className="absolute top-6 right-6 md:top-10 md:right-10 z-[70] animate-in fade-in slide-in-from-right-4 duration-1000">
@@ -143,7 +147,7 @@ export const AuthScreen = ({
         {authView !== "OTP" && <DisabledSocialButtons />}
 
         <p className="text-[9px] font-black text-zinc-700 uppercase tracking-widest pt-6">
-          STAKEWISE TERMINAL v{versionInfo.version} - SECURE ACCESS ONLY - UPDATED {new Date(versionInfo.lastUpdated).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })}
+          STAKEWISE TERMINAL v{versionInfo.version} - SECURE ACCESS ONLY - UPDATED {mounted ? new Date(versionInfo.lastUpdated).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" }) : "---"}
         </p>
       </div>
     </div>

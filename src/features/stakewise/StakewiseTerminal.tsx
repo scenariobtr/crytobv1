@@ -33,7 +33,7 @@ export function StakewiseTerminal() {
   const { t, lang, setLang } = useTranslation();
   
   const [currentUser, setCurrentUser] = useState<UserType | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false); // ปิด Loading เริ่มต้นเพื่อแก้ปัญหาค้างบนมือถือ
   const [viewMode, setViewMode] = useState<ViewMode>("USER");
   const [userSubTab, setUserSubTab] = useState<UserSubTab>("MARKETS");
   const [adminTab, setAdminTab] = useState<AdminTab>("OVERVIEW");
