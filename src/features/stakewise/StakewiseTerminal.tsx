@@ -86,33 +86,46 @@ export function StakewiseTerminal() {
 
   // Check Session
   useEffect(() => {
-    const currentId = localStorage.getItem("current_user_id");
-    if (currentId) {
-        const found = users.find(u => u.id === currentId);
-        if (found) {
-            queueMicrotask(() => {
-              setCurrentUser(found);
-              setBalance(found.balance);
-            });
-        }
+    try {
+      if (typeof window === "undefined") return;
+      const currentId = localStorage.getItem("current_user_id");
+      if (currentId) {
+          const found = users.find(u => u.id === currentId);
+          if (found) {
+              queueMicrotask(() => {
+                setCurrentUser(found);
+                setBalance(found.balance);
+              });
+          }
+      }
+    } catch (err) {
+      console.error("Session check error:", err);
     }
   }, [users]);
 
+  // Initial Data Fetch
   useEffect(() => {
+    let mounted = true;
     const init = async () => {
       const startTime = Date.now();
-      const initialThreads = await marketService.fetchMarkets();
-      setThreads(initialThreads);
-      const minDuration = 4000; 
-      const elapsed = Date.now() - startTime;
-      if (elapsed < minDuration) {
-        setTimeout(() => setIsLoading(false), minDuration - elapsed);
-      } else {
-        setIsLoading(false);
+      try {
+        const initialThreads = await marketService.fetchMarkets();
+        if (mounted) setThreads(initialThreads);
+      } catch (err) {
+        console.error("Market fetch error:", err);
+      } finally {
+        const minDuration = 2000; 
+        const elapsed = Date.now() - startTime;
+        const wait = Math.max(0, minDuration - elapsed);
+        
+        setTimeout(() => {
+          if (mounted) setIsLoading(false);
+        }, wait);
       }
     };
     init();
-  }, [users]);
+    return () => { mounted = false; };
+  }, []);
 
   const showNotify = (message: string, type: NotifyType = "SUCCESS") => {
     setNotify({ isOpen: true, message, type });
