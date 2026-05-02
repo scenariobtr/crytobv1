@@ -22,3 +22,17 @@ export type FlightTelemetry = {
 };
 
 export type RadarBetSide = "YES" | "NO";
+
+export type AircraftModel = "DRONE" | "F16";
+export type AircraftConfig = {
+  model: AircraftModel;
+  color: string;
+};
+
+export type CombatAction = {
+  type: "LOCKING" | "MISSILE_LAUNCH" | "EXPLOSION";
+  startPos: Position;
+  targetPos: Position;
+  side: RadarBetSide;
+  timestamp: number;
+};

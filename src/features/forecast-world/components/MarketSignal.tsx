@@ -10,30 +10,60 @@ type MarketSignalProps = {
 };
 
 export const MarketSignal = ({ signal, onSelect, t }: MarketSignalProps) => {
-  const tone = signal.isExpired
-    ? "border-zinc-800 bg-zinc-950 text-zinc-600"
-    : signal.isLocked
-      ? "border-orange-300 bg-orange-500 text-black shadow-[0_0_28px_rgba(249,115,22,0.45)]"
-      : signal.market.isHot
-        ? "border-red-400 bg-red-600 text-white shadow-[0_0_24px_rgba(239,68,68,0.38)]"
-        : "border-emerald-400 bg-emerald-500 text-black shadow-[0_0_18px_rgba(16,185,129,0.35)]";
-
+  const isLocked = signal.isLocked && !signal.isExpired;
+  
   return (
-    <button
-      type="button"
-      onClick={() => onSelect(signal)}
-      className={`z-20 relative flex flex-col items-center justify-center gap-1 rounded-sm border-4 p-2 transition-all hover:scale-105 ${tone}`}
-      style={{ gridColumn: signal.position.x + 1, gridRow: signal.position.y + 1 }}
-      title={signal.market.title}
-    >
-      {!signal.isExpired && <span className="absolute inset-[-8px] rounded-sm border-2 border-current opacity-30 animate-ping" />}
-      {signal.isLocked && <span className="absolute inset-[-12px] rounded-sm border-4 border-orange-300" />}
-      <RadioTower className="h-6 w-6" />
-      <span className="max-w-20 truncate text-[9px] font-black uppercase">{signal.market.title}</span>
-      <span className="flex items-center gap-1 text-[8px] font-black opacity-80">
-        <Timer className="h-3 w-3" />
-        {signal.isExpired ? t("world.closed") : `${signal.distance.toFixed(1)} KM`}
-      </span>
-    </button>
+    <div className="relative flex items-center justify-center">
+      {/* Radar Pulse Effect (Visible when locked/near) */}
+      {isLocked && (
+        <>
+          <div className="absolute h-16 w-16 animate-ping rounded-full border-2 border-emerald-400 opacity-20" />
+          <div className="absolute h-12 w-12 animate-[ping_2s_linear_infinite] rounded-full border-2 border-emerald-500/40" />
+          <div className="absolute h-8 w-8 animate-[ping_3s_linear_infinite] rounded-full border-2 border-emerald-500/60" />
+        </>
+      )}
+
+      {/* Main Signal Button (The Dot) */}
+      <button
+        type="button"
+        onClick={() => onSelect(signal)}
+        className={`group relative z-20 flex h-4 w-4 items-center justify-center transition-all duration-500 ${
+          signal.isExpired ? "opacity-30 grayscale" : "opacity-100"
+        }`}
+        title={signal.market.title}
+      >
+        {/* Core Dot */}
+        <div className={`h-2 w-2 rounded-full shadow-[0_0_10px_rgba(16,185,129,0.8)] transition-all duration-300 ${
+          signal.isExpired 
+            ? "bg-zinc-600" 
+            : isLocked 
+              ? "bg-orange-500 scale-150 shadow-[0_0_15px_rgba(249,115,22,0.9)]" 
+              : "bg-emerald-500 group-hover:scale-125"
+        }`} />
+        
+        {/* Label (Visible when locked or hovered) */}
+        <div className={`absolute -top-10 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-sm border border-emerald-900 bg-black/90 px-2 py-1 text-[10px] font-black uppercase tracking-tighter text-emerald-400 shadow-xl transition-all duration-300 ${
+          isLocked || signal.isLocked ? "scale-100 opacity-100 translate-y-0" : "scale-0 opacity-0 translate-y-2 group-hover:scale-100 group-hover:opacity-100 group-hover:translate-y-0"
+        }`}>
+          <div className="flex flex-col items-center">
+            <span>{signal.market.title}</span>
+            {!signal.isExpired && (
+              <span className={`text-[8px] ${isLocked ? "text-orange-400" : "text-emerald-600"}`}>
+                {signal.distance.toFixed(1)} KM
+              </span>
+            )}
+          </div>
+          {/* Arrow */}
+          <div className="absolute -bottom-1 left-1/2 h-1 w-1 -translate-x-1/2 rotate-45 border-b border-r border-emerald-900 bg-black/90" />
+        </div>
+      </button>
+
+      {/* Background Glow for Dot */}
+      {!signal.isExpired && (
+        <div className={`absolute h-6 w-6 animate-pulse rounded-full opacity-20 ${
+          isLocked ? "bg-orange-500" : "bg-emerald-500"
+        }`} />
+      )}
+    </div>
   );
 };

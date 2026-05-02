@@ -12,6 +12,10 @@ export type User = {
   status: "ACTIVE" | "BANNED"; // สถานะสมาชิก
   walletStatus: "ACTIVE" | "PENDING" | "BLOCKED"; // สถานะกระเป๋าเงิน
   lastIp?: string;
+  aircraftConfig?: {
+    model: "DRONE" | "F16";
+    color: string;
+  };
 };
 
 export const mockUsers: User[] = [
@@ -27,6 +31,10 @@ export const mockUsers: User[] = [
     status: "ACTIVE",
     walletStatus: "ACTIVE",
     lastIp: "192.168.1.149",
+    aircraftConfig: {
+      model: "F16",
+      color: "#facc15", // Neon Yellow
+    }
   },
   {
     id: "user_2",
@@ -40,5 +48,9 @@ export const mockUsers: User[] = [
     status: "ACTIVE",
     walletStatus: "PENDING",
     lastIp: "192.168.1.102",
+    aircraftConfig: {
+      model: "DRONE",
+      color: "#10b981", // Emerald
+    }
   },
 ];

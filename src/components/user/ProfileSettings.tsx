@@ -1,11 +1,10 @@
-"use client";
-
 import React, { useState } from "react";
-import { User, Lock, Smartphone, ShieldCheck, Calendar, Camera, CheckCircle2, Edit2 } from "lucide-react";
+import { User, Lock, Smartphone, ShieldCheck, Calendar, Camera, CheckCircle2, Edit2, Plane, Palette } from "lucide-react";
 import { useTranslation } from "@/context/LangContext";
 import type { User as UserType } from "@/data/mockUsers";
+import { PlayerPlane } from "@/features/forecast-world/components/PlayerPlane";
 
-type EditableProfile = Partial<Pick<UserType, "password">> & {
+type EditableProfile = Partial<Pick<UserType, "password" | "aircraftConfig">> & {
   displayName?: string;
   phone?: string;
   avatar?: string;
@@ -17,16 +16,25 @@ interface ProfileSettingsProps {
   onUpdate: (data: EditableProfile) => void;
 }
 
+const PRESET_COLORS = [
+  { name: "Neon Yellow", value: "#facc15" },
+  { name: "Emerald", value: "#10b981" },
+  { name: "Safety Orange", value: "#f97316" },
+  { name: "Cyber Blue", value: "#3b82f6" },
+  { name: "Neon Pink", value: "#ec4899" },
+  { name: "Ghost White", value: "#f8fafc" },
+];
+
 export const ProfileSettings: React.FC<ProfileSettingsProps> = ({ user, onUpdate }) => {
   const { t } = useTranslation();
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
     displayName: user.displayName || user.username,
     password: user.password,
-    phone: user.phone || "08X-XXX-XXXX"
+    phone: user.phone || "08X-XXX-XXXX",
+    aircraftConfig: user.aircraftConfig || { model: "F16", color: "#facc15" }
   });
 
-  // แก้ไขตรรกะจำนวนวันสมาชิก: ใช้ joinedAt จริง หรือถ้าไม่มีให้เป็น 0 (เพิ่งสมัคร)
   const calculateDays = () => {
     if (!user.joinedAt) return 0;
     const joinedDate = new Date(user.joinedAt);
@@ -82,6 +90,86 @@ export const ProfileSettings: React.FC<ProfileSettingsProps> = ({ user, onUpdate
                </div>
             </div>
          </div>
+      </div>
+
+      {/* Aircraft Hangar - NEW SECTION */}
+      <div className="bg-zinc-950 border border-emerald-900/30 rounded-[40px] p-12 relative overflow-hidden">
+        <div className="absolute right-0 top-0 h-64 w-64 bg-emerald-500/5 blur-[100px] -z-10" />
+        
+        <div className="flex items-center justify-between mb-10">
+          <div>
+            <h3 className="text-xl font-black text-white italic uppercase tracking-tighter flex items-center gap-3">
+              <Plane className="w-6 h-6 text-emerald-500" /> AIRCRAFT HANGAR
+            </h3>
+            <p className="text-[10px] font-black text-zinc-600 uppercase tracking-widest mt-1">CUSTOMIZE YOUR RADAR AVATAR</p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+          {/* Preview Window */}
+          <div className="lg:col-span-5 flex flex-col items-center justify-center bg-black border-4 border-emerald-950 rounded-[30px] p-10 relative">
+             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.1)_0%,transparent_70%)]" />
+             <div className="scale-150">
+               <PlayerPlane config={formData.aircraftConfig} />
+             </div>
+             <div className="mt-12 text-center">
+               <p className="text-xs font-black text-emerald-500 tracking-[0.2em]">{formData.aircraftConfig.model} PROTOTYPE</p>
+               <p className="text-[8px] font-bold text-zinc-700 uppercase mt-1">TRANSMITTER ACTIVE</p>
+             </div>
+          </div>
+
+          {/* Customization Options */}
+          <div className="lg:col-span-7 space-y-8">
+            <div className="space-y-4">
+               <p className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">CHOOSE MODEL</p>
+               <div className="grid grid-cols-2 gap-4">
+                  {["DRONE", "F16"].map((m) => (
+                    <button
+                      key={m}
+                      onClick={() => setFormData({ ...formData, aircraftConfig: { ...formData.aircraftConfig, model: m as any } })}
+                      className={`py-4 rounded-xl font-black text-xs tracking-widest border-2 transition-all ${
+                        formData.aircraftConfig.model === m 
+                        ? "border-emerald-500 bg-emerald-500/10 text-emerald-500 shadow-[0_0_20px_rgba(16,185,129,0.2)]" 
+                        : "border-zinc-900 bg-zinc-900/50 text-zinc-600 hover:border-zinc-700"
+                      }`}
+                    >
+                      {m}
+                    </button>
+                  ))}
+               </div>
+            </div>
+
+            <div className="space-y-4">
+               <p className="text-[10px] font-black text-zinc-500 uppercase tracking-widest flex items-center gap-2">
+                 <Palette className="w-3 h-3" /> SELECT LIVERY COLOR
+               </p>
+               <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
+                  {PRESET_COLORS.map((c) => (
+                    <button
+                      key={c.value}
+                      onClick={() => setFormData({ ...formData, aircraftConfig: { ...formData.aircraftConfig, color: c.value } })}
+                      className={`h-12 rounded-lg border-2 transition-all flex items-center justify-center ${
+                        formData.aircraftConfig.color === c.value ? "border-white scale-110 shadow-lg" : "border-transparent opacity-60 hover:opacity-100"
+                      }`}
+                      style={{ backgroundColor: c.value }}
+                      title={c.name}
+                    >
+                      {formData.aircraftConfig.color === c.value && <CheckCircle2 className="w-5 h-5 text-black" />}
+                    </button>
+                  ))}
+               </div>
+            </div>
+
+            <div className="pt-4">
+               <button 
+                 onClick={handleSubmit}
+                 className="w-full py-5 bg-zinc-900 border border-zinc-800 text-white font-black uppercase text-xs tracking-widest rounded-xl hover:bg-zinc-800 transition-all active:scale-95"
+               >
+                 APPLY TO HANGAR
+               </button>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Profile Details Form */}

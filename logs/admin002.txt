@@ -14,3 +14,11 @@ Created: 2026-05-01T20:17:49.587Z
 [2026-05-01T20:38:19.317Z] [LOGIN] IP: 127.0.0.1
 [2026-05-01T21:47:25.044Z] [LOGIN] IP: 127.0.0.1
 [2026-05-01T22:20:47.270Z] [LOGIN] IP: 127.0.0.1
+[2026-05-02T00:08:23.283Z] [RADAR_BET] Amount: 100 | Detail: Radar bet YES on ลิเวอร์พูล จะชนะ แมนยู หรือไม่?
+[2026-05-02T00:12:28.372Z] [RADAR_BET] Amount: 100 | Detail: Radar bet YES on Bitcoin จะแตะ $100k ก่อนสิ้นปี?
+[2026-05-02T00:14:10.122Z] [RADAR_BET] Amount: 100 | Detail: Radar bet NO on Bitcoin จะแตะ $100k ก่อนสิ้นปี?
+[2026-05-02T00:14:32.344Z] [RADAR_BET] Amount: 23 | Detail: Radar bet YES on ลิเวอร์พูล จะชนะ แมนยู หรือไม่?
+[2026-05-02T00:16:18.364Z] [RADAR_BET] Amount: 100 | Detail: Radar bet YES on Bitcoin จะแตะ $100k ก่อนสิ้นปี?
+[2026-05-02T00:16:48.895Z] [RADAR_BET] Amount: 8 | Detail: Radar bet NO on ลิเวอร์พูล จะชนะ แมนยู หรือไม่?
+[2026-05-02T00:17:01.707Z] [RADAR_BET] Amount: 5 | Detail: Radar bet NO on ลิเวอร์พูล จะชนะ แมนยู หรือไม่?
+[2026-05-02T00:17:17.443Z] [RADAR_BET] Amount: 2 | Detail: Radar bet YES on ลิเวอร์พูล จะชนะ แมนยู หรือไม่?

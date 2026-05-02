@@ -9,7 +9,7 @@ import { RadarMap } from "./components/RadarMap";
 import { RadarPanel } from "./components/RadarPanel";
 import { useFlightMovement } from "./hooks/useFlightMovement";
 import { useRadarLock } from "./hooks/useRadarLock";
-import type { FlightTelemetry, RadarBetSide, RadarSignal } from "./types";
+import type { CombatAction, FlightTelemetry, RadarBetSide, RadarSignal } from "./types";
 
 type ForecastWorldProps = {
   currentUser: User;
@@ -37,11 +37,19 @@ export const ForecastWorld = ({ currentUser, threads, balance, onPlaceRadarBet, 
   const [now, setNow] = useState(() => Date.now());
   const [selectedSignalId, setSelectedSignalId] = useState<string | null>(null);
   const [betAmount, setBetAmount] = useState<number | "">(100);
+  const [combatAction, setCombatAction] = useState<CombatAction | null>(null);
 
   useEffect(() => {
     const timer = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(timer);
   }, []);
+
+  useEffect(() => {
+    if (combatAction) {
+      const timer = setTimeout(() => setCombatAction(null), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [combatAction]);
 
   const signalBase = useMemo<Omit<RadarSignal, "distance" | "isLocked">[]>(() => {
     return threads.map((thread, index) => ({
@@ -71,8 +79,26 @@ export const ForecastWorld = ({ currentUser, threads, balance, onPlaceRadarBet, 
 
   const handlePlaceBet = (side: RadarBetSide) => {
     if (!activeSignal || !activeSignal.isLocked || activeSignal.isExpired || betAmount === "") return;
-    const didBet = onPlaceRadarBet(activeSignal.market, side, betAmount);
-    if (didBet) setBetAmount("");
+    
+    // Stage 1: Lock Target
+    setCombatAction({
+      type: "LOCKING",
+      startPos: { ...position },
+      targetPos: { ...activeSignal.position },
+      side,
+      timestamp: Date.now(),
+    });
+
+    // Stage 2: Weapons Release (After 1s)
+    setTimeout(() => {
+      setCombatAction(prev => prev ? { ...prev, type: "MISSILE_LAUNCH", timestamp: Date.now() } : null);
+
+      // Stage 3: Impact & Finalize (After 2.5s total to watch impact + explosion)
+      setTimeout(() => {
+        const didBet = onPlaceRadarBet(activeSignal.market, side, Number(betAmount));
+        if (didBet) setBetAmount("");
+      }, 2500); // Increased from 1500ms to 2500ms
+    }, 1000);
   };
 
   return (
@@ -108,6 +134,8 @@ export const ForecastWorld = ({ currentUser, threads, balance, onPlaceRadarBet, 
             signals={signals}
             selectedSignal={activeSignal}
             telemetry={telemetry}
+            aircraftConfig={currentUser.aircraftConfig}
+            combatAction={combatAction}
             onSelectSignal={handleSelectSignal}
             onMoveTo={moveTo}
             t={t}
