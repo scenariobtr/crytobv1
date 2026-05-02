@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, ReactNode, useCallback, useSyncExternalStore } from "react";
+import React, { createContext, useContext, ReactNode, useCallback, useState, useEffect } from "react";
 import { en, LocaleType } from "@/locales/en";
 import { th } from "@/locales/th";
 
@@ -12,7 +12,6 @@ interface LangContextType {
   t: (path: string) => string;
 }
 
-// สร้าง Default Context เพื่อป้องกัน Error "t is not a function"
 const LangContext = createContext<LangContextType>({
   lang: "EN",
   setLang: () => {},
@@ -23,34 +22,43 @@ const translations: Record<Language, LocaleType> = { EN: en, TH: th };
 const LANGUAGE_STORAGE_KEY = "app_lang";
 const LANGUAGE_CHANGE_EVENT = "stakewise-language-change";
 
-const isLanguage = (value: string | null): value is Language => value === "EN" || value === "TH";
-
-const getStoredLanguage = (): Language => {
-  if (typeof window === "undefined") return "EN";
-  try {
-    const savedLang = localStorage.getItem(LANGUAGE_STORAGE_KEY);
-    return isLanguage(savedLang) ? savedLang : "EN";
-  } catch (err) {
-    console.warn("Storage access restricted:", err);
-    return "EN";
-  }
-};
-
-const subscribeToLanguage = (onStoreChange: () => void) => {
-  window.addEventListener("storage", onStoreChange);
-  window.addEventListener(LANGUAGE_CHANGE_EVENT, onStoreChange);
-
-  return () => {
-    window.removeEventListener("storage", onStoreChange);
-    window.removeEventListener(LANGUAGE_CHANGE_EVENT, onStoreChange);
-  };
-};
-
 export const LangProvider = ({ children }: { children: ReactNode }) => {
-  const lang = useSyncExternalStore<Language>(subscribeToLanguage, getStoredLanguage, () => "EN");
+  const [lang, setLangState] = useState<Language>("EN");
+
+  // Initial load
+  useEffect(() => {
+    try {
+      const savedLang = localStorage.getItem(LANGUAGE_STORAGE_KEY);
+      if (savedLang === "EN" || savedLang === "TH") {
+        setLangState(savedLang);
+      }
+    } catch (err) {
+      console.warn("Lang initialization failed", err);
+    }
+  }, []);
+
+  // Listen for changes
+  useEffect(() => {
+    const handleStorage = () => {
+      try {
+        const savedLang = localStorage.getItem(LANGUAGE_STORAGE_KEY);
+        if (savedLang === "EN" || savedLang === "TH") {
+          setLangState(savedLang);
+        }
+      } catch (err) { /* ignore */ }
+    };
+
+    window.addEventListener("storage", handleStorage);
+    window.addEventListener(LANGUAGE_CHANGE_EVENT, handleStorage);
+    return () => {
+      window.removeEventListener("storage", handleStorage);
+      window.removeEventListener(LANGUAGE_CHANGE_EVENT, handleStorage);
+    };
+  }, []);
 
   const setLang = useCallback((newLang: Language) => {
     try {
+      setLangState(newLang);
       localStorage.setItem(LANGUAGE_STORAGE_KEY, newLang);
       window.dispatchEvent(new Event(LANGUAGE_CHANGE_EVENT));
     } catch (err) {
@@ -58,18 +66,18 @@ export const LangProvider = ({ children }: { children: ReactNode }) => {
     }
   }, []);
 
-  // ใช้ useCallback เพื่อให้ฟังก์ชัน t ไม่เปลี่ยน Reference บ่อยๆ
-  const t = useCallback((path: string): string => {
+  const t = useCallback((path: string) => {
     const keys = path.split(".");
-    let current: unknown = translations[lang];
-
+    let current: any = translations[lang];
+    
     for (const key of keys) {
-      if (!current || typeof current !== "object" || !(key in current)) {
-        return path; 
+      if (current && typeof current === "object" && key in current) {
+        current = current[key];
+      } else {
+        return path;
       }
-      current = (current as Record<string, unknown>)[key];
     }
-
+    
     return typeof current === "string" ? current : path;
   }, [lang]);
 
@@ -82,5 +90,9 @@ export const LangProvider = ({ children }: { children: ReactNode }) => {
 
 export const useTranslation = () => {
   const context = useContext(LangContext);
+  if (!context) {
+    // Return fallback if context is missing (prevents crash)
+    return { lang: "EN" as const, setLang: () => {}, t: (p: string) => p };
+  }
   return context;
 };

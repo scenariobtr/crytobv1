@@ -22,7 +22,6 @@ import type { AdminTab, AuthView, PortfolioBet, UserSubTab, ViewMode } from "./t
 
 export function StakewiseTerminal() {
   const { t, lang, setLang } = useTranslation();
-  const [isMounted, setIsMounted] = useState(false);
   
   const [currentUser, setCurrentUser] = useState<UserType | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>("USER");
@@ -51,10 +50,6 @@ export function StakewiseTerminal() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [editingMarket, setEditingMarket] = useState<Thread | null>(null);
   const [newMarket, setNewMarket] = useState(createDefaultMarketDraft);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
 
   // 1. Session Restoration (Priority 1)
   useEffect(() => {
@@ -299,30 +294,33 @@ export function StakewiseTerminal() {
     return "tracking-normal";
   };
 
-  if (!isMounted) return <div className="min-h-screen bg-black" />;
-
   // Main UI Gate
   if (!currentUser) {
     return (
-      <AuthScreen
-        authView={authView}
-        usernameInput={usernameInput}
-        passwordInput={passwordInput}
-        phoneInput={phoneInput}
-        otpInput={otpInput}
-        lang={lang}
-        onAuthViewChange={setAuthView}
-        onUsernameChange={setUsernameInput}
-        onPasswordChange={setPasswordInput}
-        onPhoneChange={setPhoneInput}
-        onOtpChange={setOtpInput}
-        onLogin={handleAuth}
-        onRegister={handleRegister}
-        onVerifyOtp={handleVerifyOtp}
-        onToggleLang={toggleLang}
-        onBypass={handleBypassAdmin}
-        t={t}
-      />
+      <div className="min-h-screen bg-black relative">
+        <div className="fixed top-4 left-4 z-[9999] text-[12px] text-emerald-500 font-black bg-black/80 px-2 py-1 rounded border border-emerald-500/30">
+          SYSTEM_V4.2.19_READY
+        </div>
+        <AuthScreen
+          authView={authView}
+          usernameInput={usernameInput}
+          passwordInput={passwordInput}
+          phoneInput={phoneInput}
+          otpInput={otpInput}
+          lang={lang}
+          onAuthViewChange={setAuthView}
+          onUsernameChange={setUsernameInput}
+          onPasswordChange={setPasswordInput}
+          onPhoneChange={setPhoneInput}
+          onOtpChange={setOtpInput}
+          onLogin={handleAuth}
+          onRegister={handleRegister}
+          onVerifyOtp={handleVerifyOtp}
+          onToggleLang={toggleLang}
+          onBypass={handleBypassAdmin}
+          t={t}
+        />
+      </div>
     );
   }
 
