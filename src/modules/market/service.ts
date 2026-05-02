@@ -1,5 +1,7 @@
 "use client";
 
+import { logService } from "@/services/logService";
+
 export interface Thread {
   id: number;
   title: string;
@@ -16,9 +18,7 @@ export interface Thread {
 }
 
 export const marketService = {
-  // จำลองการดึงข้อมูลจาก API
-  fetchMarkets: async (): Promise<Thread[]> => {
-    // ในอนาคตเปลี่ยนเป็น fetch("/api/markets")
+  getDefaultMarkets: (): Thread[] => {
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
     
@@ -54,6 +54,17 @@ export const marketService = {
         isHot: true,
         endDate: nextWeek.toISOString(),
       }
+    ];
+  },
+
+  // ดึงตลาดจาก mock base และตลาดที่ persist ใน logs/markets
+  fetchMarkets: async (): Promise<Thread[]> => {
+    const defaultMarkets = marketService.getDefaultMarkets();
+    const persistedMarkets = await logService.getMarkets();
+    const defaultIds = new Set(defaultMarkets.map((market) => market.id));
+    return [
+      ...persistedMarkets.filter((market) => !defaultIds.has(market.id)),
+      ...defaultMarkets,
     ];
   },
 

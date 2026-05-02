@@ -1,9 +1,76 @@
 import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
+import type { Thread } from '@/modules/market/service';
 
 const LOGS_DIR = 'D:/Bet/crypto-betting/logs';
 const MARKETS_DIR = path.join(LOGS_DIR, 'markets');
+
+type MarketLogData = Thread & {
+    createdBy?: string;
+    createdAt?: string;
+};
+
+const isString = (value: unknown): value is string => typeof value === 'string';
+const isNumber = (value: unknown): value is number => typeof value === 'number' && Number.isFinite(value);
+
+const isThread = (value: unknown): value is Thread => {
+    if (!value || typeof value !== 'object') return false;
+    const market = value as Record<string, unknown>;
+    return (
+        isNumber(market.id) &&
+        isString(market.title) &&
+        isString(market.description) &&
+        isString(market.status) &&
+        isNumber(market.yesPrice) &&
+        isNumber(market.noPrice) &&
+        isNumber(market.yesVolume) &&
+        isNumber(market.noVolume) &&
+        (market.winner === null || isString(market.winner)) &&
+        isString(market.creatorId) &&
+        isString(market.endDate)
+    );
+};
+
+const readLineValue = (content: string, label: string) => {
+    const match = content.match(new RegExp(`^${label}:\\s*(.*)$`, 'm'));
+    return match?.[1]?.trim() ?? '';
+};
+
+const parseMarketFile = (fileName: string): Thread | null => {
+    const content = fs.readFileSync(path.join(MARKETS_DIR, fileName), 'utf8');
+    const jsonMatch = content.match(/--- MARKET JSON ---\n([\s\S]*?)\n--- END MARKET JSON ---/);
+
+    if (jsonMatch?.[1]) {
+        try {
+            const parsed: unknown = JSON.parse(jsonMatch[1]);
+            return isThread(parsed) ? parsed : null;
+        } catch {
+            return null;
+        }
+    }
+
+    const id = Number(readLineValue(content, 'ID'));
+    const title = readLineValue(content, 'Title');
+    const creatorId = readLineValue(content, 'Creator') || 'admin';
+    const description = readLineValue(content, 'Description');
+
+    if (!Number.isFinite(id) || !title) return null;
+
+    return {
+        id,
+        title,
+        description,
+        status: 'OPEN',
+        yesPrice: 0.5,
+        noPrice: 0.5,
+        yesVolume: 0,
+        noVolume: 0,
+        winner: null,
+        creatorId,
+        endDate: new Date(Date.now() + 86400000).toISOString(),
+    };
+};
 
 export async function POST(request: Request) {
   try {
@@ -37,9 +104,18 @@ export async function POST(request: Request) {
 
     // 2. Handling MARKET creation logs
     if (action === 'MARKET_CREATE') {
+        if (!isThread(data)) {
+            return NextResponse.json({ error: 'Invalid market data' }, { status: 400 });
+        }
+
         const cleanTitle = data.title.replace(/[^a-z0-9]/gi, '_').toLowerCase();
         const marketFileName = `market_${data.id}_${cleanTitle}.txt`;
         const marketPath = path.join(MARKETS_DIR, marketFileName);
+        const marketJson: MarketLogData = {
+            ...data,
+            createdBy: username,
+            createdAt: timestamp,
+        };
         
         const marketContent = `
 --- MARKET CREATED ---
@@ -50,6 +126,9 @@ Created At: ${timestamp}
 Starting Price (YES/NO): ${data.yesPrice} / ${data.noPrice}
 Description: ${data.description}
 ----------------------
+--- MARKET JSON ---
+${JSON.stringify(marketJson, null, 2)}
+--- END MARKET JSON ---
         `.trim();
         
         fs.writeFileSync(marketPath, marketContent);
@@ -68,6 +147,27 @@ export async function GET(request: Request) {
     const username = searchParams.get('username');
     const verify = searchParams.get('verify');
     const allUsers = searchParams.get('all_users'); // เพิ่ม flag สำหรับดึงสมาชิกทั้งหมด
+    const markets = searchParams.get('markets');
+
+    if (markets === 'true') {
+        try {
+            if (!fs.existsSync(MARKETS_DIR)) {
+                return NextResponse.json({ markets: [] });
+            }
+
+            const files = fs.readdirSync(MARKETS_DIR).filter(file => file.endsWith('.txt'));
+            const parsedMarkets = files
+                .map(parseMarketFile)
+                .filter((market): market is Thread => market !== null)
+                .sort((a, b) => b.id - a.id);
+
+            return NextResponse.json({ markets: parsedMarkets });
+        } catch (error: unknown) {
+            console.error('Market Read Error:', error);
+            const message = error instanceof Error ? error.message : 'Failed to list markets';
+            return NextResponse.json({ error: message }, { status: 500 });
+        }
+    }
 
     // 1. ดึงข้อมูลสมาชิกทั้งหมดจาก Logs
     if (allUsers === 'true') {

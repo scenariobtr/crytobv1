@@ -21,6 +21,7 @@ const LangContext = createContext<LangContextType>({
 const translations: Record<Language, LocaleType> = { EN: en, TH: th };
 const LANGUAGE_STORAGE_KEY = "app_lang";
 const LANGUAGE_CHANGE_EVENT = "stakewise-language-change";
+type TranslationNode = string | { [key: string]: TranslationNode };
 
 export const LangProvider = ({ children }: { children: ReactNode }) => {
   const [lang, setLangState] = useState<Language>("EN");
@@ -30,7 +31,7 @@ export const LangProvider = ({ children }: { children: ReactNode }) => {
     try {
       const savedLang = localStorage.getItem(LANGUAGE_STORAGE_KEY);
       if (savedLang === "EN" || savedLang === "TH") {
-        setLangState(savedLang);
+        queueMicrotask(() => setLangState(savedLang));
       }
     } catch (err) {
       console.warn("Lang initialization failed", err);
@@ -45,7 +46,7 @@ export const LangProvider = ({ children }: { children: ReactNode }) => {
         if (savedLang === "EN" || savedLang === "TH") {
           setLangState(savedLang);
         }
-      } catch (err) { /* ignore */ }
+      } catch { /* ignore */ }
     };
 
     window.addEventListener("storage", handleStorage);
@@ -68,7 +69,7 @@ export const LangProvider = ({ children }: { children: ReactNode }) => {
 
   const t = useCallback((path: string) => {
     const keys = path.split(".");
-    let current: any = translations[lang];
+    let current: TranslationNode = translations[lang];
     
     for (const key of keys) {
       if (current && typeof current === "object" && key in current) {

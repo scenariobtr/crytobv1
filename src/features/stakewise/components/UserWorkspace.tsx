@@ -22,7 +22,6 @@ type UserWorkspaceProps = {
   onCreateMarketOpen: () => void;
   onDeleteMarket: (id: number) => void;
   onEditMarket: (thread: Thread) => void;
-  onDeposit: () => void;
   onProfileUpdate: (updatedData: Partial<User>) => void;
   onPlaceRadarBet: (thread: Thread, side: RadarBetSide, amount: number) => boolean;
   getTracking: (strength: "normal" | "wide" | "widest") => string;
@@ -40,17 +39,16 @@ export const UserWorkspace = ({
   onCreateMarketOpen,
   onDeleteMarket,
   onEditMarket,
-  onDeposit,
   onProfileUpdate,
   onPlaceRadarBet,
   getTracking,
   t,
 }: UserWorkspaceProps) => {
   return (
-    <div className="space-y-16">
-      <div className="flex items-center gap-6 md:gap-16 border-b border-zinc-900 overflow-x-auto no-scrollbar">
+    <div className="space-y-6 md:space-y-12">
+      <div className="flex items-center gap-3 overflow-x-auto border-b border-zinc-900 pb-px no-scrollbar sm:gap-6 md:gap-12">
         {USER_TABS.map((tab) => (
-          <button key={tab} onClick={() => onUserSubTabChange(tab)} className={`text-[14px] md:text-[16px] font-black uppercase whitespace-nowrap ${getTracking("wide")} pb-4 md:pb-8 transition-all relative ${userSubTab === tab ? "text-emerald-500" : "text-neutral-400 hover:text-neutral-200"}`}>
+          <button key={tab} onClick={() => onUserSubTabChange(tab)} className={`relative whitespace-nowrap px-1 pb-3 text-[12px] font-black uppercase transition-all sm:text-[13px] md:pb-6 md:text-[16px] ${getTracking("wide")} ${userSubTab === tab ? "text-emerald-500" : "text-neutral-400 hover:text-neutral-200"}`}>
             {t(userTabLabelKey[tab])}
             {userSubTab === tab && <div className="absolute bottom-0 left-0 w-full h-1 md:h-1.5 bg-emerald-500 rounded-t-full shadow-lg"></div>}
           </button>
@@ -77,7 +75,15 @@ export const UserWorkspace = ({
           />
         )}
         {userSubTab === "PORTFOLIO" && <PortfolioStats userBets={userBets} />}
-        {userSubTab === "WALLET" && <WalletDashboard balance={balance} walletStatus={currentUser.walletStatus} walletAddress={currentUser.wallet} transactions={[]} onDeposit={onDeposit} />}
+        {userSubTab === "WALLET" && (
+          <WalletDashboard
+            balance={balance}
+            walletStatus={currentUser.walletStatus}
+            walletAddress={currentUser.wallet}
+            transactions={[]}
+            onWalletConnect={(walletAddress) => onProfileUpdate({ wallet: walletAddress, walletStatus: "ACTIVE" })}
+          />
+        )}
         {userSubTab === "PROFILE" && <ProfileSettings user={currentUser} onUpdate={onProfileUpdate} />}
       </div>
     </div>

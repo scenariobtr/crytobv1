@@ -53,9 +53,9 @@ export const logService = {
     }
   },
 
-  async logMarketCreation(username: string, marketData: Thread) {
+  async logMarketCreation(username: string, marketData: Thread): Promise<boolean> {
     try {
-      await fetch('/api/logs', {
+      const response = await fetch('/api/logs', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -64,8 +64,23 @@ export const logService = {
           data: marketData,
         }),
       });
+      return response.ok;
     } catch (error) {
       console.error('Failed to log market creation:', error);
+      return false;
+    }
+  },
+
+  async getMarkets(): Promise<Thread[]> {
+    try {
+      const response = await fetch('/api/logs?markets=true', { cache: 'no-store' });
+      if (!response.ok) return [];
+      const data: unknown = await response.json();
+      if (!data || typeof data !== 'object' || !Array.isArray((data as { markets?: unknown }).markets)) return [];
+      return (data as { markets: Thread[] }).markets;
+    } catch (error) {
+      console.error('Failed to get markets:', error);
+      return [];
     }
   },
 

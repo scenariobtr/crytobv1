@@ -1,15 +1,13 @@
 "use client";
 
-import { RadioTower, Timer } from "lucide-react";
 import type { RadarSignal } from "../types";
 
 type MarketSignalProps = {
   signal: RadarSignal;
   onSelect: (signal: RadarSignal) => void;
-  t: (path: string) => string;
 };
 
-export const MarketSignal = ({ signal, onSelect, t }: MarketSignalProps) => {
+export const MarketSignal = ({ signal, onSelect }: MarketSignalProps) => {
   const isLocked = signal.isLocked && !signal.isExpired;
   
   return (

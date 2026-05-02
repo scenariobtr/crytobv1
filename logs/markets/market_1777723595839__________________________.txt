@@ -1,0 +1,25 @@
+--- MARKET CREATED ---
+ID: 1777723595839
+Title: หมูจะบินได้ภายใน พรุ่งนี้
+Creator: bank
+Created At: 2026-05-02T12:06:35.564Z
+Starting Price (YES/NO): 0.5 / 0.5
+Description: หมูจะบินได้ภายใน พรุ่งนี้
+----------------------
+--- MARKET JSON ---
+{
+  "id": 1777723595839,
+  "title": "หมูจะบินได้ภายใน พรุ่งนี้",
+  "description": "หมูจะบินได้ภายใน พรุ่งนี้",
+  "status": "OPEN",
+  "yesPrice": 0.5,
+  "noPrice": 0.5,
+  "yesVolume": 0,
+  "noVolume": 0,
+  "winner": null,
+  "creatorId": "user_1777723486286",
+  "endDate": "2026-05-03T05:03:00.000Z",
+  "createdBy": "bank",
+  "createdAt": "2026-05-02T12:06:35.564Z"
+}
+--- END MARKET JSON ---

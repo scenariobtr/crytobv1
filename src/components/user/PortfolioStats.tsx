@@ -27,42 +27,42 @@ export const PortfolioStats: React.FC<PortfolioStatsProps> = ({ userBets }) => {
   };
 
   return (
-    <div id="cont-user-portfolio-root" className="space-y-12 animate-in fade-in slide-in-from-right-4 duration-700">
+    <div id="cont-user-portfolio-root" className="space-y-8 animate-in fade-in slide-in-from-right-4 duration-700 md:space-y-12">
       
       {/* High-Level Stats Cards */}
-      <div id="grid-user-stats-cards" className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div id="grid-user-stats-cards" className="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-8">
         
         {/* Net Profit Card */}
-        <div id="card-stats-profit" className="bg-neutral-900 border border-amber-500/20 p-10 rounded-[2rem] space-y-6 relative overflow-hidden group shadow-2xl">
+        <div id="card-stats-profit" className="group relative space-y-5 overflow-hidden rounded-3xl border border-amber-500/20 bg-neutral-900 p-6 shadow-2xl md:p-10">
           <div className="absolute -right-12 -top-12 w-40 h-40 bg-amber-500/10 blur-[80px] group-hover:bg-amber-500/20 transition-all duration-700"></div>
           <div className="flex justify-between items-center">
             <p id="lbl-stats-profit-txt" className={`text-[11px] font-black text-neutral-300 uppercase ${getTracking("wide")}`}>Net Profit</p>
             <TrendingUp className="w-5 h-5 text-amber-500" />
           </div>
-          <p id="lbl-stats-profit-val" className="text-5xl font-black text-amber-500 tracking-tighter italic">+450.25 <span id="lbl-stats-profit-unit" className="text-sm not-italic text-amber-500/50">USDT</span></p>
+          <p id="lbl-stats-profit-val" className="text-4xl font-black italic tracking-tighter text-amber-500 md:text-5xl">+450.25 <span id="lbl-stats-profit-unit" className="text-sm not-italic text-amber-500/50">USDT</span></p>
         </div>
         
         {/* Win Rate Card */}
-        <div id="card-stats-winrate" className="bg-neutral-900 border border-neutral-800 p-10 rounded-[2rem] space-y-6 hover:border-emerald-500/30 transition-all shadow-2xl group">
+        <div id="card-stats-winrate" className="group space-y-5 rounded-3xl border border-neutral-800 bg-neutral-900 p-6 shadow-2xl transition-all hover:border-emerald-500/30 md:p-10">
           <div className="flex justify-between items-center">
             <p id="lbl-stats-winrate-txt" className={`text-[11px] font-black text-neutral-300 uppercase ${getTracking("wide")}`}>Win Rate</p>
             <Target className="w-5 h-5 text-emerald-500" />
           </div>
-          <p id="lbl-stats-winrate-val" className="text-5xl font-black text-white tracking-tighter italic">68<span className="text-emerald-500 not-italic">%</span></p>
+          <p id="lbl-stats-winrate-val" className="text-4xl font-black italic tracking-tighter text-white md:text-5xl">68<span className="not-italic text-emerald-500">%</span></p>
         </div>
         
         {/* Total Trades Card */}
-        <div id="card-stats-total" className="bg-neutral-900 border border-neutral-800 p-10 rounded-[2rem] space-y-6 hover:border-emerald-500/30 transition-all shadow-2xl group">
+        <div id="card-stats-total" className="group space-y-5 rounded-3xl border border-neutral-800 bg-neutral-900 p-6 shadow-2xl transition-all hover:border-emerald-500/30 md:p-10">
           <div className="flex justify-between items-center">
             <p id="lbl-stats-total-txt" className={`text-[11px] font-black text-neutral-300 uppercase ${getTracking("wide")}`}>Total Trades</p>
             <Activity className="w-5 h-5 text-neutral-500" />
           </div>
-          <p id="lbl-stats-total-val" className="text-5xl font-black text-white tracking-tighter italic">{userBets.length}</p>
+          <p id="lbl-stats-total-val" className="text-4xl font-black italic tracking-tighter text-white md:text-5xl">{userBets.length}</p>
         </div>
       </div>
 
       {/* Performance Curve */}
-      <section id="sect-user-portfolio-chart" className="bg-neutral-900 border border-neutral-800 rounded-[2rem] p-12 space-y-10 shadow-2xl">
+      <section id="sect-user-portfolio-chart" className="space-y-6 rounded-3xl border border-neutral-800 bg-neutral-900 p-5 shadow-2xl sm:p-8 md:space-y-10 md:p-12">
         <div className="flex justify-between items-center">
            <h3 id="lbl-chart-title" className={`text-xs font-black uppercase ${getTracking("widest")} text-neutral-300 flex items-center gap-4`}>
              <div className="p-2 bg-emerald-500/10 rounded-lg">
@@ -72,7 +72,7 @@ export const PortfolioStats: React.FC<PortfolioStatsProps> = ({ userBets }) => {
            </h3>
         </div>
         
-        <div id="cont-chart-bars" className="h-80 flex items-end gap-3 px-6 border-b border-neutral-800 pb-2 relative">
+        <div id="cont-chart-bars" className="relative flex h-56 items-end gap-1.5 border-b border-neutral-800 px-1 pb-2 sm:h-72 sm:gap-3 sm:px-6 md:h-80">
           <div className="absolute inset-0 flex flex-col justify-between py-2 pointer-events-none opacity-10">
              {[...Array(5)].map((_, i) => <div key={i} className="w-full border-t border-neutral-600 border-dashed"></div>)}
           </div>
@@ -101,8 +101,8 @@ export const PortfolioStats: React.FC<PortfolioStatsProps> = ({ userBets }) => {
           <h3 id="lbl-history-title" className={`text-xl font-black uppercase ${getTracking("widest")} text-white italic`}>{t("wallet.tx_logs")}</h3>
         </div>
         
-        <div id="cont-history-table" className="bg-neutral-900/50 border border-neutral-800 rounded-[2rem] overflow-hidden shadow-2xl">
-          <table id="tbl-user-history" className="w-full text-left">
+        <div id="cont-history-table" className="overflow-x-auto rounded-3xl border border-neutral-800 bg-neutral-900/50 shadow-2xl">
+          <table id="tbl-user-history" className="min-w-[720px] w-full text-left">
             <thead id="thead-user-history" className={`bg-black/80 text-[11px] font-black uppercase text-neutral-300 border-b border-neutral-800 ${getTracking("wide")}`}>
               <tr id="tr-history-head">
                 <th id="th-history-market" className="px-10 py-7">{t("market.vol")}</th>

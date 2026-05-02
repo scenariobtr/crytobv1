@@ -31,9 +31,9 @@ export const BetDockPanel = ({ signal, balance, amount, onAmountChange, onPlaceB
             <p className="text-[7px] md:text-[9px] font-black uppercase text-zinc-500 tracking-tighter">SECURE TRANSACTION NODE</p>
           </div>
         </div>
-        <div className="text-right">
+        <div className="min-w-0 text-right">
           <p className="text-[7px] md:text-[8px] font-black uppercase text-zinc-600">AVAILABLE CREDIT</p>
-          <span className="text-xs md:text-sm font-black uppercase text-emerald-400">{balance.toLocaleString()} USDT</span>
+          <span className="block truncate text-xs font-black uppercase text-emerald-400 md:text-sm">{balance.toLocaleString()} USDT</span>
         </div>
       </div>
 
@@ -45,7 +45,7 @@ export const BetDockPanel = ({ signal, balance, amount, onAmountChange, onPlaceB
               <span className="text-[8px] font-black uppercase text-zinc-600">TARGET MARKET</span>
               {isLocked && <span className="text-[8px] font-black uppercase text-orange-500 animate-pulse">CONNECTION STABLE</span>}
             </div>
-            <p className="mt-1 text-sm font-black uppercase text-white line-clamp-2">{signal.market.title}</p>
+            <p className="mt-1 break-words text-sm font-black uppercase text-white line-clamp-2">{signal.market.title}</p>
             
             {isLocked && (
               <div className="mt-3 grid grid-cols-2 gap-2 border-t border-emerald-900/30 pt-3">

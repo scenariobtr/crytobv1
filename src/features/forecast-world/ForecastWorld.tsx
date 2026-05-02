@@ -102,11 +102,11 @@ export const ForecastWorld = ({ currentUser, threads, balance, onPlaceRadarBet, 
   };
 
   return (
-    <div className="space-y-6 md:space-y-8 animate-in fade-in duration-700">
+    <div className="space-y-5 animate-in fade-in duration-700 md:space-y-8">
       <div className="flex flex-col justify-between gap-6 xl:flex-row xl:items-end">
         <div>
           <p className="text-xs md:text-sm font-black uppercase tracking-widest text-emerald-400">{t("world.radar.kicker")}</p>
-          <h2 className="text-3xl md:text-4xl font-black uppercase tracking-normal text-white">{t("world.title")}</h2>
+          <h2 className="text-2xl font-black uppercase tracking-normal text-white sm:text-3xl md:text-4xl">{t("world.title")}</h2>
           <p className="mt-1 text-xs md:text-sm font-bold uppercase tracking-normal text-zinc-500">
             {t("world.subtitle")}
           </p>
@@ -126,7 +126,7 @@ export const ForecastWorld = ({ currentUser, threads, balance, onPlaceRadarBet, 
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-6 md:gap-8 xl:grid-cols-12">
+      <div className="grid grid-cols-1 gap-5 md:gap-8 xl:grid-cols-12">
         <div className="space-y-5 xl:col-span-8">
           <RadarMap
             playerName={currentUser.username}

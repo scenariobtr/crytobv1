@@ -40,28 +40,28 @@ export const FinancialAudit: React.FC = () => {
       {/* Header Section */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
         <div>
-          <h2 className="text-3xl font-black text-white italic uppercase tracking-tighter">{t("nav.finance")}</h2>
+          <h2 className="text-2xl font-black uppercase italic tracking-tighter text-white md:text-3xl">{t("nav.finance")}</h2>
           <p className="text-zinc-500 text-sm font-bold uppercase tracking-widest mt-1">{t("nav.finance_subtitle")}</p>
         </div>
         
         <div className="flex items-center gap-3">
-            <button className="flex items-center gap-2 px-6 py-3 bg-zinc-900 hover:bg-white hover:text-black rounded-xl text-[11px] font-black uppercase transition-all border border-zinc-800">
+            <button className="flex w-full items-center justify-center gap-2 rounded-xl border border-zinc-800 bg-zinc-900 px-6 py-3 text-[11px] font-black uppercase transition-all hover:bg-white hover:text-black sm:w-auto">
                 <Download className="w-4 h-4" /> Export CSV
             </button>
         </div>
       </div>
 
       {/* Stats Overview */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+      <div className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-3">
         {[
           { label: t("nav.total_deposits"), val: "15,400", sub: "+12% vs last week", icon: <ArrowUpRight className="text-emerald-500" /> },
           { label: t("nav.total_withdrawals"), val: "4,200", sub: "3 Pending Requests", icon: <ArrowDownLeft className="text-red-500" /> },
           { label: t("nav.system_revenue"), val: "2,850", sub: "Net Betting Margin", icon: <TrendingUp className="text-blue-500" /> }
         ].map((stat, i) => (
           <div key={i} className="p-6 bg-zinc-950 border border-zinc-900 rounded-3xl group hover:border-emerald-500/30 transition-all">
-            <div className="flex justify-between items-start mb-4">
+            <div className="mb-4 flex justify-between gap-3">
                <div className="p-3 bg-zinc-900 rounded-2xl border border-zinc-800">{stat.icon}</div>
-               <span className="text-[10px] font-black text-zinc-600 uppercase tracking-widest">{stat.sub}</span>
+               <span className="max-w-[120px] text-right text-[10px] font-black uppercase tracking-widest text-zinc-600">{stat.sub}</span>
             </div>
             <p className="text-[10px] font-black text-zinc-500 uppercase tracking-widest mb-1">{stat.label}</p>
             <p className="text-3xl font-black text-white italic">{stat.val} <span className="text-xs text-zinc-600">USDT</span></p>
@@ -70,8 +70,8 @@ export const FinancialAudit: React.FC = () => {
       </div>
 
       {/* Search and Table */}
-      <div className="bg-zinc-950 border border-zinc-900 rounded-[2.5rem] overflow-hidden">
-        <div className="p-6 border-b border-zinc-900 flex items-center justify-between gap-4">
+      <div className="overflow-hidden rounded-3xl border border-zinc-900 bg-zinc-950 md:rounded-[2.5rem]">
+        <div className="flex items-center justify-between gap-3 border-b border-zinc-900 p-4 md:p-6">
             <div className="relative flex-1">
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-600" />
                 <input 
@@ -88,7 +88,7 @@ export const FinancialAudit: React.FC = () => {
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full">
+          <table className="min-w-[860px] w-full">
             <thead>
               <tr className="text-zinc-600 text-[10px] font-black uppercase tracking-widest border-b border-zinc-900">
                 <th className="px-8 py-6 text-left">{t("nav.tx_id")}</th>

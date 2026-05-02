@@ -1,0 +1,55 @@
+
+> crypto-betting@0.1.0 dev
+> next dev --hostname 127.0.0.1
+
+▲ Next.js 16.2.4 (Turbopack)
+- Local:         http://127.0.0.1:3000
+- Network:       http://127.0.0.1:3000
+✓ Ready in 341ms
+Creating turbopack project { dir: 'D:\\Bet\\crypto-betting', testMode: true }
+
+ GET /api/logs?markets=true 200 in 144ms (next.js: 124ms, application-code: 21ms)
+ GET / 200 in 359ms (next.js: 203ms, application-code: 156ms)
+ POST /api/logs 200 in 10ms (next.js: 2ms, application-code: 8ms)
+ GET /api/logs?markets=true 200 in 5ms (next.js: 1694µs, application-code: 4ms)
+ GET / 200 in 42ms (next.js: 3ms, application-code: 39ms)
+ GET /api/logs?markets=true 200 in 10ms (next.js: 3ms, application-code: 6ms)
+ POST /api/logs 200 in 12ms (next.js: 2ms, application-code: 10ms)
+✓ Compiled in 337ms
+ GET / 200 in 131ms (next.js: 34ms, application-code: 97ms)
+ GET / 200 in 76ms (next.js: 3ms, application-code: 73ms)
+ GET / 200 in 24ms (next.js: 4ms, application-code: 21ms)
+✓ Compiled in 39ms
+ GET / 200 in 75ms (next.js: 32ms, application-code: 42ms)
+✓ Compiled in 43ms
+✓ Compiled in 42ms
+ GET / 200 in 127ms (next.js: 71ms, application-code: 56ms)
+ GET / 200 in 34ms (next.js: 3ms, application-code: 30ms)
+✓ Compiled in 39ms
+ GET / 200 in 59ms (next.js: 34ms, application-code: 25ms)
+⚠ Fast Refresh had to perform a full reload when ./src/locales/en.ts changed. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+✓ Compiled in 53ms
+✓ Compiled in 49ms
+⚠ Fast Refresh had to perform a full reload when ./src/locales/en.ts changed. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ GET / 200 in 200ms (next.js: 53ms, application-code: 147ms)
+ GET / 200 in 137ms (next.js: 33ms, application-code: 104ms)
+ GET / 200 in 365ms (next.js: 106ms, application-code: 259ms)
+ GET / 200 in 26ms (next.js: 4ms, application-code: 22ms)
+ GET / 200 in 137ms (next.js: 52ms, application-code: 85ms)
+ GET /api/logs?markets=true 200 in 42ms (next.js: 28ms, application-code: 14ms)
+✓ Compiled in 66ms
+ GET / 200 in 83ms (next.js: 42ms, application-code: 41ms)
+ GET / 200 in 68ms (next.js: 2ms, application-code: 66ms)
+ GET /api/logs?markets=true 200 in 50ms (next.js: 40ms, application-code: 10ms)
+ GET / 200 in 36ms (next.js: 3ms, application-code: 33ms)
+ GET /api/logs?markets=true 200 in 8ms (next.js: 2ms, application-code: 6ms)
+✓ Compiled in 151ms
+ GET / 200 in 117ms (next.js: 34ms, application-code: 83ms)
+ GET / 200 in 64ms (next.js: 3ms, application-code: 61ms)
+ GET / 200 in 36ms (next.js: 3ms, application-code: 33ms)
+ GET / 200 in 84ms (next.js: 3ms, application-code: 81ms)
+ GET /? 200 in 39ms (next.js: 2ms, application-code: 37ms)
+ GET /api/logs?markets=true 200 in 61ms (next.js: 49ms, application-code: 12ms)
+✓ Compiled in 72ms
+ GET / 200 in 45ms (next.js: 28ms, application-code: 17ms)
+[?25h

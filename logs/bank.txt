@@ -1,0 +1,21 @@
+--- USER PROFILE: bank ---
+Created: 2026-05-02T12:04:45.994Z
+---------------------------
+
+--- TRANSACTIONS ---
+[PROFILE_UPDATE] 2026-05-02T12:04:45.994Z
+Data: {
+  "id": "user_1777723486286",
+  "username": "bank",
+  "password": "12345",
+  "phone": "0967907457",
+  "wallet": "0x9290F4A8",
+  "balance": 1000,
+  "winRate": "0%",
+  "totalProfit": "0 USDT",
+  "role": "USER",
+  "status": "ACTIVE",
+  "walletStatus": "ACTIVE",
+  "lastIp": "127.0.0.1"
+}
+---------------------------

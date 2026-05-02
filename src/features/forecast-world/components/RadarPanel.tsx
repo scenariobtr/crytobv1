@@ -36,7 +36,7 @@ export const RadarPanel = ({ signal, t }: RadarPanelProps) => {
               {isLocked ? "TARGET LOCKED" : "SIGNAL WEAK"}
             </p>
           </div>
-          <h3 className="mt-2 text-xl md:text-2xl font-black uppercase leading-[1.1] tracking-tighter text-white drop-shadow-md">
+          <h3 className="mt-2 break-words text-lg font-black uppercase leading-[1.1] tracking-tighter text-white drop-shadow-md md:text-2xl">
             {signal.market.title}
           </h3>
           <p className="mt-2 md:mt-3 text-[9px] md:text-[10px] font-black uppercase leading-relaxed text-zinc-500 line-clamp-2 md:line-clamp-3 border-l-2 border-emerald-900/50 pl-3">
@@ -72,7 +72,7 @@ export const RadarPanel = ({ signal, t }: RadarPanelProps) => {
       <div className="flex items-center justify-between border-t border-emerald-900/30 pt-4">
         <div className="flex flex-col">
           <span className="text-[8px] font-black text-zinc-600 uppercase">COORDINATE DISTANCE</span>
-          <span className="text-sm font-black text-emerald-400">{signal.distance.toFixed(2)} KILOMETERS</span>
+            <span className="text-xs font-black text-emerald-400 md:text-sm">{signal.distance.toFixed(2)} KILOMETERS</span>
         </div>
         <div className="h-10 w-10 opacity-20 grayscale invert contrast-200">
            {/* Simple decoration */}

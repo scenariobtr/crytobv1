@@ -1,12 +1,18 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
 import versionInfo from "@/data/version.json";
 
-export const TerminalFooter = () => {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => { setMounted(true); }, []);
+const formattedLastUpdated = new Intl.DateTimeFormat("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+  hour: "2-digit",
+  minute: "2-digit",
+  hour12: true,
+  timeZone: "Asia/Bangkok",
+}).format(new Date(versionInfo.lastUpdated));
 
+export const TerminalFooter = () => {
   return (
     <footer className="max-w-[1500px] mx-auto px-4 md:px-10 py-6 md:py-10 border-t border-zinc-900 mt-10">
       <div className="flex flex-col md:flex-row justify-between items-center gap-6">
@@ -19,14 +25,7 @@ export const TerminalFooter = () => {
         <div className="text-right">
           <p className="text-[9px] font-black text-zinc-600 uppercase tracking-widest leading-none mb-1 italic">Last Deploy Updated</p>
           <p className="text-[11px] font-black text-zinc-400 uppercase tracking-tighter">
-            {mounted ? new Date(versionInfo.lastUpdated).toLocaleString("en-US", {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-              hour: "2-digit",
-              minute: "2-digit",
-              hour12: true,
-            }) : "---"}
+            {formattedLastUpdated}
           </p>
         </div>
       </div>

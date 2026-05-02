@@ -39,13 +39,13 @@ export const Notification: React.FC<NotificationProps> = ({ isOpen, message, typ
   const current = config[type];
 
   return (
-    <div 
+    <div
       id={`shared-notify-overlay-${type.toLowerCase()}`}
-      className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300"
+      className="pointer-events-none fixed inset-x-0 top-4 z-[200] flex justify-center px-4 animate-in fade-in slide-in-from-top-3 duration-300 sm:justify-end sm:pr-6"
     >
       <div 
         id={`shared-notify-container-${type.toLowerCase()}`}
-        className={`w-full max-w-sm p-8 border shadow-2xl animate-in zoom-in slide-in-from-bottom-4 duration-500 relative overflow-hidden ${current.bg} ${current.border}`}
+        className={`pointer-events-auto relative w-full max-w-sm overflow-hidden rounded-2xl border p-5 shadow-2xl animate-in zoom-in duration-500 sm:p-6 ${current.bg} ${current.border}`}
       >
         <span id={`lbl-notify-id-tag-${type.toLowerCase()}`} className="absolute top-1 left-2 text-[6px] text-neutral-500 font-mono">ID: notify-{type.toLowerCase()}</span>
         
@@ -53,17 +53,18 @@ export const Notification: React.FC<NotificationProps> = ({ isOpen, message, typ
           <div id={`cont-notify-progress-bar-${type.toLowerCase()}`} className={`h-full ${current.progress} animate-progress-shrink`}></div>
         </div>
 
-        <div id={`cont-notify-content-${type.toLowerCase()}`} className="flex flex-col items-center text-center space-y-4">
-          <div id={`cont-notify-icon-box-${type.toLowerCase()}`} className="w-12 h-12 rounded-full flex items-center justify-center bg-white/5">
+        <div id={`cont-notify-content-${type.toLowerCase()}`} className="flex items-center gap-4 text-left">
+          <div id={`cont-notify-icon-box-${type.toLowerCase()}`} className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white/5">
             {current.icon}
           </div>
-          <h4 id={`txt-notify-message-${type.toLowerCase()}`} className="text-sm font-black uppercase tracking-widest text-white">{message}</h4>
+          <h4 id={`txt-notify-message-${type.toLowerCase()}`} className="min-w-0 flex-1 text-xs font-black uppercase tracking-widest text-white sm:text-sm">{message}</h4>
           <button 
             id={`btn-notify-close-${type.toLowerCase()}`}
             onClick={onClose}
-            className="text-[10px] font-black uppercase text-neutral-500 hover:text-white transition-colors flex items-center gap-1"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-neutral-500 transition-colors hover:bg-white/10 hover:text-white"
+            aria-label="Dismiss notification"
           >
-            <X id={`icon-notify-close-x-${type.toLowerCase()}`} className="w-3 h-3" /> Dismiss
+            <X id={`icon-notify-close-x-${type.toLowerCase()}`} className="h-4 w-4" />
           </button>
         </div>
       </div>

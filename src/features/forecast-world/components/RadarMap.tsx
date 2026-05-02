@@ -1,10 +1,18 @@
 "use client";
 
+import type React from "react";
 import { Crosshair, Navigation } from "lucide-react";
 import { WORLD_SIZE } from "../constants";
 import type { AircraftConfig, CombatAction, FlightTelemetry, Position, RadarSignal } from "../types";
 import { MarketSignal } from "./MarketSignal";
 import { PlayerPlane } from "./PlayerPlane";
+
+type MissileStyle = React.CSSProperties & {
+  "--start-x": string;
+  "--start-y": string;
+  "--target-x": string;
+  "--target-y": string;
+};
 
 type RadarMapProps = {
   playerName: string;
@@ -28,7 +36,7 @@ export const RadarMap = ({ playerName, planePosition, signals, selectedSignal, t
   const isCombatActive = Boolean(combatAction);
 
   return (
-    <section className="overflow-hidden rounded-sm border-2 md:border-4 border-emerald-950 bg-zinc-950 p-3 md:p-4 shadow-[5px_5px_0_rgba(6,78,59,0.35)] md:shadow-[10px_10px_0_rgba(6,78,59,0.35)]">
+    <section className="overflow-hidden rounded-sm border-2 border-emerald-950 bg-zinc-950 p-2 shadow-[5px_5px_0_rgba(6,78,59,0.35)] sm:p-3 md:border-4 md:p-4 md:shadow-[10px_10px_0_rgba(6,78,59,0.35)]">
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3 md:gap-4">
         <div className="flex items-center gap-2 md:gap-3">
           <div className="relative h-8 w-8 md:h-10 md:w-10 overflow-hidden rounded-full border-2 border-emerald-500/50 bg-emerald-950/30 p-1">
@@ -62,7 +70,7 @@ export const RadarMap = ({ playerName, planePosition, signals, selectedSignal, t
       </div>
 
       <div
-        className={`relative overflow-hidden border-4 border-emerald-900 bg-emerald-950 aspect-[8/6] transition-all duration-700 ${isCombatActive ? "scale-110 border-red-900 shadow-[0_0_50px_rgba(127,29,29,0.4)]" : ""}`}
+        className={`relative aspect-[4/5] overflow-hidden border-2 border-emerald-900 bg-emerald-950 transition-all duration-700 sm:aspect-[8/6] md:border-4 ${isCombatActive ? "border-red-900 shadow-[0_0_50px_rgba(127,29,29,0.4)] sm:scale-[1.03]" : ""}`}
       >
         {/* Terrain Map Background */}
         <div 
@@ -118,7 +126,7 @@ export const RadarMap = ({ playerName, planePosition, signals, selectedSignal, t
               className="relative flex items-center justify-center pointer-events-auto"
               style={{ gridColumn: signal.position.x + 1, gridRow: signal.position.y + 1 }}
             >
-              <MarketSignal signal={signal} onSelect={onSelectSignal} t={t} />
+              <MarketSignal signal={signal} onSelect={onSelectSignal} />
             </div>
           ))}
 
@@ -166,7 +174,7 @@ export const RadarMap = ({ playerName, planePosition, signals, selectedSignal, t
                     Math.atan2(combatAction.targetPos.y - combatAction.startPos.y, combatAction.targetPos.x - combatAction.startPos.x) * (180 / Math.PI) + 90
                   }deg)`,
                   animation: "missileFly 1.5s forwards ease-in"
-                } as any}
+                } as MissileStyle}
               >
                 {/* Missile Trail */}
                 <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-2 h-16 bg-gradient-to-t from-transparent via-white/20 to-white/60 blur-[2px]" />
@@ -194,9 +202,9 @@ export const RadarMap = ({ playerName, planePosition, signals, selectedSignal, t
       <div className="mt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="flex items-center gap-2 text-[8px] md:text-[10px] font-black uppercase text-emerald-300">
           <Navigation className="h-3 w-3 md:h-4 md:w-4" />
-          <span>{t("world.radar.coordinates")}: LAT {planePosition.x * 12.5}°N / LONG {planePosition.y * 15.2}°E</span>
+          <span className="break-words">{t("world.radar.coordinates")}: LAT {planePosition.x * 12.5}°N / LONG {planePosition.y * 15.2}°E</span>
         </div>
-        <div className="flex gap-4">
+        <div className="flex flex-wrap gap-3 md:gap-4">
           <span className={`text-[8px] md:text-[10px] font-black ${isCombatActive ? "text-red-500 animate-pulse" : "text-emerald-900"}`}>
             {isCombatActive ? "WEAPON LOCK ACTIVE" : "SYSTEM READY"}
           </span>

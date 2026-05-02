@@ -27,21 +27,21 @@ export const BaseModal: React.FC<BaseModalProps> = ({ id, isOpen, onClose, title
   return (
     <div 
       id={`modal-overlay-${id}`}
-      className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/95 backdrop-blur-xl animate-in fade-in duration-300"
+      className="fixed inset-0 z-[100] flex items-end justify-center overflow-y-auto bg-black/95 p-3 backdrop-blur-xl animate-in fade-in duration-300 sm:items-center sm:p-4"
     >
       <div 
         id={`modal-container-${id}`}
-        className={`bg-neutral-950 border border-neutral-800 w-full ${sizeClasses[size]} p-10 relative animate-in zoom-in duration-300 rounded-[32px]`}
+        className={`relative max-h-[92dvh] w-full overflow-y-auto border border-neutral-800 bg-neutral-950 p-5 animate-in zoom-in duration-300 rounded-3xl sm:p-8 md:p-10 ${sizeClasses[size]}`}
       >
         <button 
           id={`btn-modal-close-${id}`}
           onClick={onClose} 
-          className="absolute right-6 top-6 text-neutral-500 hover:text-white transition-colors"
+          className="absolute right-4 top-4 rounded-xl p-2 text-neutral-500 transition-colors hover:bg-white/5 hover:text-white sm:right-6 sm:top-6"
         >
           <X id={`icon-modal-close-x-${id}`} className="w-5 h-5" />
         </button>
         
-        <h3 id={`txt-modal-title-${id}`} className="text-xl font-black uppercase tracking-widest mb-10 flex items-center gap-3 text-white">
+        <h3 id={`txt-modal-title-${id}`} className="mb-6 flex items-start gap-3 pr-12 text-base font-black uppercase tracking-widest text-white sm:mb-10 sm:text-xl">
           <span id={`cont-modal-icon-${id}`}>{icon}</span>
           <span id={`lbl-modal-title-txt-${id}`}>{title}</span>
         </h3>

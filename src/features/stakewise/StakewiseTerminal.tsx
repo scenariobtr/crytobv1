@@ -56,13 +56,12 @@ export function StakewiseTerminal() {
     if (currentUser) return;
     try {
       if (typeof window === "undefined") return;
-      const currentId = localStorage.getItem("current_user_id");
-      if (currentId) {
-          const found = initialUsers.find(u => u.id === currentId);
-          if (found) {
-            setCurrentUser(found);
-            setBalance(found.balance);
-          }
+      const savedUser = authService.getCurrentSession(initialUsers);
+      if (savedUser) {
+        queueMicrotask(() => {
+          setCurrentUser(savedUser);
+          setBalance(savedUser.balance);
+        });
       }
     } catch (err) {
       console.error("Session restoration failed", err);
@@ -84,7 +83,7 @@ export function StakewiseTerminal() {
 
   const handleBypassAdmin = () => {
     const admin = initialUsers[0];
-    localStorage.setItem("current_user_id", admin.id);
+    authService.login(admin.username, initialUsers);
     setCurrentUser(admin);
     setBalance(admin.balance);
     showNotify("Bypass Login Successful", "SUCCESS");
@@ -111,12 +110,13 @@ export function StakewiseTerminal() {
       }
 
       // Check against initialUsers directly for absolute reliability
-      const user = initialUsers.find(u => u.username === usernameInput);
+      const normalizedUsername = usernameInput.trim().toLowerCase();
+
+      const user = initialUsers.find(u => u.username.toLowerCase() === normalizedUsername);
       
       if (user && user.password === passwordInput) {
           const loggedInUser = authService.login(user.username, initialUsers);
           if (loggedInUser) {
-            localStorage.setItem("current_user_id", loggedInUser.id);
             setCurrentUser(loggedInUser);
             setBalance(loggedInUser.balance);
             showNotify(`${t("common.success")}`, "SUCCESS");
@@ -126,11 +126,10 @@ export function StakewiseTerminal() {
       }
 
       // Secondary check from logs if not in initialUsers
-      const loggedUser = await logService.verifyUser(usernameInput) as UserType | null;
+      const loggedUser = await logService.verifyUser(usernameInput.trim()) as UserType | null;
       if (loggedUser && loggedUser.password === passwordInput) {
           const loggedInUser = authService.login(loggedUser.username, [loggedUser]);
           if (loggedInUser) {
-            localStorage.setItem("current_user_id", loggedInUser.id);
             setCurrentUser(loggedInUser);
             setBalance(loggedInUser.balance);
             showNotify(`${t("common.success")}`, "SUCCESS");
@@ -169,9 +168,9 @@ export function StakewiseTerminal() {
            lastIp: "127.0.0.1"
         };
         
-        authService.login(demoUser.username, [demoUser]);
-        setCurrentUser(demoUser);
-        setBalance(demoUser.balance);
+        const registeredUser = authService.login(demoUser.username, [demoUser]) ?? demoUser;
+        setCurrentUser(registeredUser);
+        setBalance(registeredUser.balance);
         showNotify("Registration successful", "SUCCESS");
         logService.initUser(demoUser.username, demoUser).catch(() => {});
      } else {
@@ -223,11 +222,16 @@ export function StakewiseTerminal() {
       creatorId: currentUser.id,
       endDate: new Date(newMarket.endDate).toISOString()
     };
-    setThreads([market, ...threads]);
+    const saved = await logService.logMarketCreation(currentUser.username, market);
+    if (!saved) {
+      showNotify("ไม่สามารถบันทึกกระทู้ได้ กรุณาลองใหม่", "ERROR");
+      return;
+    }
+
+    setThreads((current) => [market, ...current.filter((thread) => thread.id !== market.id)]);
     setIsCreateModalOpen(false);
     setNewMarket(createDefaultMarketDraft());
     showNotify(t("common.success"), "SUCCESS");
-    logService.logMarketCreation(currentUser.username, market).catch(() => {});
   };
 
   const handleDeleteMarket = (id: number) => {
@@ -254,12 +258,6 @@ export function StakewiseTerminal() {
      setUsers(users.map(u => u.id === userId ? { ...u, status: newStatus } : u));
      showNotify(`User status updated to ${newStatus}`, "SUCCESS");
   };
-
-  const handleDeposit = () => {
-      const amount = 500;
-      setBalance(p => p + amount);
-      showNotify(`Deposited ${amount} USDT`, "SUCCESS");
-  }
 
   const handlePlaceRadarBet = (thread: Thread, side: RadarBetSide, amount: number) => {
     if (!currentUser) return false;
@@ -320,6 +318,7 @@ export function StakewiseTerminal() {
           onBypass={handleBypassAdmin}
           t={t}
         />
+        <Notification isOpen={notify.isOpen} message={notify.message} type={notify.type} onClose={() => setNotify(prev => ({ ...prev, isOpen: false }))} />
       </div>
     );
   }
@@ -337,7 +336,7 @@ export function StakewiseTerminal() {
         t={t}
       />
 
-      <main className="max-w-[1500px] mx-auto px-4 md:px-10 py-8 md:py-16">
+      <main className="mx-auto max-w-[1500px] px-3 py-5 sm:px-4 md:px-8 md:py-10 lg:px-10 lg:py-14">
         {viewMode === "ADMIN" && currentUser.role === 'SUPER_ADMIN' ? (
           <AdminWorkspace
             adminTab={adminTab}
@@ -360,10 +359,9 @@ export function StakewiseTerminal() {
             onCreateMarketOpen={() => setIsCreateModalOpen(true)}
             onDeleteMarket={handleDeleteMarket}
             onEditMarket={handleOpenEdit}
-            onDeposit={handleDeposit}
             onProfileUpdate={(updatedData: Partial<UserType>) => {
               setCurrentUser({...currentUser, ...updatedData});
-              showNotify("อัปเดตโปรไฟล์เรียบร้อยแล้ว", "SUCCESS");
+              showNotify(updatedData.wallet ? "เชื่อมต่อ MetaMask เรียบร้อยแล้ว" : "อัปเดตโปรไฟล์เรียบร้อยแล้ว", "SUCCESS");
             }}
             onPlaceRadarBet={handlePlaceRadarBet}
             getTracking={getTracking}
