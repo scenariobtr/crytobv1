@@ -48,11 +48,11 @@ export const UserWorkspace = ({
 }: UserWorkspaceProps) => {
   return (
     <div className="space-y-16">
-      <div className="flex items-center gap-16 border-b border-zinc-900 overflow-x-auto no-scrollbar">
+      <div className="flex items-center gap-6 md:gap-16 border-b border-zinc-900 overflow-x-auto no-scrollbar">
         {USER_TABS.map((tab) => (
-          <button key={tab} onClick={() => onUserSubTabChange(tab)} className={`text-[16px] font-black uppercase ${getTracking("wide")} pb-8 transition-all relative ${userSubTab === tab ? "text-emerald-500" : "text-neutral-400 hover:text-neutral-200"}`}>
+          <button key={tab} onClick={() => onUserSubTabChange(tab)} className={`text-[14px] md:text-[16px] font-black uppercase whitespace-nowrap ${getTracking("wide")} pb-4 md:pb-8 transition-all relative ${userSubTab === tab ? "text-emerald-500" : "text-neutral-400 hover:text-neutral-200"}`}>
             {t(userTabLabelKey[tab])}
-            {userSubTab === tab && <div className="absolute bottom-0 left-0 w-full h-1.5 bg-emerald-500 rounded-t-full shadow-lg"></div>}
+            {userSubTab === tab && <div className="absolute bottom-0 left-0 w-full h-1 md:h-1.5 bg-emerald-500 rounded-t-full shadow-lg"></div>}
           </button>
         ))}
       </div>

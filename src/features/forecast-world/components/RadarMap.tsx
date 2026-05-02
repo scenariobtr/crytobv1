@@ -28,34 +28,34 @@ export const RadarMap = ({ playerName, planePosition, signals, selectedSignal, t
   const isCombatActive = Boolean(combatAction);
 
   return (
-    <section className="overflow-hidden rounded-sm border-4 border-emerald-950 bg-zinc-950 p-4 shadow-[10px_10px_0_rgba(6,78,59,0.35)]">
-      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-3">
-          <div className="relative h-10 w-10 overflow-hidden rounded-full border-2 border-emerald-500/50 bg-emerald-950/30 p-1">
+    <section className="overflow-hidden rounded-sm border-2 md:border-4 border-emerald-950 bg-zinc-950 p-3 md:p-4 shadow-[5px_5px_0_rgba(6,78,59,0.35)] md:shadow-[10px_10px_0_rgba(6,78,59,0.35)]">
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3 md:gap-4">
+        <div className="flex items-center gap-2 md:gap-3">
+          <div className="relative h-8 w-8 md:h-10 md:w-10 overflow-hidden rounded-full border-2 border-emerald-500/50 bg-emerald-950/30 p-1">
             <Crosshair className={`h-full w-full ${isCombatActive ? "text-red-500 scale-125 animate-pulse" : "text-emerald-400"} transition-all`} />
             <div className="absolute inset-0 animate-[radarSweep_4s_linear_infinite] bg-gradient-to-t from-emerald-500/20 to-transparent" />
           </div>
           <div>
-            <p className="text-xs font-black uppercase text-white tracking-widest">{t("world.radar.scan_online")}</p>
-            <div className="flex items-center gap-2">
-              <span className={`h-1.5 w-1.5 rounded-full ${isCombatActive ? "bg-red-500 animate-ping" : selectedSignal?.isLocked ? "bg-orange-500 animate-pulse" : "bg-emerald-500 animate-ping"}`} />
-              <p className={`text-[10px] font-black uppercase tracking-tighter ${isCombatActive ? "text-red-500" : "text-emerald-400"}`}>
+            <p className="text-[10px] md:text-xs font-black uppercase text-white tracking-widest">{t("world.radar.scan_online")}</p>
+            <div className="flex items-center gap-1.5 md:gap-2">
+              <span className={`h-1 w-1 md:h-1.5 md:w-1.5 rounded-full ${isCombatActive ? "bg-red-500 animate-ping" : selectedSignal?.isLocked ? "bg-orange-500 animate-pulse" : "bg-emerald-500 animate-ping"}`} />
+              <p className={`text-[8px] md:text-[10px] font-black uppercase tracking-tighter ${isCombatActive ? "text-red-500" : "text-emerald-400"}`}>
                 {isCombatActive ? "WEAPONS RELEASED" : selectedSignal?.isLocked ? t("world.radar.locked") : t("world.radar.searching")}
               </p>
             </div>
           </div>
         </div>
-        <div className="flex gap-2 text-[10px] font-black uppercase text-emerald-200">
-          <div className="flex flex-col border-2 border-emerald-900 bg-black/80 px-3 py-1">
-            <span className="text-[7px] text-emerald-600">ALTITUDE</span>
+        <div className="flex flex-wrap gap-1.5 md:gap-2 text-[8px] md:text-[10px] font-black uppercase text-emerald-200">
+          <div className="flex flex-col border-2 border-emerald-900 bg-black/80 px-2 md:px-3 py-1">
+            <span className="text-[6px] md:text-[7px] text-emerald-600">ALTITUDE</span>
             <span>{telemetry.altitude} FT</span>
           </div>
-          <div className="flex flex-col border-2 border-emerald-900 bg-black/80 px-3 py-1">
-            <span className="text-[7px] text-emerald-600">VELOCITY</span>
+          <div className="flex flex-col border-2 border-emerald-900 bg-black/80 px-2 md:px-3 py-1">
+            <span className="text-[6px] md:text-[7px] text-emerald-600">VELOCITY</span>
             <span>{telemetry.speed} KTS</span>
           </div>
-          <div className="flex flex-col border-2 border-emerald-900 bg-black/80 px-3 py-1">
-            <span className="text-[7px] text-emerald-600">HEADING</span>
+          <div className="flex flex-col border-2 border-emerald-900 bg-black/80 px-2 md:px-3 py-1">
+            <span className="text-[6px] md:text-[7px] text-emerald-600">HEADING</span>
             <span>{telemetry.heading}</span>
           </div>
         </div>
@@ -191,16 +191,16 @@ export const RadarMap = ({ playerName, planePosition, signals, selectedSignal, t
         )}
       </div>
 
-      <div className="mt-4 flex items-center justify-between">
-        <div className="flex items-center gap-2 text-[10px] font-black uppercase text-emerald-300">
-          <Navigation className="h-4 w-4" />
+      <div className="mt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="flex items-center gap-2 text-[8px] md:text-[10px] font-black uppercase text-emerald-300">
+          <Navigation className="h-3 w-3 md:h-4 md:w-4" />
           <span>{t("world.radar.coordinates")}: LAT {planePosition.x * 12.5}°N / LONG {planePosition.y * 15.2}°E</span>
         </div>
         <div className="flex gap-4">
-          <span className={`text-[10px] font-black ${isCombatActive ? "text-red-500 animate-pulse" : "text-emerald-900"}`}>
+          <span className={`text-[8px] md:text-[10px] font-black ${isCombatActive ? "text-red-500 animate-pulse" : "text-emerald-900"}`}>
             {isCombatActive ? "WEAPON LOCK ACTIVE" : "SYSTEM READY"}
           </span>
-          <span className="text-[10px] font-black text-emerald-500 animate-pulse">ENCRYPTION ACTIVE</span>
+          <span className="text-[8px] md:text-[10px] font-black text-emerald-500 animate-pulse">ENCRYPTION ACTIVE</span>
         </div>
       </div>
 

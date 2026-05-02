@@ -71,13 +71,13 @@ export const MarketGrid: React.FC<MarketGridProps> = ({
 
   return (
     <div className="space-y-12">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
         <div>
-          <h2 className="text-4xl font-black text-white italic uppercase tracking-tighter">Prediction Markets</h2>
-          <p className="text-zinc-500 text-sm font-bold uppercase tracking-widest mt-1">{t("auth.slogan_desc")}</p>
+          <h2 className="text-3xl md:text-4xl font-black text-white italic uppercase tracking-tighter">Prediction Markets</h2>
+          <p className="text-zinc-500 text-xs md:text-sm font-bold uppercase tracking-widest mt-1">{t("auth.slogan_desc")}</p>
         </div>
-        <button onClick={onCreateOpen} className="flex items-center gap-3 px-8 py-4 bg-emerald-500 text-black font-black uppercase text-sm rounded-xl shadow-[0_0_30px_rgba(16,185,129,0.2)] hover:bg-white transition-all active:scale-95 group">
-           <Plus className="w-5 h-5 group-hover:rotate-90 transition-transform" /> {t("market.create_market")}
+        <button onClick={onCreateOpen} className="flex items-center justify-center gap-3 px-6 md:px-8 py-3 md:py-4 bg-emerald-500 text-black font-black uppercase text-xs md:text-sm rounded-xl shadow-[0_0_30px_rgba(16,185,129,0.2)] hover:bg-white transition-all active:scale-95 group">
+           <Plus className="w-4 h-4 md:w-5 md:h-5 group-hover:rotate-90 transition-transform" /> {t("market.create_market")}
         </button>
       </div>
 

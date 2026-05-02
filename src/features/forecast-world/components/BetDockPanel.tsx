@@ -17,23 +17,23 @@ export const BetDockPanel = ({ signal, balance, amount, onAmountChange, onPlaceB
   const canBet = Boolean(isLocked && amount !== "" && amount > 0 && amount <= balance);
 
   return (
-    <section className="relative overflow-hidden rounded-sm border-4 border-emerald-950 bg-zinc-950 p-6 text-white shadow-[12px_12px_0_rgba(6,78,59,0.35)]">
+    <section className="relative overflow-hidden rounded-sm border-2 md:border-4 border-emerald-950 bg-zinc-950 p-4 md:p-6 text-white shadow-[6px_6px_0_rgba(6,78,59,0.35)] md:shadow-[12px_12px_0_rgba(6,78,59,0.35)]">
       {/* Terminal Header Decor */}
       <div className="absolute left-0 top-0 h-1 w-full bg-gradient-to-r from-emerald-500 via-transparent to-emerald-500 opacity-30" />
       
       <div className="flex items-center justify-between gap-3 border-b-2 border-emerald-900/50 pb-4">
-        <div className="flex items-center gap-3">
-          <div className={`p-2 rounded-sm border-2 ${isLocked ? "border-orange-500 bg-orange-500/10" : "border-emerald-900 bg-black"}`}>
-            <CircleDollarSign className={`h-5 w-5 ${isLocked ? "text-orange-400" : "text-emerald-500"}`} />
+        <div className="flex items-center gap-2 md:gap-3">
+          <div className={`p-1.5 md:p-2 rounded-sm border-2 ${isLocked ? "border-orange-500 bg-orange-500/10" : "border-emerald-900 bg-black"}`}>
+            <CircleDollarSign className={`h-4 w-4 md:h-5 md:w-5 ${isLocked ? "text-orange-400" : "text-emerald-500"}`} />
           </div>
           <div>
-            <h3 className="text-xs font-black uppercase tracking-widest">{t("world.bet_dock")}</h3>
-            <p className="text-[9px] font-black uppercase text-zinc-500 tracking-tighter">SECURE TRANSACTION NODE</p>
+            <h3 className="text-[10px] md:text-xs font-black uppercase tracking-widest">{t("world.bet_dock")}</h3>
+            <p className="text-[7px] md:text-[9px] font-black uppercase text-zinc-500 tracking-tighter">SECURE TRANSACTION NODE</p>
           </div>
         </div>
         <div className="text-right">
-          <p className="text-[8px] font-black uppercase text-zinc-600">AVAILABLE CREDIT</p>
-          <span className="text-sm font-black uppercase text-emerald-400">{balance.toLocaleString()} USDT</span>
+          <p className="text-[7px] md:text-[8px] font-black uppercase text-zinc-600">AVAILABLE CREDIT</p>
+          <span className="text-xs md:text-sm font-black uppercase text-emerald-400">{balance.toLocaleString()} USDT</span>
         </div>
       </div>
 
@@ -79,25 +79,25 @@ export const BetDockPanel = ({ signal, balance, amount, onAmountChange, onPlaceB
               value={amount}
               disabled={!isLocked}
               onChange={(event) => onAmountChange(event.target.value === "" ? "" : Number(event.target.value))}
-              className="w-full border-2 border-emerald-900 bg-black px-4 py-4 text-xl font-black text-emerald-400 outline-none transition-all focus:border-emerald-500 disabled:opacity-20 disabled:grayscale"
+              className="w-full border-2 border-emerald-900 bg-black px-4 py-3 md:py-4 text-lg md:text-xl font-black text-emerald-400 outline-none transition-all focus:border-emerald-500 disabled:opacity-20 disabled:grayscale"
               placeholder="0.00"
             />
             <div className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-black text-emerald-800">USDT</div>
           </div>
         </label>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-3 md:gap-4">
           <button
             type="button"
             disabled={!canBet}
             onClick={() => onPlaceBet("YES")}
-            className="group relative flex flex-col items-center justify-center gap-1 overflow-hidden border-2 border-emerald-500/50 bg-emerald-950 py-4 text-xs font-black uppercase text-emerald-400 transition-all hover:bg-emerald-500 hover:text-black disabled:opacity-20"
+            className="group relative flex flex-col items-center justify-center gap-1 overflow-hidden border-2 border-emerald-500/50 bg-emerald-950 py-3 md:py-4 text-[10px] md:text-xs font-black uppercase text-emerald-400 transition-all hover:bg-emerald-500 hover:text-black disabled:opacity-20"
           >
             <div className="flex items-center gap-2">
               <Send className="h-3 w-3" />
               <span>{t("market.yes")}</span>
             </div>
-            <span className="text-[7px] opacity-60">CONFIRM POSITIVE</span>
+            <span className="text-[6px] md:text-[7px] opacity-60">CONFIRM POSITIVE</span>
             <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent group-hover:animate-[shimmer_1.5s_infinite]" />
           </button>
           
@@ -105,13 +105,13 @@ export const BetDockPanel = ({ signal, balance, amount, onAmountChange, onPlaceB
             type="button"
             disabled={!canBet}
             onClick={() => onPlaceBet("NO")}
-            className="group relative flex flex-col items-center justify-center gap-1 overflow-hidden border-2 border-red-500/50 bg-red-950 py-4 text-xs font-black uppercase text-red-400 transition-all hover:bg-red-500 hover:text-white disabled:opacity-20"
+            className="group relative flex flex-col items-center justify-center gap-1 overflow-hidden border-2 border-red-500/50 bg-red-950 py-3 md:py-4 text-[10px] md:text-xs font-black uppercase text-red-400 transition-all hover:bg-red-500 hover:text-white disabled:opacity-20"
           >
             <div className="flex items-center gap-2">
               <Send className="h-3 w-3 rotate-180" />
               <span>{t("market.no")}</span>
             </div>
-            <span className="text-[7px] opacity-60">CONFIRM NEGATIVE</span>
+            <span className="text-[6px] md:text-[7px] opacity-60">CONFIRM NEGATIVE</span>
             <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent group-hover:animate-[shimmer_1.5s_infinite]" />
           </button>
         </div>

@@ -379,7 +379,7 @@ export function StakewiseTerminal() {
         t={t}
       />
 
-      <main className="max-w-[1500px] mx-auto px-10 py-16">
+      <main className="max-w-[1500px] mx-auto px-4 md:px-10 py-8 md:py-16">
         {viewMode === "ADMIN" && currentUser.role === 'SUPER_ADMIN' ? (
           <AdminWorkspace
             adminTab={adminTab}

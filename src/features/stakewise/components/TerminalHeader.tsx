@@ -26,13 +26,13 @@ export const TerminalHeader = ({
   t,
 }: TerminalHeaderProps) => {
   return (
-    <nav id="nav-global-header" className="flex items-center justify-between px-10 py-6 border-b border-zinc-900 bg-black/80 backdrop-blur-xl sticky top-0 z-[60] h-[80px]">
+    <nav id="nav-global-header" className="flex items-center justify-between px-4 md:px-10 py-4 md:py-6 border-b border-zinc-900 bg-black/80 backdrop-blur-xl sticky top-0 z-[60] h-[70px] md:h-[80px]">
       <div id="cont-nav-left" className="flex items-center">
-        <div className="flex items-center gap-4">
-          <div className="p-2.5 bg-emerald-500 rounded-xl shadow-lg">
-            <TrendingUp className="w-5 h-5 text-black" />
+        <div className="flex items-center gap-2 md:gap-4">
+          <div className="p-2 md:p-2.5 bg-emerald-500 rounded-lg md:rounded-xl shadow-lg">
+            <TrendingUp className="w-4 h-4 md:w-5 md:w-5 text-black" />
           </div>
-          <span className="text-3xl font-black text-white italic tracking-tighter">
+          <span className="text-xl md:text-3xl font-black text-white italic tracking-tighter">
             STAKE<span className="text-emerald-500">WISE</span>
           </span>
         </div>
@@ -49,19 +49,25 @@ export const TerminalHeader = ({
         </div>
       )}
 
-      <div id="cont-nav-right" className="flex items-center gap-6 h-full">
-        <button onClick={onToggleLang} className="flex items-center gap-3 px-6 bg-zinc-900 border border-zinc-800 rounded-xl text-[12px] font-black text-neutral-300 hover:text-emerald-500 transition-all shadow-xl h-[48px]">
-          <Globe className="w-4 h-4" /> {lang}
+      <div id="cont-nav-right" className="flex items-center gap-2 md:gap-6 h-full">
+        <button onClick={onToggleLang} className="flex items-center justify-center md:justify-start gap-2 px-3 md:px-6 bg-zinc-900 border border-zinc-800 rounded-lg md:rounded-xl text-[10px] md:text-[12px] font-black text-neutral-300 hover:text-emerald-500 transition-all shadow-xl h-[40px] md:h-[48px]">
+          <Globe className="w-3 h-3 md:w-4 md:h-4" /> <span className="hidden xs:inline">{lang}</span>
         </button>
-        <div className="flex items-center gap-5 bg-zinc-950 pl-8 pr-2.5 py-1 rounded-xl border border-zinc-800 shadow-xl h-[48px]">
-          <div className="text-right">
-            <p className="text-[10px] font-black text-zinc-500 uppercase tracking-widest leading-none mb-1">{currentUser.username}</p>
-            <p className="text-white font-black text-lg leading-none">
-              {balance.toLocaleString()} <span className="text-emerald-500 text-[10px]">USDT</span>
+        <div className="flex items-center gap-3 md:gap-5 bg-zinc-950 pl-3 md:pl-8 pr-1.5 md:pr-2.5 py-1 rounded-lg md:rounded-xl border border-zinc-800 shadow-xl h-[40px] md:h-[48px]">
+          <div className="text-right hidden sm:block">
+            <p className="text-[8px] md:text-[10px] font-black text-zinc-500 uppercase tracking-widest leading-none mb-1">{currentUser.username}</p>
+            <p className="text-white font-black text-sm md:text-lg leading-none">
+              {balance.toLocaleString()} <span className="text-emerald-500 text-[8px] md:text-[10px]">USDT</span>
             </p>
           </div>
-          <button onClick={onLogout} className="p-3.5 bg-zinc-900 hover:bg-red-500/10 hover:text-red-500 transition-all rounded-xl border border-zinc-800 group">
-            <LogOut className="w-5 h-5" />
+          <div className="text-right sm:hidden">
+            <p className="text-white font-black text-xs leading-none">
+              {balance.toLocaleString()}
+            </p>
+            <p className="text-emerald-500 font-black text-[8px] uppercase tracking-tighter">USDT</p>
+          </div>
+          <button onClick={onLogout} className="p-2 md:p-3.5 bg-zinc-900 hover:bg-red-500/10 hover:text-red-500 transition-all rounded-lg md:rounded-xl border border-zinc-800 group">
+            <LogOut className="w-4 h-4 md:w-5 md:h-5" />
           </button>
         </div>
       </div>

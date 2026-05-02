@@ -31,9 +31,9 @@ export const AdminWorkspace = ({
 }: AdminWorkspaceProps) => {
   return (
     <div className="space-y-12">
-      <div className="flex gap-5">
+      <div className="flex flex-wrap gap-3 md:gap-5">
         {ADMIN_TABS.map((tab) => (
-          <button key={tab} onClick={() => onAdminTabChange(tab)} className={`px-12 py-5 rounded-2xl border text-[13px] font-black uppercase transition-all ${adminTab === tab ? "bg-emerald-500 text-black border-emerald-400 shadow-xl" : "bg-zinc-900 border-zinc-800 text-neutral-500 hover:text-white"}`}>
+          <button key={tab} onClick={() => onAdminTabChange(tab)} className={`px-6 md:px-12 py-3 md:py-5 rounded-xl md:rounded-2xl border text-[11px] md:text-[13px] font-black uppercase transition-all ${adminTab === tab ? "bg-emerald-500 text-black border-emerald-400 shadow-xl" : "bg-zinc-900 border-zinc-800 text-neutral-500 hover:text-white"}`}>
             {t(`nav.${tab.toLowerCase()}`)}
           </button>
         ))}

@@ -102,31 +102,31 @@ export const ForecastWorld = ({ currentUser, threads, balance, onPlaceRadarBet, 
   };
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-700">
+    <div className="space-y-6 md:space-y-8 animate-in fade-in duration-700">
       <div className="flex flex-col justify-between gap-6 xl:flex-row xl:items-end">
         <div>
-          <p className="text-sm font-black uppercase tracking-widest text-emerald-400">{t("world.radar.kicker")}</p>
-          <h2 className="text-4xl font-black uppercase tracking-normal text-white">{t("world.title")}</h2>
-          <p className="mt-1 text-sm font-bold uppercase tracking-normal text-zinc-500">
+          <p className="text-xs md:text-sm font-black uppercase tracking-widest text-emerald-400">{t("world.radar.kicker")}</p>
+          <h2 className="text-3xl md:text-4xl font-black uppercase tracking-normal text-white">{t("world.title")}</h2>
+          <p className="mt-1 text-xs md:text-sm font-bold uppercase tracking-normal text-zinc-500">
             {t("world.subtitle")}
           </p>
         </div>
-        <div className="grid grid-cols-4 gap-3">
+        <div className="hidden sm:grid grid-cols-4 gap-3">
           {[
             ["W", t("world.up")],
             ["A", t("world.left")],
             ["S", t("world.down")],
             ["D", t("world.right")],
           ].map(([key, label]) => (
-            <div key={key} className="border-4 border-emerald-900 bg-zinc-950 px-4 py-3 text-center text-emerald-300 shadow-[5px_5px_0_rgba(6,78,59,0.3)]">
-              <p className="text-sm font-black leading-none">{key}</p>
-              <p className="mt-1 text-[8px] font-black uppercase text-zinc-600">{label}</p>
+            <div key={key} className="border-2 md:border-4 border-emerald-900 bg-zinc-950 px-3 md:px-4 py-2 md:py-3 text-center text-emerald-300 shadow-[3px_3px_0_rgba(6,78,59,0.3)] md:shadow-[5px_5px_0_rgba(6,78,59,0.3)]">
+              <p className="text-xs md:text-sm font-black leading-none">{key}</p>
+              <p className="mt-1 text-[7px] md:text-[8px] font-black uppercase text-zinc-600">{label}</p>
             </div>
           ))}
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-8 xl:grid-cols-12">
+      <div className="grid grid-cols-1 gap-6 md:gap-8 xl:grid-cols-12">
         <div className="space-y-5 xl:col-span-8">
           <RadarMap
             playerName={currentUser.username}
@@ -140,11 +140,11 @@ export const ForecastWorld = ({ currentUser, threads, balance, onPlaceRadarBet, 
             onMoveTo={moveTo}
             t={t}
           />
-          <div className="grid grid-cols-4 gap-3">
-            <button type="button" onClick={() => moveBy({ x: 0, y: -1 })} className="border-4 border-emerald-900 bg-zinc-950 py-3 text-xs font-black uppercase text-emerald-300 shadow-[5px_5px_0_rgba(6,78,59,0.3)] transition-all hover:bg-emerald-500 hover:text-black">{t("world.up")}</button>
-            <button type="button" onClick={() => moveBy({ x: -1, y: 0 })} className="border-4 border-emerald-900 bg-zinc-950 py-3 text-xs font-black uppercase text-emerald-300 shadow-[5px_5px_0_rgba(6,78,59,0.3)] transition-all hover:bg-emerald-500 hover:text-black">{t("world.left")}</button>
-            <button type="button" onClick={() => moveBy({ x: 0, y: 1 })} className="border-4 border-emerald-900 bg-zinc-950 py-3 text-xs font-black uppercase text-emerald-300 shadow-[5px_5px_0_rgba(6,78,59,0.3)] transition-all hover:bg-emerald-500 hover:text-black">{t("world.down")}</button>
-            <button type="button" onClick={() => moveBy({ x: 1, y: 0 })} className="border-4 border-emerald-900 bg-zinc-950 py-3 text-xs font-black uppercase text-emerald-300 shadow-[5px_5px_0_rgba(6,78,59,0.3)] transition-all hover:bg-emerald-500 hover:text-black">{t("world.right")}</button>
+          <div className="grid grid-cols-4 gap-2 md:gap-3">
+            <button type="button" onClick={() => moveBy({ x: 0, y: -1 })} className="border-2 md:border-4 border-emerald-900 bg-zinc-950 py-2 md:py-3 text-[10px] md:text-xs font-black uppercase text-emerald-300 shadow-[3px_3px_0_rgba(6,78,59,0.3)] md:shadow-[5px_5px_0_rgba(6,78,59,0.3)] transition-all hover:bg-emerald-500 hover:text-black active:scale-95">{t("world.up")}</button>
+            <button type="button" onClick={() => moveBy({ x: -1, y: 0 })} className="border-2 md:border-4 border-emerald-900 bg-zinc-950 py-2 md:py-3 text-[10px] md:text-xs font-black uppercase text-emerald-300 shadow-[3px_3px_0_rgba(6,78,59,0.3)] md:shadow-[5px_5px_0_rgba(6,78,59,0.3)] transition-all hover:bg-emerald-500 hover:text-black active:scale-95">{t("world.left")}</button>
+            <button type="button" onClick={() => moveBy({ x: 0, y: 1 })} className="border-2 md:border-4 border-emerald-900 bg-zinc-950 py-2 md:py-3 text-[10px] md:text-xs font-black uppercase text-emerald-300 shadow-[3px_3px_0_rgba(6,78,59,0.3)] md:shadow-[5px_5px_0_rgba(6,78,59,0.3)] transition-all hover:bg-emerald-500 hover:text-black active:scale-95">{t("world.down")}</button>
+            <button type="button" onClick={() => moveBy({ x: 1, y: 0 })} className="border-2 md:border-4 border-emerald-900 bg-zinc-950 py-2 md:py-3 text-[10px] md:text-xs font-black uppercase text-emerald-300 shadow-[3px_3px_0_rgba(6,78,59,0.3)] md:shadow-[5px_5px_0_rgba(6,78,59,0.3)] transition-all hover:bg-emerald-500 hover:text-black active:scale-95">{t("world.right")}</button>
           </div>
         </div>
 
