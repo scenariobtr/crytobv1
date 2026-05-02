@@ -86,6 +86,7 @@ export function StakewiseTerminal() {
 
   // Check Session
   useEffect(() => {
+    if (currentUser) return; // บังคับหยุดถ้าล็อกอินอยู่แล้ว ป้องกันการเด้งกลับหน้า Login
     try {
       if (typeof window === "undefined") return;
       const currentId = localStorage.getItem("current_user_id");
@@ -140,39 +141,39 @@ export function StakewiseTerminal() {
     setTimeout(() => setNotify(prev => ({ ...prev, isOpen: false })), 3000);
   };
 
-  const handleAuth = (e: React.FormEvent) => {
+  const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     
-    setTimeout(async () => {
-      try {
-        // 1. ลองหาในรายชื่อ Mock Data
-        let user = users.find(u => u.username === usernameInput);
-        
-        // 2. ถ้าไม่เจอ ลองหาในฐานข้อมูลไฟล์ Log
-        if (!user) {
-           const loggedUser = await logService.verifyUser(usernameInput) as UserType | null;
-           if (loggedUser && loggedUser.password === passwordInput) {
-              user = loggedUser;
-           }
-        }
-
-        if (user && user.password === passwordInput) {
-           authService.login(user.username, [user]);
-           setCurrentUser(user);
-           setBalance(user.balance);
-           setIsLoading(false);
-           showNotify(`${t("common.success")}`, "SUCCESS");
-           await logService.logLogin(user.username);
-        } else {
-           setIsLoading(false);
-           showNotify("Invalid credentials", "ERROR");
-        }
-      } catch {
-        setIsLoading(false);
-        showNotify("System error", "ERROR");
+    try {
+      // 1. ลองหาในรายชื่อ Mock Data
+      let user = users.find(u => u.username === usernameInput);
+      
+      // 2. ถ้าไม่เจอ ลองหาในฐานข้อมูลไฟล์ Log
+      if (!user) {
+          const loggedUser = await logService.verifyUser(usernameInput) as UserType | null;
+          if (loggedUser && loggedUser.password === passwordInput) {
+            user = loggedUser;
+          }
       }
-    }, 2500);
+
+      if (user && user.password === passwordInput) {
+          const loggedInUser = authService.login(user.username, [user]);
+          if (loggedInUser) {
+            setCurrentUser(loggedInUser);
+            setBalance(loggedInUser.balance);
+            showNotify(`${t("common.success")}`, "SUCCESS");
+            await logService.logLogin(loggedInUser.username);
+          }
+      } else {
+          showNotify("Invalid credentials", "ERROR");
+      }
+    } catch (err) {
+      console.error("Auth error:", err);
+      showNotify("System error", "ERROR");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleRegister = (e: React.FormEvent) => {
