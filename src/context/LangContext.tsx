@@ -27,8 +27,13 @@ const isLanguage = (value: string | null): value is Language => value === "EN" |
 
 const getStoredLanguage = (): Language => {
   if (typeof window === "undefined") return "EN";
-  const savedLang = localStorage.getItem(LANGUAGE_STORAGE_KEY);
-  return isLanguage(savedLang) ? savedLang : "EN";
+  try {
+    const savedLang = localStorage.getItem(LANGUAGE_STORAGE_KEY);
+    return isLanguage(savedLang) ? savedLang : "EN";
+  } catch (err) {
+    console.warn("Storage access restricted:", err);
+    return "EN";
+  }
 };
 
 const subscribeToLanguage = (onStoreChange: () => void) => {
@@ -45,8 +50,12 @@ export const LangProvider = ({ children }: { children: ReactNode }) => {
   const lang = useSyncExternalStore<Language>(subscribeToLanguage, getStoredLanguage, () => "EN");
 
   const setLang = useCallback((newLang: Language) => {
-    localStorage.setItem(LANGUAGE_STORAGE_KEY, newLang);
-    window.dispatchEvent(new Event(LANGUAGE_CHANGE_EVENT));
+    try {
+      localStorage.setItem(LANGUAGE_STORAGE_KEY, newLang);
+      window.dispatchEvent(new Event(LANGUAGE_CHANGE_EVENT));
+    } catch (err) {
+      console.warn("Could not save language preference:", err);
+    }
   }, []);
 
   // ใช้ useCallback เพื่อให้ฟังก์ชัน t ไม่เปลี่ยน Reference บ่อยๆ

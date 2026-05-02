@@ -127,6 +127,14 @@ export function StakewiseTerminal() {
     return () => { mounted = false; };
   }, []);
 
+  // Failsafe: บังคับปิด Loading หลังจาก 5 วินาทีแน่นอน ไม่ว่าจะเกิดอะไรขึ้น
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, []);
+
   const showNotify = (message: string, type: NotifyType = "SUCCESS") => {
     setNotify({ isOpen: true, message, type });
     setTimeout(() => setNotify(prev => ({ ...prev, isOpen: false })), 3000);
