@@ -99,7 +99,13 @@ export const AuthScreen = ({
               </div>
               <input required type="password" value={passwordInput} onChange={(e) => onPasswordChange(e.target.value)} placeholder="PASSWORD" className="w-full pl-14 pr-8 py-5 bg-zinc-950 border border-zinc-900 rounded-2xl outline-none text-white font-black tracking-widest focus:border-emerald-500/50 transition-all placeholder:text-zinc-800 text-sm" />
             </div>
-            <button type="submit" className="w-full mt-2 px-8 md:px-10 py-4 md:py-5 bg-emerald-500 text-black font-black uppercase text-sm md:text-base hover:bg-white transition-all rounded-2xl shadow-[0_0_30px_rgba(16,185,129,0.2)] active:scale-95">{t("auth.access_terminal")}</button>
+            <button 
+              type="button" 
+              onClick={onLogin}
+              className="w-full mt-2 px-8 md:px-10 py-4 md:py-5 bg-emerald-500 text-black font-black uppercase text-sm md:text-base hover:bg-white transition-all rounded-2xl shadow-[0_0_30px_rgba(16,185,129,0.2)] active:scale-95"
+            >
+              {t("auth.access_terminal")}
+            </button>
             <button type="button" onClick={() => onAuthViewChange("REGISTER")} className="w-full text-[9px] md:text-[10px] font-black text-emerald-500/60 uppercase tracking-[0.2em] hover:text-white transition-colors">{t("auth.register_link")}</button>
           </form>
         )}

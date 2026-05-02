@@ -141,38 +141,41 @@ export function StakewiseTerminal() {
     setTimeout(() => setNotify(prev => ({ ...prev, isOpen: false })), 3000);
   };
 
-  const handleAuth = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
+  const handleAuth = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
     
     try {
       // 1. ลองหาในรายชื่อ Mock Data
-      let user = users.find(u => u.username === usernameInput);
+      const user = users.find(u => u.username === usernameInput);
       
-      // 2. ถ้าไม่เจอ ลองหาในฐานข้อมูลไฟล์ Log
-      if (!user) {
-          const loggedUser = await logService.verifyUser(usernameInput) as UserType | null;
-          if (loggedUser && loggedUser.password === passwordInput) {
-            user = loggedUser;
-          }
-      }
-
       if (user && user.password === passwordInput) {
           const loggedInUser = authService.login(user.username, [user]);
           if (loggedInUser) {
             setCurrentUser(loggedInUser);
             setBalance(loggedInUser.balance);
             showNotify(`${t("common.success")}`, "SUCCESS");
-            await logService.logLogin(loggedInUser.username);
+            // รันการ Log ในพื้นหลัง ไม่ต้องรอ (Non-blocking)
+            logService.logLogin(loggedInUser.username).catch(() => {});
+            return;
           }
-      } else {
-          showNotify("Invalid credentials", "ERROR");
       }
+      
+      // 2. ถ้าไม่เจอใน Mock ลองเช็คจากระบบ Log (เฉพาะถ้ายังไม่พบ User)
+      const loggedUser = await logService.verifyUser(usernameInput) as UserType | null;
+      if (loggedUser && loggedUser.password === passwordInput) {
+          const loggedInUser = authService.login(loggedUser.username, [loggedUser]);
+          if (loggedInUser) {
+            setCurrentUser(loggedInUser);
+            setBalance(loggedInUser.balance);
+            showNotify(`${t("common.success")}`, "SUCCESS");
+            return;
+          }
+      }
+
+      showNotify("Invalid credentials", "ERROR");
     } catch (err) {
       console.error("Auth error:", err);
       showNotify("System error", "ERROR");
-    } finally {
-      setIsLoading(false);
     }
   };
 
