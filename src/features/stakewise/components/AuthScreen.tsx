@@ -71,14 +71,21 @@ export const AuthScreen = ({
 
   return (
     <div className="min-h-screen bg-black flex flex-col items-center justify-center p-6 relative overflow-hidden">
-      <div className="absolute top-6 right-6 md:top-10 md:right-10 z-[70] animate-in fade-in slide-in-from-right-4 duration-1000">
-        <button onClick={onToggleLang} className="flex items-center gap-2 md:gap-3 px-4 md:px-6 py-2 md:py-3 bg-zinc-900/50 border border-zinc-800 rounded-xl text-[10px] md:text-[12px] font-black text-neutral-300 hover:text-emerald-500 hover:border-emerald-500/30 backdrop-blur-xl transition-all shadow-2xl group">
+      {/* Background Glow - Moved to back with z-[-10] */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] md:w-[800px] md:h-[800px] bg-emerald-500/5 blur-[80px] md:blur-[150px] rounded-full pointer-events-none z-0"></div>
+
+      {/* Language Toggle - Higher Z-Index */}
+      <div className="absolute top-6 right-6 md:top-10 md:right-10 z-[100]">
+        <button 
+          type="button"
+          onClick={(e) => { e.preventDefault(); onToggleLang(); }} 
+          className="flex items-center gap-2 md:gap-3 px-4 md:px-6 py-2 md:py-3 bg-zinc-900 border border-zinc-800 rounded-xl text-[10px] md:text-[12px] font-black text-neutral-300 hover:text-emerald-500 hover:border-emerald-500/30 backdrop-blur-xl transition-all shadow-2xl group active:scale-95 cursor-pointer"
+        >
           <Globe className="w-3.5 h-3.5 md:w-4 md:h-4 group-hover:rotate-180 transition-transform duration-500" /> {lang}
         </button>
       </div>
 
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] md:w-[800px] md:h-[800px] bg-emerald-500/5 blur-[80px] md:blur-[150px] rounded-full pointer-events-none"></div>
-      <div className="text-center space-y-4 md:space-y-6 relative z-10 w-full max-w-sm py-10">
+      <div className="text-center space-y-4 md:space-y-6 relative z-50 w-full max-w-sm py-10">
         <Zap className="w-10 h-10 md:w-14 md:h-14 text-emerald-500 mx-auto" />
         <div className="space-y-1 md:space-y-2">
           <h1 className="text-5xl md:text-7xl font-black text-white italic tracking-tighter leading-none">STAKE<span className="text-emerald-500">WISE</span></h1>
@@ -86,7 +93,7 @@ export const AuthScreen = ({
         </div>
 
         {authView === "LOGIN" && (
-          <form onSubmit={onLogin} className="space-y-4 pt-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <form onSubmit={onLogin} className="space-y-4 pt-4">
             <div className="space-y-2 relative group">
               <div className="absolute left-6 top-1/2 -translate-y-1/2 text-zinc-600 group-focus-within:text-emerald-500 transition-colors">
                 <User className="w-4 h-4" />
@@ -102,16 +109,22 @@ export const AuthScreen = ({
             <button 
               type="submit" 
               onClick={(e) => onLogin(e)}
-              className="w-full mt-2 px-8 md:px-10 py-4 md:py-5 bg-emerald-500 text-black font-black uppercase text-sm md:text-base hover:bg-white transition-all rounded-2xl shadow-[0_0_30px_rgba(16,185,129,0.2)] active:scale-95"
+              className="w-full mt-2 px-8 md:px-10 py-4 md:py-5 bg-emerald-500 text-black font-black uppercase text-sm md:text-base hover:bg-white transition-all rounded-2xl shadow-[0_0_30px_rgba(16,185,129,0.2)] active:scale-95 cursor-pointer"
             >
               {t("auth.access_terminal")}
             </button>
-            <button type="button" onClick={() => onAuthViewChange("REGISTER")} className="w-full text-[9px] md:text-[10px] font-black text-emerald-500/60 uppercase tracking-[0.2em] hover:text-white transition-colors">{t("auth.register_link")}</button>
+            <button 
+              type="button" 
+              onClick={(e) => { e.preventDefault(); onAuthViewChange("REGISTER"); }} 
+              className="w-full py-4 text-[10px] md:text-[11px] font-black text-emerald-500/80 uppercase tracking-[0.2em] hover:text-white transition-colors cursor-pointer"
+            >
+              {t("auth.register_link")}
+            </button>
           </form>
         )}
 
         {authView === "REGISTER" && (
-          <form onSubmit={onRegister} className="space-y-4 pt-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <form onSubmit={onRegister} className="space-y-4 pt-4">
             <div className="space-y-2 relative group">
               <div className="absolute left-6 top-1/2 -translate-y-1/2 text-zinc-600 group-focus-within:text-emerald-500 transition-colors">
                 <User className="w-4 h-4" />
@@ -130,13 +143,25 @@ export const AuthScreen = ({
               </div>
               <input required type="password" value={passwordInput} onChange={(e) => onPasswordChange(e.target.value)} placeholder="SET PASSWORD" className="w-full pl-14 pr-8 py-5 bg-zinc-950 border border-zinc-900 rounded-2xl outline-none text-white font-black tracking-widest focus:border-emerald-500/50 transition-all placeholder:text-zinc-800 text-sm" />
             </div>
-            <button type="submit" className="w-full mt-2 px-8 md:px-10 py-4 md:py-5 bg-white text-black font-black uppercase text-sm md:text-base hover:bg-emerald-500 transition-all rounded-2xl shadow-xl active:scale-95">{t("auth.send_otp")}</button>
-            <button type="button" onClick={() => onAuthViewChange("LOGIN")} className="w-full text-[9px] md:text-[10px] font-black text-zinc-600 uppercase tracking-[0.2em] hover:text-white transition-colors">กลับหน้าล็อกอิน / BACK TO LOGIN</button>
+            <button 
+              type="submit" 
+              onClick={(e) => onRegister(e)}
+              className="w-full mt-2 px-8 md:px-10 py-4 md:py-5 bg-white text-black font-black uppercase text-sm md:text-base hover:bg-emerald-500 transition-all rounded-2xl shadow-xl active:scale-95 cursor-pointer"
+            >
+              {t("auth.send_otp")}
+            </button>
+            <button 
+              type="button" 
+              onClick={(e) => { e.preventDefault(); onAuthViewChange("LOGIN"); }} 
+              className="w-full py-4 text-[10px] md:text-[11px] font-black text-zinc-600 uppercase tracking-[0.2em] hover:text-white transition-colors cursor-pointer"
+            >
+              กลับหน้าล็อกอิน / BACK TO LOGIN
+            </button>
           </form>
         )}
 
         {authView === "OTP" && (
-          <form onSubmit={onVerifyOtp} className="space-y-6 pt-4 animate-in fade-in zoom-in duration-500">
+          <form onSubmit={onVerifyOtp} className="space-y-6 pt-4">
             <div className="bg-zinc-900/50 border border-zinc-800 p-6 rounded-2xl text-center">
               <ShieldCheck className="w-10 h-10 text-emerald-500 mx-auto mb-4" />
               <p className="text-[11px] font-black text-neutral-400 uppercase tracking-widest leading-relaxed">
@@ -145,8 +170,20 @@ export const AuthScreen = ({
               </p>
             </div>
             <input required type="text" maxLength={4} value={otpInput} onChange={(e) => onOtpChange(e.target.value)} placeholder="0 0 0 0" className="w-full py-6 bg-zinc-950 border border-zinc-900 rounded-2xl outline-none text-white font-black text-4xl text-center tracking-[0.5em] focus:border-emerald-500 transition-all" />
-            <button type="submit" className="w-full px-8 md:px-10 py-4 md:py-5 bg-emerald-500 text-black font-black uppercase text-sm md:text-base hover:bg-white transition-all rounded-2xl shadow-xl">ยืนยันตัวตน</button>
-            <button type="button" onClick={() => onAuthViewChange("REGISTER")} className="w-full text-[9px] md:text-[10px] font-black text-zinc-600 uppercase tracking-[0.2em]">ขอรหัสอีกครั้ง / RESEND</button>
+            <button 
+              type="submit" 
+              onClick={(e) => onVerifyOtp(e)}
+              className="w-full px-8 md:px-10 py-4 md:py-5 bg-emerald-500 text-black font-black uppercase text-sm md:text-base hover:bg-white transition-all rounded-2xl shadow-xl active:scale-95 cursor-pointer"
+            >
+              ยืนยันตัวตน
+            </button>
+            <button 
+              type="button" 
+              onClick={(e) => { e.preventDefault(); onAuthViewChange("REGISTER"); }} 
+              className="w-full py-4 text-[10px] md:text-[11px] font-black text-zinc-600 uppercase tracking-[0.2em] cursor-pointer"
+            >
+              ขอรหัสอีกครั้ง / RESEND
+            </button>
           </form>
         )}
 
