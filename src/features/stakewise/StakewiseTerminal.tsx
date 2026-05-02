@@ -93,10 +93,8 @@ export function StakewiseTerminal() {
       if (currentId) {
           const found = users.find(u => u.id === currentId);
           if (found) {
-              queueMicrotask(() => {
-                setCurrentUser(found);
-                setBalance(found.balance);
-              });
+            setCurrentUser(found);
+            setBalance(found.balance);
           }
       }
     } catch (err) {
@@ -142,26 +140,45 @@ export function StakewiseTerminal() {
   };
 
   const handleAuth = async (e?: React.FormEvent) => {
-    if (e) e.preventDefault();
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
     
+    // ป้องกันการกดซ้ำ
+    if (isLoading) return;
+
     try {
-      // 1. ลองหาในรายชื่อ Mock Data
+      // 1. ตรวจสอบข้อมูลเบื้องต้น
+      if (!usernameInput || !passwordInput) {
+        showNotify("Please enter credentials", "ERROR");
+        return;
+      }
+
+      // 2. เช็คจาก Mock Data (รวดเร็วที่สุด)
       const user = users.find(u => u.username === usernameInput);
       
-      if (user && user.password === passwordInput) {
-          const loggedInUser = authService.login(user.username, [user]);
-          if (loggedInUser) {
-            setCurrentUser(loggedInUser);
-            setBalance(loggedInUser.balance);
-            showNotify(`${t("common.success")}`, "SUCCESS");
-            // รันการ Log ในพื้นหลัง ไม่ต้องรอ (Non-blocking)
-            logService.logLogin(loggedInUser.username).catch(() => {});
+      if (user) {
+          if (user.password === passwordInput) {
+            const loggedInUser = authService.login(user.username, [user]);
+            if (loggedInUser) {
+              setCurrentUser(loggedInUser);
+              setBalance(loggedInUser.balance);
+              showNotify(`${t("common.success")}`, "SUCCESS");
+              logService.logLogin(loggedInUser.username).catch(() => {});
+              return;
+            }
+          } else {
+            showNotify("Incorrect password", "ERROR");
             return;
           }
       }
       
-      // 2. ถ้าไม่เจอใน Mock ลองเช็คจากระบบ Log (เฉพาะถ้ายังไม่พบ User)
+      // 3. ถ้าไม่เจอใน Mock ลองเช็คจากฐานข้อมูล Log (ใช้ setIsLoading เฉพาะส่วนนี้)
+      setIsLoading(true);
       const loggedUser = await logService.verifyUser(usernameInput) as UserType | null;
+      setIsLoading(false);
+
       if (loggedUser && loggedUser.password === passwordInput) {
           const loggedInUser = authService.login(loggedUser.username, [loggedUser]);
           if (loggedInUser) {
@@ -172,9 +189,10 @@ export function StakewiseTerminal() {
           }
       }
 
-      showNotify("Invalid credentials", "ERROR");
+      showNotify("User not found", "ERROR");
     } catch (err) {
       console.error("Auth error:", err);
+      setIsLoading(false);
       showNotify("System error", "ERROR");
     }
   };
