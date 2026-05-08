@@ -1,7 +1,7 @@
 import type { Thread } from "@/modules/market/service";
 
 export type ViewMode = "USER" | "ADMIN";
-export type UserSubTab = "WORLD" | "MARKETS" | "PORTFOLIO" | "WALLET" | "PROFILE";
+export type UserSubTab = "MARKETS" | "PORTFOLIO" | "WALLET" | "PROFILE";
 export type AdminTab = "OVERVIEW" | "USERS" | "FINANCE" | "SYSTEM";
 export type AuthView = "LOGIN" | "REGISTER" | "OTP";
 export type MarketSide = "YES" | "NO";

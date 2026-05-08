@@ -6,7 +6,6 @@ import { authService } from "@/modules/auth/service";
 import { marketService, Thread } from "@/modules/market/service";
 import { betService } from "@/modules/bet/service";
 import { logService } from "@/services/logService";
-import type { RadarBetSide } from "@/features/forecast-world/types";
 import { useTranslation } from "@/context/LangContext";
 import { mockUsers as initialUsers, User as UserType } from "@/data/mockUsers";
 import { createDefaultMarketDraft } from "./constants";
@@ -81,26 +80,14 @@ export function StakewiseTerminal() {
     init();
   }, []);
 
-  const handleBypassAdmin = () => {
-    const admin = initialUsers[0];
-    authService.login(admin.username, initialUsers);
-    setCurrentUser(admin);
-    setBalance(admin.balance);
-    showNotify("Bypass Login Successful", "SUCCESS");
-  };
-
   const showNotify = (message: string, type: NotifyType = "SUCCESS") => {
     setNotify({ isOpen: true, message, type });
     setTimeout(() => setNotify(prev => ({ ...prev, isOpen: false })), 3000);
   };
 
   // 3. Fast Login Handler
-  const handleAuth = async (e?: React.FormEvent | React.MouseEvent) => {
-    if (e) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
-    
+  const handleAuth = async () => {
+    alert("Login clicked: " + usernameInput);
     if (currentUser) return;
 
     try {
@@ -144,14 +131,12 @@ export function StakewiseTerminal() {
     }
   };
 
-  const handleRegister = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleRegister = () => {
     setAuthView("OTP");
     showNotify("OTP sent to your mobile", "INFO");
   };
 
-  const handleVerifyOtp = (e: React.FormEvent) => {
-     e.preventDefault();
+  const handleVerifyOtp = () => {
      if (otpInput === "1234") {
         const demoUser: UserType & { phone: string } = {
            id: `user_${Date.now()}`,
@@ -185,6 +170,7 @@ export function StakewiseTerminal() {
   };
 
   const toggleLang = () => {
+    alert("Toggle lang clicked, current: " + lang);
     setLang(lang === "EN" ? "TH" : "EN");
   };
 
@@ -259,31 +245,7 @@ export function StakewiseTerminal() {
      showNotify(`User status updated to ${newStatus}`, "SUCCESS");
   };
 
-  const handlePlaceRadarBet = (thread: Thread, side: RadarBetSide, amount: number) => {
-    if (!currentUser) return false;
-    if (amount <= 0 || amount > balance) {
-      showNotify(t("world.insufficient_balance"), "ERROR");
-      return false;
-    }
-
-    try {
-      const newBalance = betService.placeBet(balance, amount);
-      setBalance(newBalance);
-      setThreads((current) => current.map((market) => {
-        if (market.id !== thread.id) return market;
-        return side === "YES"
-          ? { ...market, yesVolume: market.yesVolume + amount }
-          : { ...market, noVolume: market.noVolume + amount };
-      }));
-
-      showNotify(`${t("world.radar.bet_confirmed")} ${side} ${amount} USDT`, "SUCCESS");
-      logService.logTransaction(currentUser.username, "RADAR_BET", amount, `Radar bet ${side} on ${thread.title}`);
-      return true;
-    } catch (err: unknown) {
-      showNotify(err instanceof Error ? err.message : t("world.insufficient_balance"), "ERROR");
-      return false;
-    }
-  };
+  
 
   const getTracking = (strength: "normal" | "wide" | "widest") => {
     if (lang === "TH") return "tracking-normal";
@@ -296,9 +258,6 @@ export function StakewiseTerminal() {
   if (!currentUser) {
     return (
       <div className="min-h-screen bg-black relative">
-        <div className="fixed top-4 left-4 z-[9999] text-[12px] text-emerald-500 font-black bg-black/80 px-2 py-1 rounded border border-emerald-500/30">
-          SYSTEM_V4.2.19_READY
-        </div>
         <AuthScreen
           authView={authView}
           usernameInput={usernameInput}
@@ -315,7 +274,6 @@ export function StakewiseTerminal() {
           onRegister={handleRegister}
           onVerifyOtp={handleVerifyOtp}
           onToggleLang={toggleLang}
-          onBypass={handleBypassAdmin}
           t={t}
         />
         <Notification isOpen={notify.isOpen} message={notify.message} type={notify.type} onClose={() => setNotify(prev => ({ ...prev, isOpen: false }))} />
@@ -363,7 +321,6 @@ export function StakewiseTerminal() {
               setCurrentUser({...currentUser, ...updatedData});
               showNotify(updatedData.wallet ? "เชื่อมต่อ MetaMask เรียบร้อยแล้ว" : "อัปเดตโปรไฟล์เรียบร้อยแล้ว", "SUCCESS");
             }}
-            onPlaceRadarBet={handlePlaceRadarBet}
             getTracking={getTracking}
             t={t}
           />

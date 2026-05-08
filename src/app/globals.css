@@ -52,3 +52,62 @@ body {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* Mobile-first utilities */
+@layer utilities {
+  /* Safe area padding for notched phones */
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom, 0.5rem);
+  }
+  .pt-safe {
+    padding-top: env(safe-area-inset-top, 0.5rem);
+  }
+  .pl-safe {
+    padding-left: env(safe-area-inset-left, 0.5rem);
+  }
+  .pr-safe {
+    padding-right: env(safe-area-inset-right, 0.5rem);
+  }
+  
+  /* Touch-friendly tap targets */
+  .tap-44 {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Prevent pull-to-refresh on mobile */
+  .no-pull-refresh {
+    overscroll-behavior-y: contain;
+  }
+  
+  /* Better scroll behavior */
+  .snap-x-mandatory {
+    scroll-snap-type: x mandatory;
+  }
+  .snap-center {
+    scroll-snap-align: center;
+  }
+}
+
+/* Mobile touch optimizations */
+@media (max-width: 640px) {
+  /* Increase touch targets for better UX */
+  button, 
+  [role="button"],
+  a {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Larger inputs for mobile */
+  input, 
+  textarea, 
+  select {
+    font-size: 16px !important; /* Prevents iOS zoom on focus */
+  }
+  
+  /* Disable hover effects on touch devices */
+  .hover-trigger {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
